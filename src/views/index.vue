@@ -1,0 +1,36 @@
+<template>
+  <div>
+    <div class="divcolor">
+
+    </div>
+    <div>
+
+    </div>
+    <div>
+
+    </div>
+  </div>
+</template>
+<script>
+
+</script>
+<style lang="less" scoped>
+  @base: #f938ab;
+
+  div{
+    background-color:@base;
+    padding:50px;
+  }
+
+  .divcolor {
+    @media (max-width: 400px) {
+      background-color: green;
+    }
+    @media (min-width: 400px) and (max-width: 800px) {
+      background-color: red;
+    }
+    @media (min-width: 800px) {
+      background-color: #f938ab;
+    }
+  }
+</style>
