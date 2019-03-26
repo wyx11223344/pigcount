@@ -78,11 +78,13 @@ img {
 @顶部导航栏响应全局使用
 
  */
-.respond_t(@nav_title_height , @font_lead){
+.respond_t(@nav_title_height , @font_lead , @banner_zoom_with , @banner_zoom_margin){
+  //导航栏
   .nav_title{
     height: @nav_title_height;
     line-height: @nav_title_height - 6px;
   }
+
   .nav_lead{
     font-size: @font_lead;
     li{
@@ -95,20 +97,34 @@ img {
       }
     }
   }
+
+  .banner_zoom{
+    width: @banner_zoom_with ;
+    left: @banner_zoom_margin ;
+  }
 }
+
 @media (max-width: 400px) {
   @nav_title_height: 26px;
   @font_lead: 14px;
-  .respond_t(@nav_title_height,@font_lead);
+  @banner_zoom_with: 160%;
+  @banner_zoom_margin: -30%;
+  .respond_t(@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
 }
+
 @media (min-width: 400px) and (max-width: 800px) {
   @nav_title_height: 36px;
   @font_lead: 16px;
-  .respond_t(@nav_title_height,@font_lead);
+  @banner_zoom_with: 130%;
+  @banner_zoom_margin: -15%;
+  .respond_t(@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
 }
+
 @media (min-width: 800px) {
   @nav_title_height: 46px;
   @font_lead: 18px;
-  .respond_t(@nav_title_height,@font_lead);
+  @banner_zoom_with: 100%;
+  @banner_zoom_margin: 0%;
+  .respond_t(@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
 }
 
