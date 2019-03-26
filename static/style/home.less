@@ -4,8 +4,34 @@
 @暂未实现上述功能！
 
  */
-@color:blue;
-
+.theme(@bgc,@lead_color1,@lead_color2,@lead_color3){
+  .nav_title{
+    background-color: @bgc;
+  }
+  .lead_color1{
+    background-color: @lead_color1;
+  }
+  .lead_color2{
+    background-color: @lead_color2;
+  }
+  .lead_color3{
+    background-color: @lead_color3;
+  }
+}
+.theme-red{
+  @bgc: red;
+  @lead_color1: #ff35f8;
+  @lead_color2: #E58308;
+  @lead_color3: #5992ff;
+  .theme(@bgc,@lead_color1,@lead_color2,@lead_color3)
+}
+.theme-pink{
+  @bgc: rgba(225,102,150,0.3);
+  @lead_color1: #ff35f8;
+  @lead_color2: #E58308;
+  @lead_color3: #5992ff;
+  .theme(@bgc,@lead_color1,@lead_color2,@lead_color3)
+}
 /*
 
 @这一段是初始化页面整体
@@ -49,6 +75,40 @@ img {
 /*
 
 @响应式布局关键
+@顶部导航栏响应全局使用
 
  */
+.respond_t(@nav_title_height , @font_lead){
+  .nav_title{
+    height: @nav_title_height;
+    line-height: @nav_title_height - 6px;
+  }
+  .nav_lead{
+    font-size: @font_lead;
+    li{
+      .nav_lead_bgc{
+        line-height: @nav_title_height;
+      }
+      transform: translateY(3px - @nav_title_height);
+      &:hover{
+        transform: translateY(0);
+      }
+    }
+  }
+}
+@media (max-width: 400px) {
+  @nav_title_height: 26px;
+  @font_lead: 14px;
+  .respond_t(@nav_title_height,@font_lead);
+}
+@media (min-width: 400px) and (max-width: 800px) {
+  @nav_title_height: 36px;
+  @font_lead: 16px;
+  .respond_t(@nav_title_height,@font_lead);
+}
+@media (min-width: 800px) {
+  @nav_title_height: 46px;
+  @font_lead: 18px;
+  .respond_t(@nav_title_height,@font_lead);
+}
 

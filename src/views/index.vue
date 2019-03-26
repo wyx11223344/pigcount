@@ -1,36 +1,31 @@
 <template>
-  <div>
-    <div class="divcolor">
-
-    </div>
-    <div>
-
-    </div>
-    <div>
-
-    </div>
+  <div class="theme">
+    <titletop></titletop>
+    <img src="../../static/img/down.png" class="icon_down"/>
   </div>
 </template>
 <script>
+  export default {
+    name: 'index',
+    data(){
+      return{
 
+      }
+    },
+    methods:{
+
+    },
+  }
 </script>
 <style lang="less" scoped>
-  @base: #f938ab;
-
-  div{
-    background-color:@base;
-    padding:50px;
+  .theme{
+    position: relative;
+    height: 100%;
   }
-
-  .divcolor {
-    @media (max-width: 400px) {
-      background-color: green;
-    }
-    @media (min-width: 400px) and (max-width: 800px) {
-      background-color: red;
-    }
-    @media (min-width: 800px) {
-      background-color: #f938ab;
-    }
+  .icon_down{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20px;
   }
 </style>

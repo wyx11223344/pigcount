@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui';
 import {post,fetch,patch,put} from './api/http'
 import '../static/style/home.less';
+import titletop from './components/title.vue'
 
 Vue.prototype.$echarts = echarts //引入组件
 Vue.config.productionTip = false
@@ -15,6 +16,7 @@ Vue.prototype.$fetch=fetch;
 Vue.prototype.$patch=patch;
 Vue.prototype.$put=put;
 Vue.use(ElementUI);
+Vue.component('titletop',titletop)
 
 new Vue({
   router,
