@@ -27,12 +27,15 @@
     name: 'titletop',
     data(){
       return{
-        theme: 'theme-pink'
+        theme: '',
       }
+    },
+    created(){
+      this.theme = 'theme-'+this.$store.state.theme;
     },
     methods:{
       theme_click(){
-        this.theme = 'theme-pink';
+
       }
     },
   }

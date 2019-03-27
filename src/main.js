@@ -8,6 +8,7 @@ import ElementUI from 'element-ui';
 import {post,fetch,patch,put} from './api/http'
 import '../static/style/home.less';
 import titletop from './components/title.vue'
+import theme from './components/theme_color.vue'
 
 Vue.prototype.$echarts = echarts //引入组件
 Vue.config.productionTip = false
@@ -17,6 +18,7 @@ Vue.prototype.$patch=patch;
 Vue.prototype.$put=put;
 Vue.use(ElementUI);
 Vue.component('titletop',titletop)
+Vue.component('theme',theme)
 
 new Vue({
   router,
