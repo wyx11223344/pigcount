@@ -17,8 +17,8 @@
         data(){
             return{
                 options: [{
-                    value: 'red',
-                    label: '红色'
+                    value: 'blue',
+                    label: '蓝色'
                 }, {
                     value: 'pink',
                     label: '粉色'

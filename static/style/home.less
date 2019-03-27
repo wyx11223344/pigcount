@@ -4,9 +4,12 @@
 @暂未实现上述功能！
 
  */
-.theme(@bgc,@lead_color1,@lead_color2,@lead_color3){
+.theme(@bgc,@bgc_d,@lead_color1,@lead_color2,@lead_color3){
   .nav_title{
     background-color: @bgc;
+  }
+  .dang{
+    background-color: @bgc_d;
   }
   .lead_color1{
     background-color: @lead_color1;
@@ -18,19 +21,21 @@
     background-color: @lead_color3;
   }
 }
-.theme-red{
-  @bgc: red;
-  @lead_color1: #ff35f8;
-  @lead_color2: #E58308;
-  @lead_color3: #5992ff;
-  .theme(@bgc,@lead_color1,@lead_color2,@lead_color3)
+.theme-blue{
+  @bgc: rgba(66, 76, 255, 0.31);
+  @bgc_d: #afb9ff;
+  @lead_color1: #f9bf69;
+  @lead_color2: #23d619;
+  @lead_color3: #ef6c68;
+  .theme(@bgc,@bgc_d,@lead_color1,@lead_color2,@lead_color3)
 }
 .theme-pink{
   @bgc: rgba(225,102,150,0.3);
+  @bgc_d: #f0c4ac;
   @lead_color1: #ff35f8;
   @lead_color2: #E58308;
   @lead_color3: #5992ff;
-  .theme(@bgc,@lead_color1,@lead_color2,@lead_color3)
+  .theme(@bgc,@bgc_d,@lead_color1,@lead_color2,@lead_color3)
 }
 /*
 
@@ -79,6 +84,15 @@ img {
 
  */
 .respond_t(@nav_title_height , @font_lead , @banner_zoom_with , @banner_zoom_margin){
+  //遮挡效果
+  .dang{
+    height: @nav_title_height;
+    line-height: @nav_title_height;
+  }
+  .dang_gif{
+    height: @nav_title_height;
+  }
+
   //导航栏
   .nav_title{
     height: @nav_title_height;

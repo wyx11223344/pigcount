@@ -2,12 +2,12 @@
   <div class="theme">
     <titletop style="z-index: 10"></titletop>
     <img src="../../static/img/down.png" class="icon_down"/>
-    <!--<div>-->
-      <!--<img src="../../static/img/banner1_font.png" class="banner_font"/>-->
-      <!--<img src="../../static/img/cicle.png" class="banner_run"/>-->
-      <!--<img src="../../static/img/banner1.png" alt="" class="banner_zoom">-->
-    <!--</div>-->
-    <theme></theme>
+    <div>
+      <img src="../../static/img/banner1_font.png" class="banner_font"/>
+      <img src="../../static/img/cicle.png" class="banner_run"/>
+      <img src="../../static/img/banner1.png" alt="" class="banner_zoom">
+    </div>
+    <!--<theme></theme>-->
   </div>
 </template>
 <script>
@@ -35,8 +35,8 @@
     margin: auto;
     left: 0;
     right: 0;
-    bottom: 20px;
-    width: 5%;
+    bottom: 0;
+    width: 8%;
   }
   .banner_font{
     position: absolute;
