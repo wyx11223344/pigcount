@@ -10,6 +10,7 @@ import animate from 'animate.css'
 import '../static/style/home.less';
 import titletop from './components/title.vue'
 import theme from './components/theme_color.vue'
+// import touch from '../static/js/vueTouch.js'
 
 Vue.prototype.$echarts = echarts //引入组件
 Vue.config.productionTip = false
@@ -17,6 +18,7 @@ Vue.prototype.$post=post;
 Vue.prototype.$fetch=fetch;
 Vue.prototype.$patch=patch;
 Vue.prototype.$put=put;
+// Vue.use(touch)
 Vue.use(ElementUI);
 Vue.use(animate);
 Vue.component('titletop',titletop)

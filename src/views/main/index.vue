@@ -39,6 +39,7 @@
 </template>
 <script>
   import slide from './slide.vue'
+
   export default {
     name: 'index',
     data(){
@@ -53,7 +54,7 @@
       onScroll(event){
         let _this = this;
         var delta = 0;
-        if (!event) event = window.event;
+        if (!event) event = window.event;//为没有event浏览器获取event
         if (event.wheelDelta) {//IE、chrome浏览器使用的是wheelDelta，并且值为“正负120”
           delta = event.wheelDelta/120;
           if (window.opera) delta = -delta;//因为IE、chrome等向下滚动是负值，FF是正值，为了处理一致性，在此取反处理
@@ -101,6 +102,9 @@
         }
 
 
+      },
+      swipe(){
+        console.log(123)
       }
     },
     components:{
