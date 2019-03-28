@@ -11,7 +11,13 @@ export default new Vuex.Store({
   mutations: {
     slideadd(state){
       state.slide++
-    }
+    },
+    slidedown(state){
+      state.slide--
+    },
+    // slideget(state){
+    //   return state.slide
+    // }
   },
   actions: {
 

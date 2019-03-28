@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{theme_change: a}" style="transition: 0.5s opacity;">
+  <div id="app" :class="{zoomInDown: a , zoomOutDown : a === false}" class="animated">
     <router-view></router-view>
   </div>
 </template>
@@ -7,7 +7,7 @@
   export default {
     data(){
       return{
-        a: false,
+        a: true,
       }
     },
     computed:{
@@ -18,11 +18,11 @@
     watch: {
       //切换主题切换效果，opacity表现不理想，暂代
       myValue: function() {
-        // let _this = this
-        // _this.a = true;
-        // setTimeout(()=>{
-        //   _this.a = false
-        // },500)
+        let _this = this
+        _this.a = false;
+        setTimeout(()=>{
+          _this.a = true
+        },500)
       }
     }
   }

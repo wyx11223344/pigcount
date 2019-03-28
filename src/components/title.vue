@@ -3,7 +3,7 @@
 @2019-3-35 14：35
 -->
 <template>
-  <div :class="$store.state.theme" class="title">
+  <div :class="theme" class="title">
     <div class="nav_title_blur">
 
     </div>
@@ -34,26 +34,40 @@
 <script>
   export default {
     name: 'titletop',
-    data(){
-      return{
+    data() {
+      return {
         theme: '',
         a: false
       }
     },
-    created(){
-
+    created() {
+      this.theme = this.$store.state.theme
     },
-    methods:{
-      theme_click(){
+    methods: {
+      theme_click() {
 
       },
-      movein(){
+      movein() {
         this.a = true;
       },
-      moveout(){
+      moveout() {
         this.a = false;
       }
     },
+    computed: {
+      theme_change() {
+        return this.$store.state.theme
+      }
+    },
+    watch: {
+      //切换主题颜色延迟
+      theme_change() {
+        let _this = this
+        setTimeout(() => {
+          _this.theme = this.$store.state.theme
+        }, 500)
+      }
+    }
   }
 </script>
 <style lang="less" scoped>
@@ -62,6 +76,7 @@
     top: 0;
     z-index: 10;
     width: 100%;
+    overflow: hidden;
   }
   //遮挡栏样式
   .dang{

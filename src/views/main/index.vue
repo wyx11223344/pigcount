@@ -3,25 +3,26 @@
     <titletop></titletop>
     <div class="banner_control" :style="{transform:'translate3d(0,'+(-100*$store.state.slide)+'%,0)'}">
       <div class="banner0">
-        <img @click="updown" src="../../../static/img/down.png" class="icon_down"/>
+        <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
         <img src="../../../static/img/banner1_font.png" class="banner_font"/>
         <img src="../../../static/img/cicle.png" class="banner_run"/>
         <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
+
       </div>
       <div class="banner1">
-        <img @click="updown" src="../../../static/img/down.png" class="icon_down"/>
+        <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
         <img src="../../../static/img/banner1_font.png" class="banner_font"/>
         <img src="../../../static/img/cicle.png" class="banner_run"/>
         <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
       </div>
       <div class="banner2">
-        <img @click="updown" src="../../../static/img/down.png" class="icon_down"/>
+        <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
         <img src="../../../static/img/banner1_font.png" class="banner_font"/>
         <img src="../../../static/img/cicle.png" class="banner_run"/>
         <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
       </div>
       <div class="banner3">
-        <img @click="updown" src="../../../static/img/down.png" class="icon_down"/>
+        <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
         <img src="../../../static/img/banner1_font.png" class="banner_font"/>
         <img src="../../../static/img/cicle.png" class="banner_run"/>
         <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
@@ -32,7 +33,7 @@
         <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
       </div>
     </div>
-    <!--<theme></theme>-->
+    <theme></theme>
     <slide></slide>
   </div>
 </template>
@@ -50,56 +51,61 @@
         this.$store.commit('slideadd')
       },
       onScroll(event){
+        let _this = this;
         var delta = 0;
         if (!event) event = window.event;
         if (event.wheelDelta) {//IE、chrome浏览器使用的是wheelDelta，并且值为“正负120”
-          console.log(123)
           delta = event.wheelDelta/120;
           if (window.opera) delta = -delta;//因为IE、chrome等向下滚动是负值，FF是正值，为了处理一致性，在此取反处理
-        } else if (event.detail) {//FF浏览器使用的是detail,其值为“正负3”
-          delta = -event.detail/3;
+        } else if (event.deltaY) {//FF浏览器使用的是detail,其值为“正负3”
+          delta = -event.deltaY/3;
         }
-        if (delta)
-          if (delta <0){//向下滚动
-            console.log('向下滚动');
-          }else{//向上滚动
-            console.log('向下滚动');
+        if (delta <0){//向下滚动
+          if ( _this.stop_scroll === false ){
+            if ( this.$store.state.slide === 4 ) {
+              _this.$message({
+                type: 'warning',
+                message: '已经到底啦，别往下了',
+              })
+              _this.stop_scroll = true;
+              setTimeout(() => {
+                _this.stop_scroll = false
+              }, 1000);
+            }else {
+              _this.$store.commit('slideadd')
+              _this.stop_scroll = true;
+              setTimeout(() => {
+                _this.stop_scroll = false
+              }, 1000);
+            }
           }
-        // let _this = this;
-        // if ( _this.stop_scroll === false ){
-        //   this.$store.commit('slideadd')
-        // }
-        // this.stop_scroll = true;
-        // setTimeout(() => {
-        //   _this.stop_scroll = false
-        // }, 1000);
+        }else{//向上滚动
+          if ( _this.stop_scroll === false ){
+            if ( this.$store.state.slide === 0 ) {
+              _this.$message({
+                type: 'warning',
+                message: '已经到顶啦，上不了了',
+              })
+              _this.stop_scroll = true;
+              setTimeout(() => {
+                _this.stop_scroll = false
+              }, 1000);
+            }else {
+              _this.$store.commit('slidedown')
+              _this.stop_scroll = true;
+              setTimeout(() => {
+                _this.stop_scroll = false
+              }, 1000);
+            }
+          }
+        }
+
+
       }
     },
     components:{
       'slide': slide,
     }
-  }
-  // 兼容性写法，该函数也是网上别人写的，不过找不到出处了，蛮好的，所有我也没有必要修改了
-  // 判断鼠标滚轮滚动方向
-  // if (window.addEventListener)//FF,火狐浏览器会识别该方法
-  //   window.addEventListener('DOMMouseScroll', wheel, false);
-  // window.onmousewheel = document.onmousewheel = wheel;//W3C
-  // //统一处理滚轮滚动事件
-  // function wheel(event){
-  //   var delta = 0;
-  //   if (!event) event = window.event;
-  //   if (event.wheelDelta) {//IE、chrome浏览器使用的是wheelDelta，并且值为“正负120”
-  //     delta = event.wheelDelta/120;
-  //     if (window.opera) delta = -delta;//因为IE、chrome等向下滚动是负值，FF是正值，为了处理一致性，在此取反处理
-  //   } else if (event.detail) {//FF浏览器使用的是detail,其值为“正负3”
-  //     delta = -event.detail/3;
-  //   }
-  //   if (delta)
-  //     handle(delta);
-  // }
-  //上下滚动时的具体处理函数
-  function handle(delta) {
-
   }
 </script>
 <style lang="less" scoped>
@@ -115,6 +121,7 @@
     left: 0;
     right: 0;
     bottom: 0;
+    top: auto;
     width: 8%;
     cursor: pointer;
   }
@@ -151,7 +158,7 @@
   }
 
   //banner1背景滚动
-  @keyframes spin1 {
+  @keyframes spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
   }
@@ -170,7 +177,7 @@
   }
 
   //banner1图片放大
-  @keyframes big1 {
+  @keyframes big {
     0% { transform: scale(1); bottom: 0 }
     50% { transform: scale(1.1); bottom: 4.5% }
     100% { transform: scale(1); bottom: 0 }

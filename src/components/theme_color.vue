@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="position: fixed ; right: 0 ; top: 50px">
         <el-select v-model="choose_color" placeholder="选择颜色" @change="color_change">
             <el-option
                     v-for="item in options"

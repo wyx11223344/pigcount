@@ -6,6 +6,7 @@ import echarts from 'echarts' //引入echarts
 import 'element-ui/lib/theme-chalk/index.css';
 import ElementUI from 'element-ui';
 import {post,fetch,patch,put} from './api/http'
+import animate from 'animate.css'
 import '../static/style/home.less';
 import titletop from './components/title.vue'
 import theme from './components/theme_color.vue'
@@ -17,6 +18,7 @@ Vue.prototype.$fetch=fetch;
 Vue.prototype.$patch=patch;
 Vue.prototype.$put=put;
 Vue.use(ElementUI);
+Vue.use(animate);
 Vue.component('titletop',titletop)
 Vue.component('theme',theme)
 
