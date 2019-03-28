@@ -3,8 +3,12 @@
 @2019-3-35 14：35
 -->
 <template>
-  <div :class="theme">
+  <div :class="$store.state.theme" class="title">
+    <div class="nav_title_blur">
+
+    </div>
     <nav class="nav_title">
+      <img class="nav_tithl_log" src="../../static/img/logo.png"/>
       <ul class="nav_lead">
         <li>
           <p class="nav_lead_bgc lead_color1">查看分析</p>
@@ -22,7 +26,7 @@
       <p class="nav_lead login" @mouseover="movein" @mouseout="moveout">开始管钱</p>
     </nav>
     <div class="dang" :class="{move_dang: a}">
-      <p class="nav_lead dang_font">点我开始省钱之路 ></p>
+      <p class="nav_lead dang_font">点我开始省钱之路</p>
       <img src="../../static/img/dang_gif.gif" class="dang_gif"/>
     </div>
   </div>
@@ -37,7 +41,7 @@
       }
     },
     created(){
-      this.theme = 'theme-'+this.$store.state.theme;
+
     },
     methods:{
       theme_click(){
@@ -50,19 +54,15 @@
         this.a = false;
       }
     },
-    computed:{
-      myValue() {
-        return this.$store.state.theme
-      }
-    },
-    watch: {
-      myValue: function(newVal) {
-        this.theme = 'theme-'+ newVal
-      }
-    }
   }
 </script>
 <style lang="less" scoped>
+  .title{
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+  }
   //遮挡栏样式
   .dang{
     width: 100%;
@@ -71,7 +71,7 @@
     right: 100%;
     top: 0;
     transition: 0.5s;
-    z-index: 100;
+    z-index: 20;
   }
   .move_dang{
     right: 18% !important;
@@ -80,18 +80,38 @@
     position: relative !important;
     float: right !important;
     width: auto !important;
-    right: 1% !important;
+    right: 0 !important;
   }
   .dang_gif{
     position: relative;
     float: right;
-    margin-right: 2%;
+    margin-right: 1%;
+  }
+  .dang:before {
+    content: '';
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 100%;
+    top: 50%;
   }
 
+  .nav_title_blur{
+    position: absolute;
+    filter: blur(5px);
+    top: 0;
+    width: 100%;
+  }
   .nav_title{
     width: 100% ;
-    position: relative;
+    position: absolute;
     overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,.1);
+  }
+  .nav_tithl_log{
+    position: absolute;
+    height: 100%;
+    left: 15%;
   }
   .nav_lead{
     position: absolute;

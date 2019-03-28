@@ -4,12 +4,15 @@
 @暂未实现上述功能！
 
  */
-.theme(@bgc,@bgc_d,@lead_color1,@lead_color2,@lead_color3){
-  .nav_title{
+.theme(@bgc,@bgc_d_1,@bgc_d_2,@lead_color1,@lead_color2,@lead_color3){
+  .nav_title_blur{
     background-color: @bgc;
   }
   .dang{
-    background-color: @bgc_d;
+    background: radial-gradient(@bgc_d_1,@bgc_d_2);
+    &:before{
+      border-left-color: @bgc_d_2;
+    }
   }
   .lead_color1{
     background-color: @lead_color1;
@@ -23,19 +26,21 @@
 }
 .theme-blue{
   @bgc: rgba(66, 76, 255, 0.31);
-  @bgc_d: #afb9ff;
+  @bgc_d_1: #ffe0d3;
+  @bgc_d_2: #F0C4AC;
   @lead_color1: #f9bf69;
   @lead_color2: #23d619;
   @lead_color3: #ef6c68;
-  .theme(@bgc,@bgc_d,@lead_color1,@lead_color2,@lead_color3)
+  .theme(@bgc,@bgc_d_1,@bgc_d_2,@lead_color1,@lead_color2,@lead_color3)
 }
 .theme-pink{
   @bgc: rgba(225,102,150,0.3);
-  @bgc_d: #f0c4ac;
+  @bgc_d_1: #ffe0d3;
+  @bgc_d_2: #F0C4AC;
   @lead_color1: #ff35f8;
   @lead_color2: #E58308;
   @lead_color3: #5992ff;
-  .theme(@bgc,@bgc_d,@lead_color1,@lead_color2,@lead_color3)
+  .theme(@bgc,@bgc_d_1,@bgc_d_2,@lead_color1,@lead_color2,@lead_color3)
 }
 /*
 
@@ -88,13 +93,20 @@ img {
   .dang{
     height: @nav_title_height;
     line-height: @nav_title_height;
+    &:before{
+      border: @nav_title_height/2 solid transparent;
+      margin-top: -@nav_title_height/2;
+    }
   }
   .dang_gif{
     height: @nav_title_height;
   }
+  .title{
+    height: @nav_title_height;
+  }
 
   //导航栏
-  .nav_title{
+  .nav_title,.nav_title_blur{
     height: @nav_title_height;
     line-height: @nav_title_height - 6px;
   }

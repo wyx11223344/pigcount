@@ -17,13 +17,13 @@
         data(){
             return{
                 options: [{
-                    value: 'blue',
+                    value: 'theme-blue',
                     label: '蓝色'
                 }, {
-                    value: 'pink',
+                    value: 'theme-pink',
                     label: '粉色'
                 }],
-                choose_color: 'pink'
+                choose_color: 'theme-pink'
             }
         },
         methods: {
