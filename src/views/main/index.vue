@@ -1,41 +1,42 @@
 <template>
-  <div @wheel="onScroll()" class="theme">
-    <titletop></titletop>
-    <div class="banner_control" :style="{transform:'translate3d(0,'+(-100*$store.state.slide)+'%,0)'}">
-      <div class="banner0">
-        <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
-        <img src="../../../static/img/banner1_font.png" class="banner_font"/>
-        <img src="../../../static/img/cicle.png" class="banner_run"/>
-        <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
-
+  <v-touch style="width: 100% ; height: 100%" @swipeup="swipedown" @swipedown="swipeup">
+    <div @wheel="onScroll()" class="theme">
+      <titletop></titletop>
+      <div class="banner_control" :style="{transform:'translate3d(0,'+(-100*$store.state.slide)+'%,0)'}">
+        <div class="banner0">
+          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
+          <img src="../../../static/img/banner1_font.png" class="banner_font"/>
+          <img src="../../../static/img/cicle.png" class="banner_run"/>
+          <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
+        </div>
+        <div class="banner1">
+          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
+          <img src="../../../static/img/banner1_font.png" class="banner_font"/>
+          <img src="../../../static/img/cicle.png" class="banner_run"/>
+          <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
+        </div>
+        <div class="banner2">
+          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
+          <img src="../../../static/img/banner1_font.png" class="banner_font"/>
+          <img src="../../../static/img/cicle.png" class="banner_run"/>
+          <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
+        </div>
+        <div class="banner3">
+          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
+          <img src="../../../static/img/banner1_font.png" class="banner_font"/>
+          <img src="../../../static/img/cicle.png" class="banner_run"/>
+          <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
+        </div>
+        <div class="banner4">
+          <img src="../../../static/img/banner1_font.png" class="banner_font"/>
+          <img src="../../../static/img/cicle.png" class="banner_run"/>
+          <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
+        </div>
       </div>
-      <div class="banner1">
-        <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
-        <img src="../../../static/img/banner1_font.png" class="banner_font"/>
-        <img src="../../../static/img/cicle.png" class="banner_run"/>
-        <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
-      </div>
-      <div class="banner2">
-        <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
-        <img src="../../../static/img/banner1_font.png" class="banner_font"/>
-        <img src="../../../static/img/cicle.png" class="banner_run"/>
-        <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
-      </div>
-      <div class="banner3">
-        <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
-        <img src="../../../static/img/banner1_font.png" class="banner_font"/>
-        <img src="../../../static/img/cicle.png" class="banner_run"/>
-        <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
-      </div>
-      <div class="banner4">
-        <img src="../../../static/img/banner1_font.png" class="banner_font"/>
-        <img src="../../../static/img/cicle.png" class="banner_run"/>
-        <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
-      </div>
+      <!--<theme></theme>-->
+      <slide></slide>
     </div>
-    <theme></theme>
-    <slide></slide>
-  </div>
+  </v-touch>
 </template>
 <script>
   import slide from './slide.vue'
@@ -62,49 +63,54 @@
           delta = -event.deltaY/3;
         }
         if (delta <0){//向下滚动
-          if ( _this.stop_scroll === false ){
-            if ( this.$store.state.slide === 4 ) {
-              _this.$message({
-                type: 'warning',
-                message: '已经到底啦，别往下了',
-              })
-              _this.stop_scroll = true;
-              setTimeout(() => {
-                _this.stop_scroll = false
-              }, 1000);
-            }else {
-              _this.$store.commit('slideadd')
-              _this.stop_scroll = true;
-              setTimeout(() => {
-                _this.stop_scroll = false
-              }, 1000);
-            }
-          }
+          _this.swipedown()
         }else{//向上滚动
-          if ( _this.stop_scroll === false ){
-            if ( this.$store.state.slide === 0 ) {
-              _this.$message({
-                type: 'warning',
-                message: '已经到顶啦，上不了了',
-              })
-              _this.stop_scroll = true;
-              setTimeout(() => {
-                _this.stop_scroll = false
-              }, 1000);
-            }else {
-              _this.$store.commit('slidedown')
-              _this.stop_scroll = true;
-              setTimeout(() => {
-                _this.stop_scroll = false
-              }, 1000);
-            }
-          }
+          _this.swipeup()
         }
 
 
       },
-      swipe(){
-        console.log(123)
+      swipeup(){
+        let _this = this;
+        if ( _this.stop_scroll === false ){
+          if ( this.$store.state.slide === 0 ) {
+            _this.$message({
+              type: 'warning',
+              message: '已经到顶啦，上不了了',
+            })
+            _this.stop_scroll = true;
+            setTimeout(() => {
+              _this.stop_scroll = false
+            }, 1000);
+          }else {
+            _this.$store.commit('slidedown')
+            _this.stop_scroll = true;
+            setTimeout(() => {
+              _this.stop_scroll = false
+            }, 1000);
+          }
+        }
+      },
+      swipedown(){
+        let _this = this
+        if ( _this.stop_scroll === false ){
+          if ( this.$store.state.slide === 4 ) {
+            _this.$message({
+              type: 'warning',
+              message: '已经到底啦，别往下了',
+            })
+            _this.stop_scroll = true;
+            setTimeout(() => {
+              _this.stop_scroll = false
+            }, 1000);
+          }else {
+            _this.$store.commit('slideadd')
+            _this.stop_scroll = true;
+            setTimeout(() => {
+              _this.stop_scroll = false
+            }, 1000);
+          }
+        }
       }
     },
     components:{
@@ -171,7 +177,7 @@
     position: absolute;
     margin: auto;
     top: calc(~"(-2721px + 200%)/2");
-    left: calc(~"(-2721px + 100%)/2");;
+    left: calc(~"(-2721px + 100%)/2");
     width: 2721px;
     height: 2721px;
     animation-name: spin;
@@ -183,7 +189,7 @@
   //banner1图片放大
   @keyframes big {
     0% { transform: scale(1); bottom: 0 }
-    50% { transform: scale(1.1); bottom: 4.5% }
+    50% { transform: scale(1.1); bottom: 3% }
     100% { transform: scale(1); bottom: 0 }
   }
   .banner_zoom{

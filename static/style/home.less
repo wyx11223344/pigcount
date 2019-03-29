@@ -88,7 +88,7 @@ img {
 @顶部导航栏响应全局使用
 
  */
-.respond_t(@nav_title_height , @font_lead , @banner_zoom_with , @banner_zoom_margin){
+.respond_t(@nav_login_right,@nav_tithl_log_left,@nav_lead_width,@nav_title_height , @font_lead , @banner_zoom_with , @banner_zoom_margin){
   //遮挡效果
   .dang{
     height: @nav_title_height;
@@ -113,6 +113,8 @@ img {
 
   .nav_lead{
     font-size: @font_lead;
+    width: @nav_lead_width;
+    right: 20%;
     li{
       .nav_lead_bgc{
         line-height: @nav_title_height;
@@ -124,33 +126,87 @@ img {
     }
   }
 
+  .nav_login{
+    width: @nav_lead_width/3;
+    right: @nav_login_right;
+  }
+
+  .nav_tithl_log{
+    left: @nav_tithl_log_left;
+  }
+
   .banner_zoom{
     width: @banner_zoom_with ;
     left: @banner_zoom_margin ;
   }
 }
 
-@media (max-width: 400px) {
+@media(max-width: 570px) {
+  .banner_run{
+    width: 1800px !important;
+    height: 1800px !important;
+    top: calc(~"(-1800px + 200%)/2") !important;
+    left: calc(~"(-1800px + 100%)/2") !important;
+  }
+  .banner_font{
+    left: 0 !important;
+    right: 0 !important;
+    top: 100px !important;
+    bottom: auto !important;
+    width: 70% !important;
+  }
+  .icon_down{
+    width: 35% !important;
+  }
+  .move_dang{
+    right: 20% !important;
+  }
+  @nav_login_right: 2%;
+  @nav_tithl_log_left: 5%;
+  @nav_lead_width: 200px;
+  @nav_title_height: 22px;
+  @font_lead: 12px;
+  @banner_zoom_with: 260%;
+  @banner_zoom_margin: -90%;
+  .respond_t(@nav_login_right,@nav_tithl_log_left,@nav_lead_width,@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
+}
+
+@media (min-width: 570px) and (max-width: 800px) {
+  .icon_down{
+    width: 18% !important;
+  }
+  @nav_login_right: 3%;
+  @nav_tithl_log_left: 9%;
+  @nav_lead_width: 270px;
   @nav_title_height: 26px;
   @font_lead: 14px;
-  @banner_zoom_with: 160%;
-  @banner_zoom_margin: -30%;
-  .respond_t(@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
+  @banner_zoom_with: 180%;
+  @banner_zoom_margin: -50%;
+  .respond_t(@nav_login_right,@nav_tithl_log_left,@nav_lead_width,@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
 }
 
-@media (min-width: 400px) and (max-width: 800px) {
+@media (min-width: 800px) and (max-width: 1200px) {
+  .icon_down{
+    width: 12% !important;
+  }
+  @nav_login_right: 4%;
+  @nav_tithl_log_left: 12%;
+  @nav_lead_width: 400px;
   @nav_title_height: 36px;
   @font_lead: 16px;
-  @banner_zoom_with: 130%;
-  @banner_zoom_margin: -15%;
-  .respond_t(@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
+  @banner_zoom_with: 140%;
+  @banner_zoom_margin: -20%;
+  .respond_t(@nav_login_right,@nav_tithl_log_left,@nav_lead_width,@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
 }
 
-@media (min-width: 800px) {
+@media (min-width: 1200px) {
+  @nav_login_right: 5%;
+  @nav_tithl_log_left: 15%;
+  @nav_lead_width: 570px;
   @nav_title_height: 46px;
   @font_lead: 18px;
   @banner_zoom_with: 100%;
   @banner_zoom_margin: 0%;
-  .respond_t(@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
+  .respond_t(@nav_login_right,@nav_tithl_log_left,@nav_lead_width,@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
 }
 

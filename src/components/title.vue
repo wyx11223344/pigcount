@@ -23,7 +23,7 @@
           <p>个人主页</p>
         </li>
       </ul>
-      <p class="nav_lead login" @mouseover="movein" @mouseout="moveout">开始管钱</p>
+      <p class="nav_lead nav_login" @mouseover="movein" @mouseout="moveout">开始管钱</p>
     </nav>
     <div class="dang" :class="{move_dang: a}">
       <p class="nav_lead dang_font">点我开始省钱之路</p>
@@ -89,7 +89,7 @@
     z-index: 20;
   }
   .move_dang{
-    right: 18% !important;
+    right: 18%;
   }
   .dang_font{
     position: relative !important;
@@ -126,16 +126,14 @@
   .nav_tithl_log{
     position: absolute;
     height: 100%;
-    left: 15%;
   }
   .nav_lead{
     position: absolute;
     margin: auto;
-    width: 30%;
-    right: 20%;
+
     li{
       cursor: pointer;
-      width: 33%;
+      width: 33.3%;
       display: inline-block;
       float: right;
       text-align: center;
@@ -146,13 +144,12 @@
     color: white;
   }
 
-  .login{
+  .nav_login{
     position: absolute;
-    width: 7% !important;
     text-align: center;
     margin: auto;
     top: 3px;
-    right: 5%;
+    transition: 0.5s;
     &:hover{
       cursor: pointer;
     }
