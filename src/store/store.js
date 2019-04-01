@@ -5,8 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    theme: 'theme-pink',
-    slide: 0,
+      app_change: true,
+      theme: 'theme-pink',
+      slide: 0,
   },
   mutations: {
     slideadd(state){

@@ -25,6 +25,12 @@ Vue.use(animate);
 Vue.component('titletop',titletop)
 Vue.component('theme',theme)
 
+router.beforeEach((to, from, next)=>{
+  setTimeout(()=>{
+    next()
+  },500)
+})
+
 new Vue({
   router,
   store,

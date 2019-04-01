@@ -8,22 +8,22 @@
 
     </div>
     <nav class="nav_title">
-      <img class="nav_tithl_log" src="../../static/img/logo.png"/>
+      <img @click="router_link('/')" class="nav_tithl_log" src="../../static/img/logo.png"/>
       <ul class="nav_lead">
-        <li>
+        <li @click="router_link('/analysis')">
           <p class="nav_lead_bgc lead_color1">查看分析</p>
           <p>查看分析</p>
         </li>
-        <li>
+        <li @click="router_link('/register')">
           <p class="nav_lead_bgc lead_color2">登记账本</p>
           <p>登记账本</p>
         </li>
-        <li>
+        <li @click="href_change">
           <p class="nav_lead_bgc lead_color3">个人主页</p>
           <p>个人主页</p>
         </li>
       </ul>
-      <p class="nav_lead nav_login" @mouseover="movein" @mouseout="moveout">开始管钱</p>
+      <p @click="router_link('/login')" class="nav_lead nav_login" @mouseover="movein" @mouseout="moveout">开始管钱</p>
     </nav>
     <div class="dang" :class="{move_dang: a}">
       <p class="nav_lead dang_font">点我开始省钱之路</p>
@@ -52,6 +52,16 @@
       },
       moveout() {
         this.a = false;
+      },
+      router_link(index){
+        this.$store.state.app_change = false;
+        setTimeout(()=>{
+          this.$store.state.app_change = true
+        },500)
+        this.$router.push(index)
+      },
+      href_change(){
+        window.location.href = 'http://www.mrwanmisshen.com'
       }
     },
     computed: {
@@ -126,6 +136,7 @@
   .nav_tithl_log{
     position: absolute;
     height: 100%;
+    cursor: pointer;
   }
   .nav_lead{
     position: absolute;

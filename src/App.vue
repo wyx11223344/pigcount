@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{zoomInDown: a , zoomOutDown : a === false}" class="animated">
+  <div id="app" :class="{bounceInDown: $store.state.app_change , bounceOutDown : $store.state.app_change === false}" class="animated">
     <router-view></router-view>
   </div>
 </template>
@@ -7,7 +7,7 @@
   export default {
     data(){
       return{
-        a: true,
+
       }
     },
     computed:{
@@ -16,14 +16,14 @@
       }
     },
     watch: {
-      //切换主题切换效果，opacity表现不理想，暂代
+      //切换主题切换效果
       myValue: function() {
         let _this = this
-        _this.a = false;
+        _this.$store.state.app_change = false;
         setTimeout(()=>{
-          _this.a = true
+          _this.$store.state.app_change = true
         },500)
-      }
+      },
     }
   }
 </script>
