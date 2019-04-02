@@ -111,6 +111,7 @@
         display: flex;
         width: 500px;
         height: 100%;
+        overflow: hidden;
     }
     .login_banner{
         opacity: 0;
@@ -205,5 +206,31 @@
         height:12px;
         font-size:12px;
         color:red;
+    }
+
+    /*
+    响应式
+     */
+    @media (max-width: 1000px) {
+        .login_banner_main{
+            width: 200px;
+        }
+        .logo-box {
+            right: calc( 50% - 301px );
+        }
+        .login_banner{
+            left: -150px;
+        }
+    }
+    @media (max-width: 650px) {
+        .login_banner_main{
+            width: 0px;
+        }
+        .logo-box {
+            right: calc( 50% - 201px );
+        }
+        .login_banner{
+            left: -250px;
+        }
     }
 </style>
