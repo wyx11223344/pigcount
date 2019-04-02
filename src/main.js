@@ -11,6 +11,7 @@ import '../static/style/home.less';
 import titletop from './components/title.vue'
 import theme from './components/theme_color.vue'
 import VueTouch from 'vue-touch'
+import './assets/icon/iconfont.css'
 
 
 Vue.prototype.$echarts = echarts //引入组件
