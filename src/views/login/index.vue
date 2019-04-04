@@ -66,18 +66,19 @@
                 this.login_check_left = 0;
                 this.login_send = true;
                 setTimeout(()=>{
-                    if ( _this.name === 'yixin.wan' || _this.password === '123321yx' ){
-                        _this.$message({
+                    _this.$post('loginc/login',{
+                        username: this.name,
+                        password: this.password
+                    }).then((response)=>{
+                        console.log(response)
+                        console.log(response.msg)
+                        response = JSON.parse(response)
+                        this.$message({
                             type: 'success',
-                            message: '登录成功啦老哥！！'
+                            message: response.msg
                         })
-                        this.login_send = false;
-                    } else {
-                        this.$message.error('老哥你密码怕不是这个哦？')
-                        _this.pi_title = '噗嗤，你是不是不知道密码哦！'
-                        _this.login_pic_p = require('../../../static/img/login-err.png')
-                        this.login_send = false;
-                    }
+                    })
+                    _this.login_send = false;
                 },2000)
             },
             log_button(){
