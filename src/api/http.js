@@ -1,20 +1,21 @@
 import axios from 'axios'
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL ='http://193.112.145.172:8080/pigcount/';
+axios.defaults.baseURL ='http://192.168.15.142:8066/';
 
 
 // http request 拦截器
 // axios.interceptors.request.use(
 //     config => {
-//         if (window.vm.$store.state.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-//             config.headers.Authorization = `token ${window.vm.$store.state.token}`;
-//         }
+//         // if (window.vm.$store.state.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
+//         //     config.headers.Authorization = `token ${window.vm.$store.state.token}`;
+//         // }
+//         console.log(config)
 //         return config;
 //     },
-//     error => {
-//         return Promise.reject(err);
-//     }
+//     // error => {
+//     //     return Promise.reject(err);
+//     // }
 // );
 
 

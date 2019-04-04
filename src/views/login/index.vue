@@ -25,7 +25,6 @@
             </div>
             <pic_check class="pic_check_class" :style="{left: login_check_left+100+'%'}" @check_ok="check_ok"></pic_check>
         </div>
-
     </div>
 </template>
 <style>
@@ -70,9 +69,6 @@
                         username: this.name,
                         password: this.password
                     }).then((response)=>{
-                        console.log(response)
-                        console.log(response.msg)
-                        response = JSON.parse(response)
                         this.$message({
                             type: 'success',
                             message: response.msg
