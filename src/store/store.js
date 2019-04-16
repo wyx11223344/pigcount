@@ -8,7 +8,6 @@ export default new Vuex.Store({
       app_change: true,
       theme: 'theme-pink',
       slide: 0,
-      pic_check: false,
   },
   mutations: {
     slideadd(state){
@@ -17,9 +16,6 @@ export default new Vuex.Store({
     slidedown(state){
       state.slide--
     },
-    pic_check_success(state){
-      state.pic_check = true
-    }
   },
   actions: {
 

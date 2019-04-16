@@ -44,7 +44,7 @@
                 randomY: null,
                 imgRandom: '',
                 left_Num: 0,
-                dataWidth: 260,
+                dataWidth: 240,
                 dataHeight: 120,
                 puzzleSize: 48,
                 deviation: 4,
@@ -308,7 +308,7 @@
         },
         mounted () {
             let self = this
-            this.dataWidth = this.$refs.puzzle.clientWidth*0.884
+            this.dataWidth = this.$refs.puzzle.clientWidth*0.72
             this.dataHeight = this.dataWidth*(this.height/this.width)
             this.scale = this.$refs.puzzle.clientWidth/260
             this.puzzleSize = this.dataWidth*(this.PlSize/this.width)

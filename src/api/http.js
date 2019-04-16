@@ -1,7 +1,10 @@
 import axios from 'axios'
+axios.defaults.withCredentials=true;
+
+import url from '../../setBaseUrl.js'
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL ='http://193.112.145.172:8080/pigcount/';
+axios.defaults.baseURL = url.baseUrl
 
 
 // http request 拦截器

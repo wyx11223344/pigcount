@@ -6,7 +6,13 @@
 
 <script>
     export default {
-        name: "index"
+        name: "index",
+        created() {
+            this.$post('/loginc/login_on',{
+            }).then((response)=>{
+                console.log(response)
+            })
+        }
     }
 </script>
 

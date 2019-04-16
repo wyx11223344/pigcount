@@ -5,7 +5,7 @@
             <img src="../../../static/img/login1.jpg" class="login_banner" :class="{login_banner_show: banner_control === 1}"/>
             <img src="../../../static/img/login2.jpg" class="login_banner" :class="{login_banner_show: banner_control === 2}"/>
         </div>
-        <div class="logo-box" v-loading="login_send" element-loading-text="正在为老哥登录中">
+        <div class="logo-box" v-loading="login_send" :element-loading-text="loading_text">
             <div class="login" :style="{left: login_check_left+'%'}">
                 <div class="bxs-row" style="text-align:center; transition: 0.5s">
                     <img id="logo" :src="login_pic_p" style="width:72px;"><span class="tips" style="color:#fe6673;">{{pi_title}}</span>
@@ -23,8 +23,8 @@
                 </div>
                 <p @click="login_check_left = 100">没有账号？点我注册啊！</p>
             </div>
-            <pic_check class="pic_check_class" :style="{left: login_check_left+100+'%'}" @check_ok="check_ok"></pic_check>
-            <pic_check class="pic_check_class" :style="{left: login_check_left-200+'%'}" @check_ok="check_ok"></pic_check>
+            <pic_check class="pic_check_class" :style="{left: login_check_left+100+'%'}" @check_ok="check_ok_login"></pic_check>
+            <pic_check class="pic_check_class" :style="{left: login_check_left-200+'%'}" @check_ok="check_ok_register"></pic_check>
             <div class="login" :style="{left: login_check_left-100+'%'}">
                 <div class="bxs-row" style="text-align:center; transition: 0.5s">
                     <img id="register" :src="register_pic_p" style="width:72px;"><span class="tips" style="color:#fe6673;">{{pi1_title}}</span>
@@ -77,7 +77,8 @@
                     bgc: '#07b9ff'
                 },{
                     bgc: '#7bf497'
-                }]
+                }],
+                loading_text: ''
             }
         },
         created() {
@@ -98,11 +99,11 @@
         },
         methods:{
             register_button(){
-                if( this.err_register_name === '' ){
+                if( this.err_register_name !== '' ){
                     this.$message.error('老哥你邮箱不对啊？')
                     this.register_pic_p = require('../../../static/img/null-password.jpg')
                     this.pi1_title =  '老哥你邮箱不对啊！'
-                }else if( this.err_register_pass === '' ){
+                }else if( this.err_register_pass !== '' ){
                     this.$message.error('老哥密码六位以上啊？')
                     this.register_pic_p = require('../../../static/img/null-password.jpg')
                     this.pi1_title =  '老哥密码六位以上啊！'
@@ -111,22 +112,27 @@
                     this.login_check_left = 200
                 }
             },
-            check_ok(){
-                let _this = this
+            check_ok_login(){
+                let _this = this;
                 this.login_check_left = 0;
                 this.login_send = true;
+                this.loading_text = '正在为老哥拼命登录中！'
                 setTimeout(()=>{
                     _this.$post('loginc/login',{
                         username: this.name,
                         password: this.password
                     }).then((response)=>{
-                        if ( response.code === 200 ) {
+                        if ( response.code === '200' ) {
                             this.$message({
                                 type: 'success',
                                 message: '为老哥登录成功，马上自动跳转!'
                             })
                             setTimeout(()=>{
-                                this.$router.push('register')
+                                _this.$store.state.app_change = false;
+                                setTimeout(()=>{
+                                    _this.$store.state.app_change = true
+                                },500)
+                                _this.$router.push('register')
                             },1500)
                         }else {
                             this.$message.error(response.msg)
@@ -137,12 +143,55 @@
                     _this.login_send = false;
                 },2000)
             },
+            check_ok_register(){
+                let _this = this;
+                this.login_check_left = 100;
+                this.login_send = true;
+                this.loading_text = '正在为老哥注册中！'
+                setTimeout(()=>{
+                    _this.$post('loginc/register',{
+                        username: this.name1,
+                        password: this.password1
+                    }).then((response)=>{
+                        if ( response.code === '200' ) {
+                            this.$message({
+                                type: 'success',
+                                message: '为老哥注册成功，并且自动登录!'
+                            })
+                            _this.$post('loginc/login',{
+                                username: _this.name1,
+                                password: _this.password1
+                            }).then((response)=>{
+                                if ( response.code === '200' ) {
+                                    setTimeout(()=>{
+                                        _this.$store.state.app_change = false;
+                                        setTimeout(()=>{
+                                            _this.$store.state.app_change = true
+                                        },500)
+                                        _this.$router.push('register')
+                                    },1500)
+                                }else {
+                                    _this.$message.error(response.msg)
+                                    _this.register_pic_p = require('../../../static/img/login-err.png')
+                                    _this.pi1_title =  '老哥，自动登录失败，手动吧！'
+                                    _this.login_check_left = 0;
+                                }
+                            })
+                        }else {
+                            this.$message.error(response.msg)
+                            this.register_pic_p = require('../../../static/img/login-err.png')
+                            this.pi1_title =  '老哥，注册都能出错哦！'
+                        }
+                    })
+                    _this.login_send = false;
+                },2000)
+            },
             log_button(){
-                if( this.err_login_name === '' ){
+                if( this.err_login_name !== '' ){
                     this.$message.error('老哥你邮箱不对啊？')
                     this.login_pic_p = require('../../../static/img/null-password.jpg')
                     this.pi_title =  '老哥你邮箱不对啊！'
-                }else if( this.err_login_pass === '' ){
+                }else if( this.err_login_pass !== '' ){
                     this.$message.error('老哥密码六位以上啊？')
                     this.login_pic_p = require('../../../static/img/null-password.jpg')
                     this.pi_title =  '老哥密码六位以上啊！'
@@ -227,10 +276,10 @@
     .pic_check_class{
         position: absolute;
         height: 250px;
-        width: 300px;
+        width: 340px;
         margin: auto;
         top:0;
-        padding: 56px 42px 36px;
+        padding: 36px 32px 36px;
         transition:all 0.8s;
     }
 
