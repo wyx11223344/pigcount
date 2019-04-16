@@ -2,24 +2,43 @@ import axios from 'axios'
 axios.defaults.withCredentials=true;
 
 import url from '../../setBaseUrl.js'
+import md5 from 'js-md5';
+import sha1 from 'sha1';
 
 axios.defaults.timeout = 5000;
 axios.defaults.baseURL = url.baseUrl
 
 
+function _getRandomString(len) {
+    len = len || 32;
+    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'; // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1
+    var maxPos = $chars.length;
+    var pwd = '';
+    for (let i = 0; i < len; i++) {
+        pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+    }
+    return pwd;
+}
+
 // http request 拦截器
-// axios.interceptors.request.use(
-//     config => {
-//         // if (window.vm.$store.state.token) {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-//         //     config.headers.Authorization = `token ${window.vm.$store.state.token}`;
-//         // }
-//         console.log(config)
-//         return config;
-//     },
-//     // error => {
-//     //     return Promise.reject(err);
-//     // }
-// );
+axios.interceptors.request.use(
+    config => {
+        //加密添加请求头
+        var timestamp = parseInt(Date.parse(new Date())/1000);
+        var rand_str = _getRandomString(10);
+        var arr = timestamp+rand_str+"LOVESHEN";
+        var sha = sha1(arr)
+        var token = md5(sha)
+        var signature = token.toUpperCase();
+        config.data.timestamp = timestamp
+        config.data.rand = rand_str
+        config.data.signature = signature
+        return config;
+    },
+    // error => {
+    //     return Promise.reject(err);
+    // }
+);
 
 
 //http response 拦截器
