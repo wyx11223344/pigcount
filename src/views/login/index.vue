@@ -8,22 +8,40 @@
         <div class="logo-box" v-loading="login_send" element-loading-text="正在为老哥登录中">
             <div class="login" :style="{left: login_check_left+'%'}">
                 <div class="bxs-row" style="text-align:center; transition: 0.5s">
-                    <img id="logo" :src="login_pic_p" style="width:72px;"><span class="tips" style="color:red;">{{pi_title}}</span>
+                    <img id="logo" :src="login_pic_p" style="width:72px;"><span class="tips" style="color:#fe6673;">{{pi_title}}</span>
                 </div>
                 <div class="bxs-row">
-                    <el-input prefix-icon="el-icon-moresousuoyemiantubiao" type="text" class="username" placeholder="用户名" v-model="name"></el-input>
-                    <p class=" err err-username"></p>
+                    <el-input :class="{error_input: err_login_name !== ''}" prefix-icon="el-icon-moresousuoyemiantubiao" type="text" @blur="check_login_email" class="username" placeholder="用户名-邮箱" v-model="name"></el-input>
+                    <p class=" err ">{{err_login_name}}</p>
                 </div>
                 <div class="bxs-row">
-                    <el-input prefix-icon="el-icon-morelock" type="password" class="password" placeholder="密码" v-model="password"></el-input>
-                    <p class="err err-password"></p>
+                    <el-input :class="{error_input: err_login_pass !== ''}" prefix-icon="el-icon-morelock" type="password" @blur="check_login_pass" class="password" placeholder="密码" v-model="password"></el-input>
+                    <p class="err">{{err_login_pass}}</p>
                 </div>
                 <div class="bxs-row">
-                    <input type="submit" class="submit btn" value="登录" @click="log_button()">
+                    <input type="submit" :style="{backgroundColor: bgc , border: '1px solid '+bgc}" class="submit btn" value="登录" @click="log_button()">
                 </div>
-                <p>没有账号？点我注册啊！</p>
+                <p @click="login_check_left = 100">没有账号？点我注册啊！</p>
             </div>
             <pic_check class="pic_check_class" :style="{left: login_check_left+100+'%'}" @check_ok="check_ok"></pic_check>
+            <pic_check class="pic_check_class" :style="{left: login_check_left-200+'%'}" @check_ok="check_ok"></pic_check>
+            <div class="login" :style="{left: login_check_left-100+'%'}">
+                <div class="bxs-row" style="text-align:center; transition: 0.5s">
+                    <img id="register" :src="register_pic_p" style="width:72px;"><span class="tips" style="color:#fe6673;">{{pi1_title}}</span>
+                </div>
+                <div class="bxs-row">
+                    <el-input :class="{error_input: err_register_name !== ''}" prefix-icon="el-icon-moresousuoyemiantubiao" type="text" @blur="check_register_email" class="username" placeholder="用户名-邮箱" v-model="name1"></el-input>
+                    <p class=" err ">{{err_register_name}}</p>
+                </div>
+                <div class="bxs-row">
+                    <el-input :class="{error_input: err_register_pass !== ''}" prefix-icon="el-icon-morelock" type="password" @blur="check_register_pass" class="password" placeholder="密码" v-model="password1"></el-input>
+                    <p class="err">{{err_register_pass}}</p>
+                </div>
+                <div class="bxs-row">
+                    <input type="submit" :style="{backgroundColor: bgc , border: '1px solid '+bgc}" class="submit btn" value="注册" @click="register_button()">
+                </div>
+                <p @click="login_check_left = 0">已有账号？点我登录啊！</p>
+            </div>
         </div>
     </div>
 </template>
@@ -43,23 +61,56 @@
                 login_pic_p: require('../../../static/img/logo.jpg'),
                 name: '',
                 password: '',
-                pi_title: '欢迎老哥注册登录',
+                pi_title: '欢迎老哥登录',
                 login_check_left: 0,
-                login_send: false
+                login_send: false,
+                register_pic_p: require('../../../static/img/logo.jpg'),
+                pi1_title: '欢迎老哥注册',
+                name1: '',
+                password1: '',
+                err_login_name: '',
+                err_login_pass: '',
+                err_register_name: '',
+                err_register_pass: '',
+                bgc: '',
+                banner_bgc: [{
+                    bgc: '#07b9ff'
+                },{
+                    bgc: '#7bf497'
+                }]
             }
         },
         created() {
             let _this = this;
+            let i = 0;
+            _this.bgc = _this.banner_bgc[i].bgc
             var change = setInterval(()=>{
                 if ( _this.banner_control < 2 ) {
+                    i += 1
                     _this.banner_control += 1;
                 }else {
+                    i = 0
                     _this.banner_control = 1;
                 }
+                _this.bgc = _this.banner_bgc[i].bgc
             },5000)
             change;
         },
         methods:{
+            register_button(){
+                if( this.err_register_name === '' ){
+                    this.$message.error('老哥你邮箱不对啊？')
+                    this.register_pic_p = require('../../../static/img/null-password.jpg')
+                    this.pi1_title =  '老哥你邮箱不对啊！'
+                }else if( this.err_register_pass === '' ){
+                    this.$message.error('老哥密码六位以上啊？')
+                    this.register_pic_p = require('../../../static/img/null-password.jpg')
+                    this.pi1_title =  '老哥密码六位以上啊！'
+                }else {
+                    this.$message('老哥划一梭')
+                    this.login_check_left = 200
+                }
+            },
             check_ok(){
                 let _this = this
                 this.login_check_left = 0;
@@ -69,26 +120,73 @@
                         username: this.name,
                         password: this.password
                     }).then((response)=>{
-                        this.$message({
-                            type: 'success',
-                            message: response.msg
-                        })
+                        if ( response.code === 200 ) {
+                            this.$message({
+                                type: 'success',
+                                message: '为老哥登录成功，马上自动跳转!'
+                            })
+                            setTimeout(()=>{
+                                this.$router.push('register')
+                            },1500)
+                        }else {
+                            this.$message.error(response.msg)
+                            this.register_pic_p = require('../../../static/img/login-err.png')
+                            this.pi1_title =  '老哥，你怕是不知道密码哦！'
+                        }
                     })
                     _this.login_send = false;
                 },2000)
             },
             log_button(){
-                if( this.name === '' ){
-                    this.$message.error('老哥你账号呢？')
+                if( this.err_login_name === '' ){
+                    this.$message.error('老哥你邮箱不对啊？')
                     this.login_pic_p = require('../../../static/img/null-password.jpg')
-                    this.pi_title =  '老哥没有账号先注册啊！'
-                }else if( this.password === '' ){
-                    this.$message.error('老哥你密码呢？')
+                    this.pi_title =  '老哥你邮箱不对啊！'
+                }else if( this.err_login_pass === '' ){
+                    this.$message.error('老哥密码六位以上啊？')
                     this.login_pic_p = require('../../../static/img/null-password.jpg')
-                    this.pi_title =  '老哥没有密码怎么登啊！'
+                    this.pi_title =  '老哥密码六位以上啊！'
                 }else {
                     this.$message('老哥划一梭')
                     this.login_check_left = -100;
+                }
+            },
+
+            //登录注册校验
+            check_login_email(){
+                let reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
+                if(!reg.test(this.name)){
+                    this.err_login_name = '老哥你这个邮箱不对啊';
+                    this.$message.error('请输入有效的邮箱号');
+                }else {
+                    this.err_login_name = '';
+                }
+            },
+            check_login_pass(){
+                let reg = /^.{6,}$/;
+                if(!reg.test(this.password)){
+                    this.err_login_pass = '老哥密码不少于6位';
+                    this.$message.error('请输入正确的密码');
+                }else {
+                    this.err_login_pass = '';
+                }
+            },
+            check_register_email(){
+                let reg = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/
+                if(!reg.test(this.name1)){
+                    this.err_register_name = '老哥你这个邮箱不对啊';
+                    this.$message.error('请输入有效的邮箱号');
+                }else {
+                    this.err_register_name = '';
+                }
+            },
+            check_register_pass(){
+                let reg = /^.{6,}$/;
+                if(!reg.test(this.password1)){
+                    this.err_register_pass = '老哥密码不少于6位';
+                    this.$message.error('请输入正确的密码');
+                }else {
+                    this.err_register_pass = '';
                 }
             }
         },
@@ -97,7 +195,11 @@
         }
     }
 </script>
-
+<style>
+    .error_input input{
+        border: 1px solid #fe6673 !important;
+    }
+</style>
 <style scoped>
     .login_index{
         width: 100%;
@@ -127,9 +229,8 @@
         height: 250px;
         width: 300px;
         margin: auto;
-        right: 0;
-        top: 0;
-        bottom: 0;
+        top:0;
+        padding: 56px 42px 36px;
         transition:all 0.8s;
     }
 
@@ -172,7 +273,6 @@
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
         box-shadow: none;
-        color: #000;
         font-size: 1em;
         font-family: Helvetica,Arial,sans-serif;
         font-weight: 400;
@@ -180,12 +280,8 @@
         font-size:13px;
     }
     .submit {
-        background-color: #0070ba;
         color:#fff;
-        border:1px solid #0070ba;
-    }
-    .submit:hover {
-        background-color:#005ea6;
+        transition: 0.5s all;
     }
     .verBox {
         position:absolute;
@@ -198,11 +294,11 @@
         padding-top:55px;
     }
     .err {
-        margin:12px 0 0;
+        margin:6px 10px 0;
         line-height:12px;
         height:12px;
         font-size:12px;
-        color:red;
+        color: #fe6673;
     }
 
     /*

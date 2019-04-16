@@ -34,7 +34,7 @@
 <script lang="js">
 
     export default {
-        name: 'puzzle',
+        name: 'pic_check',
         data () {
             return {
                 moveStart: '',
