@@ -129,10 +129,10 @@
                             })
                             setTimeout(()=>{
                                 _this.$store.state.app_change = false;
+                                _this.$router.push('register')
                                 setTimeout(()=>{
                                     _this.$store.state.app_change = true
                                 },500)
-                                _this.$router.push('register')
                             },1500)
                         }else {
                             this.$message.error(response.msg)
@@ -165,10 +165,10 @@
                                 if ( response.code === '200' ) {
                                     setTimeout(()=>{
                                         _this.$store.state.app_change = false;
+                                        _this.$router.push('register')
                                         setTimeout(()=>{
                                             _this.$store.state.app_change = true
                                         },500)
-                                        _this.$router.push('register')
                                     },1500)
                                 }else {
                                     _this.$message.error(response.msg)
