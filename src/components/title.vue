@@ -23,7 +23,10 @@
           <p>个人主页</p>
         </li>
       </ul>
-      <p @click="router_link('/login')" class="nav_lead nav_login" @mouseover="movein" @mouseout="moveout">开始管钱</p>
+      <p v-if="$store.state.is_log === false" @click="router_link('/login')" class="nav_lead nav_login" @mouseover="movein" @mouseout="moveout">开始管钱</p>
+      <el-tooltip v-if="$store.state.is_log" class="item" effect="light" content="点我退出登录哦" placement="bottom">
+        <p @click="log_out" class="nav_lead nav_login">记账中</p>
+      </el-tooltip>
     </nav>
     <div class="dang" :class="{move_dang: a}">
       <p class="nav_lead dang_font">点我开始省钱之路</p>
@@ -44,6 +47,41 @@
       this.theme = this.$store.state.theme
     },
     methods: {
+      log_out(){
+        let _this = this
+        this.$post('loginc/login_out',{
+        }).then((response)=>{
+          if ( response.code === '200' ){
+            this.$message({
+              type: 'success',
+              message: response.msg
+            })
+            setTimeout(()=>{
+              _this.$store.state.app_change = false;
+              _this.$router.push('')
+              setTimeout(()=>{
+                _this.$store.state.is_log = false
+                _this.$store.state.app_change = true
+              })
+            })
+          }else {
+            this.$message.error(response.msg)
+            setTimeout(()=>{
+              _this.$store.state.app_change = false;
+              _this.$router.push('')
+              setTimeout(()=>{
+                _this.$store.state.app_change = true
+                _this.$store.state.is_log = false
+              },500)
+            },1500)
+          }
+        }).catch(()=>{
+          this.$message.error('大哥，网站出错了，再试一次或者点击联系我')
+          this.$alert('<a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class">点我！联系我！</a>', '老哥！', {
+            dangerouslyUseHTMLString: true
+          });
+        })
+      },
       theme_click() {
 
       },

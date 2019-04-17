@@ -5,6 +5,8 @@
             <img src="../../../static/img/login1.jpg" class="login_banner" :class="{login_banner_show: banner_control === 1}"/>
             <img src="../../../static/img/login2.jpg" class="login_banner" :class="{login_banner_show: banner_control === 2}"/>
         </div>
+        <canvas id="canvas" class="login_title">
+        </canvas>
         <div class="logo-box" v-loading="login_send" :element-loading-text="loading_text">
             <div class="login" :style="{left: login_check_left+'%'}">
                 <div class="bxs-row" style="text-align:center; transition: 0.5s">
@@ -19,9 +21,9 @@
                     <p class="err">{{err_login_pass}}</p>
                 </div>
                 <div class="bxs-row">
-                    <input type="submit" :style="{backgroundColor: bgc , border: '1px solid '+bgc}" class="submit btn" value="登录" @click="log_button()">
+                    <input type="submit" :style="{backgroundColor: bgc , border: '1px solid '+bgc}" class="submit btn pointer" value="登录" @click="log_button()">
                 </div>
-                <p @click="login_check_left = 100">没有账号？点我注册啊！</p>
+                <p @click="login_check_left = 100" class="pointer">没有账号？点我注册啊！<span v-if="link_a" style="float: right"><a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class">点我！联系我！</a></span></p>
             </div>
             <pic_check class="pic_check_class" :style="{left: login_check_left+100+'%'}" @check_ok="check_ok_login"></pic_check>
             <pic_check class="pic_check_class" :style="{left: login_check_left-200+'%'}" @check_ok="check_ok_register"></pic_check>
@@ -38,9 +40,9 @@
                     <p class="err">{{err_register_pass}}</p>
                 </div>
                 <div class="bxs-row">
-                    <input type="submit" :style="{backgroundColor: bgc , border: '1px solid '+bgc}" class="submit btn" value="注册" @click="register_button()">
+                    <input type="submit" :style="{backgroundColor: bgc , border: '1px solid '+bgc}" class="submit btn pointer" value="注册" @click="register_button()">
                 </div>
-                <p @click="login_check_left = 0">已有账号？点我登录啊！</p>
+                <p @click="login_check_left = 0" class="pointer">已有账号？点我登录啊！<span v-if="link_a" style="float: right"><a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class">点我！联系我！</a></span></p>
             </div>
         </div>
     </div>
@@ -78,7 +80,8 @@
                 },{
                     bgc: '#7bf497'
                 }],
-                loading_text: ''
+                loading_text: '',
+                link_a: false
             }
         },
         created() {
@@ -96,6 +99,185 @@
                 _this.bgc = _this.banner_bgc[i].bgc
             },5000)
             change;
+        },
+        mounted(){
+            var utils = {
+                degreesToRads: function(degrees) {
+                    return degrees / 180 * Math.PI;
+                },
+                randomInt: function(min, max) {
+                    return min + Math.random() * (max - min + 1);
+                },
+            }
+
+            // basic setup  :)
+
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext('2d');
+            var W = canvas.width;
+            var H = canvas.height;
+
+            var gridX = 3;
+            var gridY = 3;
+
+            function shape(x, y, texte) {
+                this.x = x;
+                this.y = y;
+                this.size = 70;
+
+                this.text = texte;
+                this.placement = [];
+                this.vectors = [];
+
+            }
+
+            shape.prototype.getValue = function() {
+
+                // Draw the shape :^)
+
+                ctx.textAlign = "center";
+                ctx.font = "bold " + this.size + "px arial,Microsoft YaHei";
+                ctx.fillText(this.text, this.x, this.y);
+
+
+                var idata = ctx.getImageData(0, 0, W, H);
+
+                var buffer32 = new Uint32Array(idata.data.buffer);
+
+                for (var y = 0; y < H; y += gridY) {
+                    for (var x = 0; x < W; x += gridX) {
+
+                        if (buffer32[y * W + x]) {
+                            this.placement.push(new particle(x, y));
+                        }
+                    }
+                }
+                ctx.clearRect(0, 0, W, H);
+
+            }
+            var colors = [
+                '#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5',
+                '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50',
+                '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800',
+                '#FF5722'
+            ];
+
+            function particle(x, y, type) {
+                this.radius = 1.1;
+                this.futurRadius = utils.randomInt(radius, radius+3);
+
+
+                this.rebond = utils.randomInt(1, 5);
+                this.x = x;
+                this.y = y;
+
+                this.dying = false;
+
+                this.base = [x, y]
+
+                this.vx = 0;
+                this.vy = 0;
+                this.type = type;
+                this.friction = .99;
+                this.gravity = gravity;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+
+                this.getSpeed = function() {
+                    return Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                };
+
+                this.setSpeed = function(speed) {
+                    var heading = this.getHeading();
+                    this.vx = Math.cos(heading) * speed;
+                    this.vy = Math.sin(heading) * speed;
+                };
+
+                this.getHeading = function() {
+                    return Math.atan2(this.vy, this.vx);
+                };
+
+                this.setHeading = function(heading) {
+                    var speed = this.getSpeed();
+                    this.vx = Math.cos(heading) * speed;
+                    this.vy = Math.sin(heading) * speed;
+                };
+
+                this.angleTo = function(p2) {
+                    return Math.atan2(p2.y - this.y, p2.x - this.x);
+
+                };
+
+                this.update = function() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.vy += gravity;
+
+                    this.vx *= this.friction;
+                    this.vy *= this.friction;
+
+                    if(this.radius < this.futurRadius && this.dying === false){
+                        this.radius += duration;
+                    }else{
+                        this.dying = true;
+                    }
+
+                    if(this.dying === true){
+                        this.radius -= duration;
+
+
+                    }
+
+
+                    ctx.beginPath();
+
+                    ctx.fillStyle = this.color;
+
+                    ctx.arc(this.x, this.y, this.radius, Math.PI * 2, false);
+                    ctx.fill();
+                    ctx.closePath();
+
+                    if (this.y < 0 || this.radius < 1) {
+                        this.x = this.base[0];
+                        this.dying = false;
+                        this.y = this.base[1];
+                        this.radius = 1.1;
+                        this.setSpeed(speed);
+                        this.futurRadius = utils.randomInt(radius, radius+3);
+                        this.setHeading(utils.randomInt(utils.degreesToRads(0), utils.degreesToRads(360)));
+                    }
+
+                };
+
+                this.setSpeed(utils.randomInt(.1, .5));
+                this.setHeading(utils.randomInt(utils.degreesToRads(0), utils.degreesToRads(360)));
+
+            }
+            var gravity = 0;
+            var duration = 0.1;
+            var speed = 0;
+            var radius = -1.2;
+
+            var message = new shape(W / 2, H / 2 + 50, "猪猪账本");
+
+            message.getValue();
+
+            update();
+
+
+
+            var fps = 100;
+            function update() {
+                setTimeout(function() {
+                    ctx.clearRect(0, 0, W, H);
+
+
+                    for (var i = 0; i < message.placement.length; i++) {
+                        message.placement[i].update();
+                    }
+
+                    requestAnimationFrame(update);
+                }, 1000 / fps);
+            }
         },
         methods:{
             register_button(){
@@ -117,74 +299,93 @@
                 this.login_check_left = 0;
                 this.login_send = true;
                 this.loading_text = '正在为老哥拼命登录中！'
-                setTimeout(()=>{
-                    _this.$post('loginc/login',{
-                        username: this.name,
-                        password: this.password
-                    }).then((response)=>{
-                        if ( response.code === '200' ) {
-                            this.$message({
-                                type: 'success',
-                                message: '为老哥登录成功，马上自动跳转!'
-                            })
+                _this.$post('loginc/login',{
+                    username: this.name,
+                    password: this.password
+                }).then((response)=>{
+                    if ( response.code === '200' ) {
+                        this.$message({
+                            type: 'success',
+                            message: '为老哥登录成功，马上自动跳转!'
+                        })
+                        setTimeout(()=>{
+                            _this.login_send = false;
+                            _this.$store.state.app_change = false;
+                            _this.$router.push('register')
                             setTimeout(()=>{
-                                _this.$store.state.app_change = false;
-                                _this.$router.push('register')
-                                setTimeout(()=>{
-                                    _this.$store.state.app_change = true
-                                },500)
-                            },1500)
-                        }else {
-                            this.$message.error(response.msg)
-                            this.register_pic_p = require('../../../static/img/login-err.png')
-                            this.pi1_title =  '老哥，你怕是不知道密码哦！'
-                        }
-                    })
+                                _this.$store.state.app_change = true
+                                _this.$store.state.is_log = true
+                            },500)
+                        },1500)
+                    }else {
+                        _this.login_send = false;
+                        this.$message.error(response.msg)
+                        this.register_pic_p = require('../../../static/img/login-err.png')
+                        this.pi1_title =  '老哥，你怕是不知道密码哦！'
+                    }
+                }).catch(()=>{
                     _this.login_send = false;
-                },2000)
+                    this.$message.error('网站出错了老哥，要不再试一下或者右下角联系我')
+                    this.login_pic_p = require('../../../static/img/null-password.jpg')
+                    this.pi_title =  '老哥再试一次或者联系我'
+                    this.link_a = true
+                })
             },
             check_ok_register(){
                 let _this = this;
                 this.login_check_left = 100;
                 this.login_send = true;
                 this.loading_text = '正在为老哥注册中！'
-                setTimeout(()=>{
-                    _this.$post('loginc/register',{
-                        username: this.name1,
-                        password: this.password1
-                    }).then((response)=>{
-                        if ( response.code === '200' ) {
-                            this.$message({
-                                type: 'success',
-                                message: '为老哥注册成功，并且自动登录!'
-                            })
-                            _this.$post('loginc/login',{
-                                username: _this.name1,
-                                password: _this.password1
-                            }).then((response)=>{
-                                if ( response.code === '200' ) {
+                _this.$post('loginc/register',{
+                    username: this.name1,
+                    password: this.password1
+                }).then((response)=>{
+                    if ( response.code === '200' ) {
+                        this.$message({
+                            type: 'success',
+                            message: '为老哥注册成功，并且自动登录!'
+                        })
+                        _this.$post('loginc/login',{
+                            username: _this.name1,
+                            password: _this.password1
+                        }).then((response)=>{
+                            if ( response.code === '200' ) {
+                                setTimeout(()=>{
+                                    _this.login_send = false;
+                                    _this.$store.state.app_change = false;
+                                    _this.$router.push('register')
                                     setTimeout(()=>{
-                                        _this.$store.state.app_change = false;
-                                        _this.$router.push('register')
-                                        setTimeout(()=>{
-                                            _this.$store.state.app_change = true
-                                        },500)
-                                    },1500)
-                                }else {
-                                    _this.$message.error(response.msg)
-                                    _this.register_pic_p = require('../../../static/img/login-err.png')
-                                    _this.pi1_title =  '老哥，自动登录失败，手动吧！'
-                                    _this.login_check_left = 0;
-                                }
-                            })
-                        }else {
-                            this.$message.error(response.msg)
-                            this.register_pic_p = require('../../../static/img/login-err.png')
-                            this.pi1_title =  '老哥，注册都能出错哦！'
-                        }
-                    })
+                                        _this.$store.state.is_log = true
+                                        _this.$store.state.app_change = true
+                                    },500)
+                                },1500)
+                            }else {
+                                _this.login_send = false;
+                                _this.$message.error(response.msg)
+                                _this.register_pic_p = require('../../../static/img/login-err.png')
+                                _this.pi1_title =  '老哥，自动登录失败，手动吧！'
+                                _this.login_check_left = 0;
+                            }
+                        }).catch(()=>{
+                            _this.login_send = false;
+                            this.$message.error('网站出错了老哥，试试自动登录或者右下角联系我')
+                            this.login_pic_p = require('../../../static/img/null-password.jpg')
+                            this.pi_title =  '老哥试试手动登录或者联系我'
+                            this.link_a = true
+                        })
+                    }else {
+                        _this.login_send = false;
+                        this.$message.error(response.msg)
+                        this.register_pic_p = require('../../../static/img/login-err.png')
+                        this.pi1_title =  '老哥，注册都能出错哦！'
+                    }
+                }).catch(()=>{
                     _this.login_send = false;
-                },2000)
+                    this.$message.error('网站出错了老哥，要不再试一下或者右下角联系我')
+                    this.register_pic_p = require('../../../static/img/null-password.jpg')
+                    this.pi1_title =  '老哥再试一次或者联系我'
+                    this.link_a = true
+                })
             },
             log_button(){
                 if( this.err_login_name !== '' ){
@@ -243,6 +444,7 @@
             'pic_check': pic_check
         }
     }
+
 </script>
 <style>
     .error_input input{
@@ -296,8 +498,16 @@
         height:360px;
         margin: auto;
         right: calc( 50% - 451px );
-        top: 0;
+        top: 100px;
         bottom: 0;
+    }
+    .login_title{
+        width:404px;
+        position:absolute;
+        margin: auto;
+        right: calc( 50% - 451px );
+        top: 0;
+        bottom: 450px;
     }
     .login {
         position:absolute;
@@ -357,7 +567,7 @@
         .login_banner_main{
             width: 200px;
         }
-        .logo-box {
+        .logo-box ,.login_title {
             right: calc( 50% - 301px );
         }
         .login_banner{
@@ -368,7 +578,7 @@
         .login_banner_main{
             width: 0px;
         }
-        .logo-box {
+        .logo-box ,.login_title{
             right: calc( 50% - 201px );
         }
         .login_banner{

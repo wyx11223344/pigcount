@@ -8,6 +8,7 @@ export default new Vuex.Store({
       app_change: true,
       theme: 'theme-pink',
       slide: 0,
+      is_log: false
   },
   mutations: {
     slideadd(state){
