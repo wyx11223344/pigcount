@@ -58,12 +58,12 @@
             })
             setTimeout(()=>{
               _this.$store.state.app_change = false;
-              _this.$router.push('')
+              _this.$router.push('/')
               setTimeout(()=>{
                 _this.$store.state.is_log = false
                 _this.$store.state.app_change = true
-              })
-            })
+              },500)
+            },1500)
           }else {
             this.$message.error(response.msg)
             setTimeout(()=>{
