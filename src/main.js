@@ -29,7 +29,7 @@ Vue.component('theme',theme)
 router.beforeEach((to, from, next)=>{
   setTimeout(()=>{
     next()
-  },500)
+  },400)
 })
 
 new Vue({

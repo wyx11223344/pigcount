@@ -73,6 +73,7 @@
                     require('../../../static/img/ver-1.png'),
                     require('../../../static/img/ver-2.png'),
                     require('../../../static/img/ver-3.png'),
+                    require('../../../static/img/ver-4.png'),
                 ]
             },
             PlSize: {
