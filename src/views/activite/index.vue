@@ -11,7 +11,7 @@
             let url = window.location.href
             let arr = url.split('=')
             let brr = arr[1].split('&')
-            this.$post('code_check',{
+            this.$post('loginc/code_check',{
                 code: brr[0],
                 name: brr[1]
             }).then((response)=>{
