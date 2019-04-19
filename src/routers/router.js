@@ -8,6 +8,7 @@ const index = ()=>import("../views/main/index")
 const login = ()=>import("../views/login/index")
 const register = ()=>import("../views/register/index")
 const analysis = ()=>import("../views/analysis/index")
+const activite = ()=>import("../views/activite/index")
 
 export default new Router({
   routes: [
@@ -27,6 +28,10 @@ export default new Router({
       path: '/analysis',
       name: 'analysis',
       component: analysis
+    },{
+      path: '/activite',
+      name: 'activite',
+      component: activite
     }
   ]
 })

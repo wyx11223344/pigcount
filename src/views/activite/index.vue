@@ -9,7 +9,14 @@
         name: "index",
         created(){
             let url = window.location.href
-            console.log(url)
+            let arr = url.split('=')
+            let brr = arr[1].split('&')
+            this.$post('code_check',{
+                code: brr[0],
+                name: brr[1]
+            }).then((response)=>{
+                console.log(response)
+            })
         }
     }
 </script>

@@ -362,8 +362,8 @@
                             }else {
                                 _this.login_send = false;
                                 _this.$message.error(response.msg)
-                                _this.register_pic_p = require('../../../static/img/login-err.png')
-                                _this.pi1_title =  '老哥，自动登录失败，手动吧！'
+                                _this.login_pic_p = require('../../../static/img/login-err.png')
+                                _this.pi_title =  '老哥，自动登录失败，手动吧！'
                                 _this.login_check_left = 0;
                             }
                         }).catch(()=>{
