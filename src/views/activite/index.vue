@@ -13,7 +13,7 @@
             let brr = arr[1].split('&')
             this.$post('loginc/code_check',{
                 code: brr[0],
-                name: brr[1]
+                name: decodeURIComponent(brr[1])
             }).then((response)=>{
                 console.log(response)
             })
