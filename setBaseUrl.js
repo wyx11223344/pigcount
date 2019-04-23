@@ -4,7 +4,7 @@ switch (process.env.NODE_ENV) {
         baseUrl = "http://localhost:8068/"  //这里是本地的请求url
         break
     case 'production':
-        baseUrl = "http://manage.mrwanmisshen.com/pigcount/"   //生产环境url
+        baseUrl = "http://pigshop.mrwanmisshen.com/"   //生产环境url
         break
 }
 
