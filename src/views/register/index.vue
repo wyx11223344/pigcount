@@ -11,7 +11,7 @@
             let _this = this
             this.$post('/loginc/login_on',{
             }).then((response)=>{
-                if ( response.code === '200' ) {
+                if ( response.code === 200 ) {
                     _this.$store.state.is_log = true
                     _this.username = response.code.data
                 }else {

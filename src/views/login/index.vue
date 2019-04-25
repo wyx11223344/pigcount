@@ -299,11 +299,11 @@
                 this.login_check_left = 0;
                 this.login_send = true;
                 this.loading_text = '正在为老哥拼命登录中！'
-                _this.$post('loginc/login',{
+                _this.$post('loginc/login_in',{
                     username: this.name,
                     password: this.password
                 }).then((response)=>{
-                    if ( response.code === '200' ) {
+                    if ( response.code === 200 ) {    
                         this.$message({
                             type: 'success',
                             message: '为老哥登录成功，马上自动跳转!'
@@ -320,8 +320,8 @@
                     }else {
                         _this.login_send = false;
                         this.$message.error(response.msg)
-                        this.register_pic_p = require('../../../static/img/login-err.png')
-                        this.pi1_title =  '老哥，你怕是不知道密码哦！'
+                        this.login_pic_p = require('../../../static/img/login-err.png')
+                        this.pi_title =  '老哥，你怕是不知道密码哦！'
                     }
                 }).catch(()=>{
                     _this.login_send = false;
@@ -340,16 +340,16 @@
                     username: this.name1,
                     password: this.password1
                 }).then((response)=>{
-                    if ( response.code === '200' ) {
+                    if ( response.code === 200 ) {
                         this.$message({
                             type: 'success',
                             message: '为老哥注册成功，并且自动登录!'
                         })
-                        _this.$post('loginc/login',{
+                        _this.$post('loginc/login_in',{
                             username: _this.name1,
                             password: _this.password1
                         }).then((response)=>{
-                            if ( response.code === '200' ) {
+                            if ( response.code === 200 ) {
                                 setTimeout(()=>{
                                     _this.login_send = false;
                                     _this.$store.state.app_change = false;
