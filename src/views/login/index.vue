@@ -345,6 +345,7 @@
                             type: 'success',
                             message: '为老哥注册成功，快去进行邮箱验证吧!'
                         })
+                        this.login_check_left = 0;
                         _this.login_send = false;
                         this.login_pic_p = require('../../../static/img/logo.jpg')
                         this.pi_title =  '老哥最后一步了，快去验证登录了'
