@@ -9,7 +9,7 @@
         name: "index",
         data(){
             return{
-                show_text: ""
+                show_text: "验证中……"
             }
         },
         created(){
