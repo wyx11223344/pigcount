@@ -343,36 +343,11 @@
                     if ( response.code === 200 ) {
                         this.$message({
                             type: 'success',
-                            message: '为老哥注册成功，并且自动登录!'
+                            message: '为老哥注册成功，快去进行邮箱验证吧!'
                         })
-                        _this.$post('loginc/login_in',{
-                            username: _this.name1,
-                            password: _this.password1
-                        }).then((response)=>{
-                            if ( response.code === 200 ) {
-                                setTimeout(()=>{
-                                    _this.login_send = false;
-                                    _this.$store.state.app_change = false;
-                                    _this.$router.push('register')
-                                    setTimeout(()=>{
-                                        _this.$store.state.is_log = true
-                                        _this.$store.state.app_change = true
-                                    },500)
-                                },1500)
-                            }else {
-                                _this.login_send = false;
-                                _this.$message.error(response.msg)
-                                _this.login_pic_p = require('../../../static/img/login-err.png')
-                                _this.pi_title =  '老哥，自动登录失败，手动吧！'
-                                _this.login_check_left = 0;
-                            }
-                        }).catch(()=>{
-                            _this.login_send = false;
-                            this.$message.error('网站出错了老哥，试试自动登录或者右下角联系我')
-                            this.login_pic_p = require('../../../static/img/null-password.jpg')
-                            this.pi_title =  '老哥试试手动登录或者联系我'
-                            this.link_a = true
-                        })
+                        _this.login_send = false;
+                        this.login_pic_p = require('../../../static/img/logo.jpg')
+                        this.pi_title =  '老哥最后一步了，快去验证登录了'
                     }else {
                         _this.login_send = false;
                         this.$message.error(response.msg)
