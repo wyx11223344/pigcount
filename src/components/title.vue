@@ -51,7 +51,7 @@
         let _this = this
         this.$post('loginc/login_out',{
         }).then((response)=>{
-          if ( response.code === '200' ){
+          if ( response.code === 200 ){
             this.$message({
               type: 'success',
               message: response.msg
