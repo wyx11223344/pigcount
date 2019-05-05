@@ -18,7 +18,7 @@
           <p class="nav_lead_bgc lead_color2">登记账本</p>
           <p>登记账本</p>
         </li>
-        <li @click="href_change">
+        <li @click="router_link('/')">
           <p class="nav_lead_bgc lead_color3">个人主页</p>
           <p>个人主页</p>
         </li>
@@ -98,9 +98,9 @@
         },500)
         this.$router.push(index)
       },
-      href_change(){
-        window.location.href = 'http://www.mrwanmisshen.com'
-      }
+      // href_change(){
+      //   window.location.href = 'http://www.mrwanmisshen.com'
+      // }
     },
     computed: {
       theme_change() {
