@@ -21,15 +21,57 @@
                                                     :on-remove="handleRemove">
                                                 <i class="el-icon-plus"></i>
                                             </el-upload>
-                                            <el-dialog :visible.sync="dialogVisible_pic">
-                                                <img width="100%" :src="dialogImageUrl" alt="">
-                                            </el-dialog>
                                             <div class="show_pic_font">
                                                 添加您的照片
                                             </div>
                                         </div>
                                         <div class="show_big_form">
-
+                                            <el-form style="width: 100% ; transform: translateY( 20px )" ref="form" :model="form" :rules="rules" label-width="0px">
+                                                <table class="vlay-dialog-table">
+                                                    <tr class="tr">
+                                                        <td class="th">日期</td>
+                                                        <td class="td">
+                                                            <el-form-item label="" prop="time">
+                                                                <el-date-picker
+                                                                        style="width: 100%"
+                                                                        v-model="form.time"
+                                                                        type="date"
+                                                                        placeholder="选择日期"
+                                                                        value-format="yyyy/MM/dd"
+                                                                        :picker-options="pickerOptions">
+                                                                </el-date-picker>
+                                                            </el-form-item>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="tr">
+                                                        <td class="th">金额</td>
+                                                        <td class="td">
+                                                            <el-form-item label="" prop="money">
+                                                                <el-input-number style="width: 100%" placeholder="必填" v-model="form.money" :precision="2" :min="0" :step="1">
+                                                                    <i slot="prefix" class="el-input__icon">￥</i>
+                                                                </el-input-number>
+                                                            </el-form-item>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="tr">
+                                                        <td class="th">备注</td>
+                                                        <td class="td">
+                                                            <el-form-item label="" prop="notice">
+                                                                <el-input type="textarea" placeholder="选填" v-model="form.notice"></el-input>
+                                                            </el-form-item>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <div class="vlay-btms-btn">
+                                                    <el-form-item>
+                                                        <el-button type="primary" @click="submitCase('form')">保存</el-button>
+                                                        <el-button @click="resetForm('form')">重置</el-button>
+                                                    </el-form-item>
+                                                </div>
+                                            </el-form>
+                                            <div class="show_big_gif">
+                                                <img src="../../../static/img/logo-1.gif" class="show_gif_1"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -114,6 +156,9 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
+        <el-dialog :visible.sync="dialogVisible_pic" :modal-append-to-body="false">
+            <img width="100%" :src="dialogImageUrl" alt="">
+        </el-dialog>
     </div>
 </template>
 
@@ -159,6 +204,31 @@ export default {
     },
     data() {
         return {
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                },
+                shortcuts: [{
+                    text: '今天',
+                    onClick(picker) {
+                        picker.$emit('pick', new Date());
+                    }
+                }, {
+                    text: '昨天',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setTime(date.getTime() - 3600 * 1000 * 24);
+                        picker.$emit('pick', date);
+                    }
+                }, {
+                    text: '一周前',
+                    onClick(picker) {
+                        const date = new Date();
+                        date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', date);
+                    }
+                }]
+            },
             li_list: [ {
                 text: '餐饮饮食',
                 src: require('../../../static/img/logo_cyys.png'),
@@ -294,6 +364,8 @@ export default {
                 type: '餐饮饮食',
                 money: '20'
             } ],
+            form: {},
+            rules: {},
             username: '',
             show_big_check: false,
             show_big_check1: false,
@@ -309,6 +381,18 @@ export default {
         };
     },
     methods: {
+        submitCase(formName) {
+            this.$refs[ formName ].validate((valid) => {
+                if (valid) {
+                    console.log(this.form);
+                } else {
+                    this.$message.error('老哥至少把日期和金额填写了啊！');
+                }
+            });
+        },
+        resetForm(formName) {
+            console.log(formName);
+        },
         handleRemove(file, fileList) {
             console.log(file, fileList);
         },
@@ -362,7 +446,7 @@ export default {
                 this.can_change = false;
                 this.show_big_index = index;
                 this.$refs[ `li${index}` ][ 0 ].style.position = 'fixed';
-                this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 200px)';
+                this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 300px)';
                 this.$refs[ `li${index}` ][ 0 ].style.width = '96%';
                 this.$refs[ `li${index}` ][ 0 ].style.left = '0';
                 this.$refs[ `li${index}` ][ 0 ].style.zIndex = '100';
@@ -593,12 +677,13 @@ export default {
                                 .show_big_center{
                                     width: 100%;
                                     height: calc(100% - 40px);
+                                    transform: translateY(10px);
                                     display: flex;
                                     justify-content: center;
                                     .show_big_pic{
-                                        width: 800px;
-                                        margin-top: 20px;
+                                        width: 600px;
                                         overflow-y: auto;
+                                        display: flex;
                                         .show_pic_font{
                                             position: absolute;
                                             left: 2%;
@@ -612,6 +697,7 @@ export default {
                                             width: 7px;
                                             height: 7px;
                                             background-color: #F5F5F5;
+                                            display: none;
                                         }
                                         /*定义滚动条轨道 内阴影+圆角*/
                                         &::-webkit-scrollbar-track {
@@ -633,9 +719,47 @@ export default {
                                         }
                                     }
                                     .show_big_form{
-                                        width: 800px;
-                                        background-color: pink;
-                                        margin-top: 20px;
+                                        width: 600px;
+                                        display: flex;
+                                        justify-content: center;
+                                        flex-wrap: wrap;
+                                        .vlay-dialog-table{
+                                            width: 90%;
+                                            .tr{
+                                                height: 40px;
+                                                .th{
+                                                    width: 10%;
+                                                    text-align:center;
+                                                    font-size: 18px;
+                                                    font-weight: bold;
+                                                    color: white;
+                                                }
+                                                .td{
+                                                    width: 90%;
+                                                    box-sizing: border-box;
+                                                    padding:0 10px;
+                                                    .el-form-item{
+                                                        margin-bottom: 0px;
+                                                    }
+                                                    .vlay-input{
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        .vlay-btms-btn{
+                                            width: 90%;
+                                            text-align: center;
+                                            margin-top: 20px;
+                                        }
+                                        .show_big_gif{
+                                            position: absolute;
+                                            right: 10%;
+                                            bottom: 10%;
+                                            .show_gif_1{
+                                                width: 300px;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -753,7 +877,7 @@ export default {
     }
     /deep/ .el-dialog__header{
         background-color: #38414a;
-        padding: 10px 15px 10px 15px;
+        padding: 20px 15px 20px 15px;
     }
     /deep/ .el-dialog__title{
         color: white;
@@ -763,13 +887,14 @@ export default {
     }
     /deep/ .el-upload--picture-card{
         background-color: rgba(0,0,0,0);
+        border: 1px dashed white;
+        margin: 10px;
     }
     /deep/ .el-upload-list--picture-card li{
         background-color: rgba(0,0,0,0);
         margin: 10px;
     }
     /deep/ .el-upload-list--picture-card{
-        width: 100%;
         text-align: center;
     }
 </style>

@@ -42,7 +42,13 @@ axios.interceptors.request.use(
 
 
 axios.interceptors.response.use((response) => {
-    return response;
+    if(response === '超时了'){
+        this.$message.error('请核对您的本机时间误差不要超过一个小时！')
+    }else if( response === '我看你就是个蛤蟆皮' ){
+        this.$message.error('请从本网站请求接口，不要使用postman等工具!')
+    }else{
+        return response;
+    }
 }, (err) => {
     if (err.response) {
         switch (err.response.status) {
