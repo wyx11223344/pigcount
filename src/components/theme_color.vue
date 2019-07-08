@@ -12,26 +12,26 @@
 </template>
 
 <script>
-    export default {
-        name: "theme_color",
-        data(){
-            return{
-                options: [{
-                    value: 'theme-blue',
-                    label: '蓝色'
-                }, {
-                    value: 'theme-pink',
-                    label: '粉色'
-                }],
-                choose_color: 'theme-pink'
-            }
-        },
-        methods: {
-            color_change(){
-                this.$store.state.theme = this.choose_color
-            }
+export default {
+    name: 'theme_color',
+    data() {
+        return {
+            options: [ {
+                value: 'theme-blue',
+                label: '蓝色'
+            }, {
+                value: 'theme-pink',
+                label: '粉色'
+            } ],
+            choose_color: 'theme-pink'
+        };
+    },
+    methods: {
+        color_change() {
+            this.$store.state.theme = this.choose_color;
         }
     }
+};
 </script>
 
 <style scoped>

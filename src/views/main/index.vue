@@ -1,8 +1,8 @@
 <template>
   <v-touch style="width: 100% ; height: 100%" @swipeup="swipedown" @swipedown="swipeup">
-    <div @wheel="onScroll()" class="theme">
+    <div @wheel="onScroll()" class="theme" id="theme">
       <titletop></titletop>
-      <div class="banner_control" :style="{transform:'translate3d(0,'+(-100*$store.state.slide)+'%,0)'}">
+      <div class="banner_control" :style="{transform:'translate3d(0,'+(-100*slide)+'%,0)'}">
         <div class="banner0">
           <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
           <img src="../../../static/img/banner1_font.png" class="banner_font"/>
@@ -39,84 +39,93 @@
   </v-touch>
 </template>
 <script>
-  import slide from './slide.vue'
+import slide from './slide.vue';
 
-  export default {
+export default {
     name: 'index',
-    data(){
-      return{
-        stop_scroll: false,
-      }
+    data() {
+        return {
+            stop_scroll: false,
+        };
     },
-    methods:{
-      updown(){
-        this.$store.commit('slideadd')
-      },
-      onScroll(event){
-        let _this = this;
-        var delta = 0;
-        if (!event) event = window.event;//为没有event浏览器获取event
-        if (event.wheelDelta) {//IE、chrome浏览器使用的是wheelDelta，并且值为“正负120”
-          delta = event.wheelDelta/120;
-          if (window.opera) delta = -delta;//因为IE、chrome等向下滚动是负值，FF是正值，为了处理一致性，在此取反处理
-        } else if (event.deltaY) {//FF浏览器使用的是detail,其值为“正负3”
-          delta = -event.deltaY/3;
+    computed: {
+        slide() {
+            return this.$store.state.slide;
         }
-        if (delta <0){//向下滚动
-          _this.swipedown()
-        }else{//向上滚动
-          _this.swipeup()
-        }
+    },
+    methods: {
+        updown() {
+            this.$store.commit('slideadd');
+        },
+        onScroll(event) {
+            const _this = this;
+            let delta = 0;
+            if (!event) {
+                event = window.event;
+            }//为没有event浏览器获取event
+            if (event.wheelDelta) { //IE、chrome浏览器使用的是wheelDelta，并且值为“正负120”
+                delta = event.wheelDelta / 120;
+                if (window.opera) {
+                    delta = -delta;
+                }//因为IE、chrome等向下滚动是负值，FF是正值，为了处理一致性，在此取反处理
+            } else if (event.deltaY) { //FF浏览器使用的是detail,其值为“正负3”
+                delta = -event.deltaY / 3;
+            }
+            if (delta < 0) { //向下滚动
+                _this.swipedown();
+            } else { //向上滚动
+                _this.swipeup();
+            }
 
 
-      },
-      swipeup(){
-        let _this = this;
-        if ( _this.stop_scroll === false ){
-          if ( this.$store.state.slide === 0 ) {
-            _this.$message({
-              type: 'warning',
-              message: '已经到顶啦，上不了了',
-            })
-            _this.stop_scroll = true;
-            setTimeout(() => {
-              _this.stop_scroll = false
-            }, 1000);
-          }else {
-            _this.$store.commit('slidedown')
-            _this.stop_scroll = true;
-            setTimeout(() => {
-              _this.stop_scroll = false
-            }, 1000);
-          }
+        },
+        swipeup() {
+            const _this = this;
+            if (_this.stop_scroll === false) {
+                if (this.slide === 0) {
+                    _this.$message({
+                        type: 'warning',
+                        message: '已经到顶啦，上不了了',
+                    });
+                    _this.stop_scroll = true;
+                    setTimeout(() => {
+                        _this.stop_scroll = false;
+                    }, 1000);
+                } else {
+                    _this.$store.commit('slidedown');
+                    _this.stop_scroll = true;
+                    setTimeout(() => {
+                        _this.stop_scroll = false;
+                    }, 1000);
+                }
+            }
+        },
+        swipedown() {
+            const _this = this;
+            if (_this.stop_scroll === false) {
+                if (this.slide === 4) {
+                    _this.$message({
+                        type: 'warning',
+                        message: '已经到底啦，别往下了',
+                    });
+                    _this.stop_scroll = true;
+                    setTimeout(() => {
+                        _this.stop_scroll = false;
+                    }, 1000);
+                } else {
+                    _this.$store.commit('slideadd');
+                    _this.stop_scroll = true;
+                    setTimeout(() => {
+                        _this.stop_scroll = false;
+                    }, 1000);
+                }
+            }
         }
-      },
-      swipedown(){
-        let _this = this
-        if ( _this.stop_scroll === false ){
-          if ( this.$store.state.slide === 4 ) {
-            _this.$message({
-              type: 'warning',
-              message: '已经到底啦，别往下了',
-            })
-            _this.stop_scroll = true;
-            setTimeout(() => {
-              _this.stop_scroll = false
-            }, 1000);
-          }else {
-            _this.$store.commit('slideadd')
-            _this.stop_scroll = true;
-            setTimeout(() => {
-              _this.stop_scroll = false
-            }, 1000);
-          }
-        }
-      }
     },
-    components:{
-      'slide': slide,
+    components: {
+        'slide': slide,
     }
-  }
+};
 </script>
 <style lang="less" scoped>
   .theme{

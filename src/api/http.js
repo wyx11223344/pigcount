@@ -1,19 +1,19 @@
-import axios from 'axios'
-axios.defaults.withCredentials=true;
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 
-import url from '../../setBaseUrl.js'
+import url from '../../setBaseUrl.js';
 import md5 from 'js-md5';
 import sha1 from 'sha1';
 
 axios.defaults.timeout = 5000;
-axios.defaults.baseURL = url.baseUrl
+axios.defaults.baseURL = url.baseUrl;
 
 
 function _getRandomString(len) {
     len = len || 32;
-    var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'; // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1
-    var maxPos = $chars.length;
-    var pwd = '';
+    const $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678'; // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1
+    const maxPos = $chars.length;
+    let pwd = '';
     for (let i = 0; i < len; i++) {
         pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
     }
@@ -22,17 +22,17 @@ function _getRandomString(len) {
 
 // http request 拦截器
 axios.interceptors.request.use(
-    config => {
+    (config) => {
         //加密添加请求头
-        var timestamp = parseInt(Date.parse(new Date())/1000);
-        var rand_str = _getRandomString(10);
-        var arr = timestamp+rand_str+"LOVESHEN";
-        var sha = sha1(arr)
-        var token = md5(sha)
-        var signature = token.toUpperCase();
-        config.data.timestamp = timestamp
-        config.data.rand = rand_str
-        config.data.signature = signature
+        const timestamp = parseInt(Date.parse(new Date()) / 1000);
+        const rand_str = _getRandomString(10);
+        const arr = `${timestamp + rand_str}LOVESHEN`;
+        const sha = sha1(arr);
+        const token = md5(sha);
+        const signature = token.toUpperCase();
+        config.data.timestamp = timestamp;
+        config.data.rand = rand_str;
+        config.data.signature = signature;
         return config;
     },
     // error => {
@@ -63,18 +63,18 @@ axios.interceptors.request.use(
  * @returns {Promise}
  */
 
-export function fetch(url,params={}){
-    return new Promise((resolve,reject) => {
-        axios.get(url,{
-            params:params
+export function fetch(url, params = {}) {
+    return new Promise((resolve, reject) => {
+        axios.get(url, {
+            params: params
         })
-            .then(response => {
+            .then((response) => {
                 resolve(response.data);
             })
-            .catch(err => {
-                reject(err)
-            })
-    })
+            .catch((err) => {
+                reject(err);
+            });
+    });
 }
 
 
@@ -85,15 +85,15 @@ export function fetch(url,params={}){
  * @returns {Promise}
  */
 
-export function post(url,data = {}){
-    return new Promise((resolve,reject) => {
-        axios.post(url,data)
-            .then(response => {
+export function post(url, data = {}) {
+    return new Promise((resolve, reject) => {
+        axios.post(url, data)
+            .then((response) => {
                 resolve(response.data);
-            },err => {
-                reject(err)
-            })
-    })
+            }, (err) => {
+                reject(err);
+            });
+    });
 }
 
 /**
@@ -103,15 +103,15 @@ export function post(url,data = {}){
  * @returns {Promise}
  */
 
-export function patch(url,data = {}){
-    return new Promise((resolve,reject) => {
-        axios.patch(url,data)
-            .then(response => {
+export function patch(url, data = {}) {
+    return new Promise((resolve, reject) => {
+        axios.patch(url, data)
+            .then((response) => {
                 resolve(response.data);
-            },err => {
-                reject(err)
-            })
-    })
+            }, (err) => {
+                reject(err);
+            });
+    });
 }
 
 /**
@@ -121,13 +121,13 @@ export function patch(url,data = {}){
  * @returns {Promise}
  */
 
-export function put(url,data = {}){
-    return new Promise((resolve,reject) => {
-        axios.put(url,data)
-            .then(response => {
+export function put(url, data = {}) {
+    return new Promise((resolve, reject) => {
+        axios.put(url, data)
+            .then((response) => {
                 resolve(response.data);
-            },err => {
-                reject(err)
-            })
-    })
+            }, (err) => {
+                reject(err);
+            });
+    });
 }

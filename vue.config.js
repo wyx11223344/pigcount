@@ -1,10 +1,8 @@
-const path = require("path");
-
 module.exports = {
     pluginOptions: {
         'style-resources-loader': {
             preProcessor: 'less',
-            patterns: ['D:\\码云\\pigcount\\static\\style\\home.less']
+            patterns: [ 'D:\\码云\\pigcount\\static\\style\\home.less' ]
         }
     }
 };

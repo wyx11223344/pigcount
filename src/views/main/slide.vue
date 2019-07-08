@@ -1,6 +1,6 @@
 <template>
     <div class="slide_bg">
-        <div class="slide_div_each_move" :style="{marginTop: (34+$store.state.slide*58)+'px' }">
+        <div class="slide_div_each_move" :style="{marginTop: (34+slide*58)+'px' }">
         </div>
         <div v-for="item in div_each" :key="item.key" @click="slide_change(item.key)" :class="item.class">
             <p class="slide_p_each"></p>
@@ -9,35 +9,39 @@
 </template>
 
 <script>
-    export default {
-        name: "slide",
-        data(){
-            return{
-                slide: this.$store.state.slide,
-                div_each: [{
-                    key: 0,
-                    class: 'slide_div_each',
-                },{
-                    key: 1,
-                    class: 'slide_div_each',
-                },{
-                    key: 2,
-                    class: 'slide_div_each',
-                },{
-                    key: 3,
-                    class: 'slide_div_each',
-                },{
-                    key: 4,
-                    class: 'slide_div_each_end',
-                }]
-            }
-        },
-        methods:{
-            slide_change(index){
-                this.$store.state.slide = index
-            }
-        },
-    }
+export default {
+    name: 'slide',
+    data() {
+        return {
+            div_each: [ {
+                key: 0,
+                class: 'slide_div_each',
+            }, {
+                key: 1,
+                class: 'slide_div_each',
+            }, {
+                key: 2,
+                class: 'slide_div_each',
+            }, {
+                key: 3,
+                class: 'slide_div_each',
+            }, {
+                key: 4,
+                class: 'slide_div_each_end',
+            } ]
+        };
+    },
+    computed: {
+        slide() {
+            return this.$store.state.slide;
+        }
+    },
+    methods: {
+        slide_change(index) {
+            this.slide = index;
+        }
+    },
+};
 </script>
 
 <style lang="less" scoped>

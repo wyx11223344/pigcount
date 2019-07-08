@@ -35,88 +35,88 @@
   </div>
 </template>
 <script>
-  export default {
+export default {
     name: 'titletop',
     data() {
-      return {
-        theme: '',
-        a: false
-      }
+        return {
+            theme: '',
+            a: false
+        };
     },
     created() {
-      this.theme = this.$store.state.theme
+        this.theme = this.$store.state.theme;
     },
     methods: {
-      log_out(){
-        let _this = this
-        this.$post('loginc/login_out',{
-        }).then((response)=>{
-          if ( response.code === 200 ){
-            this.$message({
-              type: 'success',
-              message: response.msg
-            })
-            setTimeout(()=>{
-              _this.$store.state.app_change = false;
-              _this.$router.push('/')
-              setTimeout(()=>{
-                _this.$store.state.is_log = false
-                _this.$store.state.app_change = true
-              },500)
-            },1500)
-          }else {
-            this.$message.error(response.msg)
-            setTimeout(()=>{
-              _this.$store.state.app_change = false;
-              _this.$router.push('')
-              setTimeout(()=>{
-                _this.$store.state.app_change = true
-                _this.$store.state.is_log = false
-              },500)
-            },1500)
-          }
-        }).catch(()=>{
-          this.$message.error('大哥，网站出错了，再试一次或者点击联系我')
-          this.$alert('<a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class">点我！联系我！</a>', '老哥！', {
-            dangerouslyUseHTMLString: true
-          });
-        })
-      },
-      theme_click() {
+        log_out() {
+            const _this = this;
+            this.$post('loginc/login_out', {
+            }).then((response) => {
+                if (response.code === 200) {
+                    this.$message({
+                        type: 'success',
+                        message: response.msg
+                    });
+                    setTimeout(() => {
+                        _this.$store.state.app_change = false;
+                        _this.$router.push('/');
+                        setTimeout(() => {
+                            _this.$store.state.is_log = false;
+                            _this.$store.state.app_change = true;
+                        }, 500);
+                    }, 1500);
+                } else {
+                    this.$message.error(response.msg);
+                    setTimeout(() => {
+                        _this.$store.state.app_change = false;
+                        _this.$router.push('');
+                        setTimeout(() => {
+                            _this.$store.state.app_change = true;
+                            _this.$store.state.is_log = false;
+                        }, 500);
+                    }, 1500);
+                }
+            }).catch(() => {
+                this.$message.error('大哥，网站出错了，再试一次或者点击联系我');
+                this.$alert('<a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class">点我！联系我！</a>', '老哥！', {
+                    dangerouslyUseHTMLString: true
+                });
+            });
+        },
+        theme_click() {
 
-      },
-      movein() {
-        this.a = true;
-      },
-      moveout() {
-        this.a = false;
-      },
-      router_link(index){
-        this.$store.state.app_change = false;
-        setTimeout(()=>{
-          this.$store.state.app_change = true
-        },500)
-        this.$router.push(index)
-      },
-      // href_change(){
-      //   window.location.href = 'http://www.mrwanmisshen.com'
-      // }
+        },
+        movein() {
+            this.a = true;
+        },
+        moveout() {
+            this.a = false;
+        },
+        router_link(index) {
+            this.$store.state.app_change = false;
+            setTimeout(() => {
+                this.$store.state.app_change = true;
+            }, 500);
+            this.$router.push(index);
+        },
+        // href_change(){
+        //   window.location.href = 'http://www.mrwanmisshen.com'
+        // }
     },
     computed: {
-      theme_change() {
-        return this.$store.state.theme
-      }
+        theme_change() {
+            return this.$store.state.theme;
+        }
     },
     watch: {
-      //切换主题颜色延迟
-      theme_change() {
-        let _this = this
-        setTimeout(() => {
-          _this.theme = this.$store.state.theme
-        }, 500)
-      }
+        //切换主题颜色延迟
+        theme_change() {
+            const _this = this;
+            setTimeout(() => {
+                _this.theme = this.$store.state.theme;
+            }, 500);
+        }
     }
-  }
+};
 </script>
 <style lang="less" scoped>
   .title{
