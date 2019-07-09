@@ -109,7 +109,11 @@ img {
   }
   .login_banner{
     top: @nav_title_height;
-    min-height: calc( 100% -  @nav_title_height);
+    height: calc( 100% -  @nav_title_height);
+  }
+  .wdui_center{
+    margin-top: @nav_title_height;
+    min-height: calc( 100% -  @nav_title_height - 150px );
   }
 
   //导航栏
@@ -168,6 +172,31 @@ img {
   .move_dang{
     right: 20% !important;
   }
+  .wdui_echarts{
+    height: 500px;
+  }
+  .wdui_form , .wdui_echarts{
+    width: 100%;
+    margin-bottom: 20px;
+    ul{
+      li{
+        width: 70px;
+        height: 70px;
+        margin: 7px;
+        &:hover{
+          transform: translateY(-5px);
+          box-shadow: 0 2.5px 2.5px 2.5px #9f9f9f;
+        }
+        .small_show_font{
+          line-height: 70px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+  .wdui_center{
+    width: 100%;
+  }
   @nav_login_right: 2%;
   @nav_tithl_log_left: 5%;
   @nav_lead_width: 200px;
@@ -181,6 +210,31 @@ img {
 @media (min-width: 570px) and (max-width: 800px) {
   .icon_down{
     width: 18% !important;
+  }
+  .wdui_echarts{
+    height: 650px;
+  }
+  .wdui_form , .wdui_echarts{
+    width: 96%;
+    margin: 10px;
+    ul{
+      li{
+        width: 90px;
+        height: 90px;
+        margin: 9px;
+        &:hover{
+          transform: translateY(-7px);
+          box-shadow: 0 2.5px 2.5px 2.5px #9f9f9f;
+        }
+        .small_show_font{
+          line-height: 90px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+  .wdui_center{
+    width: 96%;
   }
   @nav_login_right: 3%;
   @nav_tithl_log_left: 9%;
@@ -196,6 +250,31 @@ img {
   .icon_down{
     width: 12% !important;
   }
+  .wdui_echarts{
+    height: 700px;
+  }
+  .wdui_form , .wdui_echarts{
+    width: 700px;
+    margin: 20px;
+    ul{
+      li{
+        width: 100px;
+        height: 100px;
+        margin: 10px;
+        &:hover{
+          transform: translateY(-7.5px);
+          box-shadow: 0 2.5px 2.5px 2.5px #9f9f9f;
+        }
+        .small_show_font{
+          line-height: 100px;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+  .wdui_center{
+    width: 800px;
+  }
   @nav_login_right: 4%;
   @nav_tithl_log_left: 12%;
   @nav_lead_width: 400px;
@@ -207,6 +286,37 @@ img {
 }
 
 @media (min-width: 1200px) {
+  .wdui_echarts{
+    height: 700px;
+  }
+  .wdui_form , .wdui_echarts{
+    width: 700px;
+    margin: 20px;
+    ul{
+      li{
+        width: 115px;
+        height: 115px;
+        margin: 11px;
+        &:hover{
+          transform: translateY(-8.5px);
+          box-shadow: 0 3px 3px 3px #9f9f9f;
+        }
+        .small_show_font{
+          line-height: 115px;
+          font-size: 20px;
+        }
+        .big_show_div{
+          .out_point{
+            width: 30px !important;
+            height: 30px !important;
+          }
+        }
+      }
+    }
+  }
+  .wdui_center{
+    width: 960px;
+  }
   @nav_login_right: 5%;
   @nav_tithl_log_left: 15%;
   @nav_lead_width: 570px;
@@ -215,6 +325,39 @@ img {
   @banner_zoom_with: 100%;
   @banner_zoom_margin: 0%;
   .respond_t(@nav_login_right,@nav_tithl_log_left,@nav_lead_width,@nav_title_height,@font_lead,@banner_zoom_with,@banner_zoom_margin);
+}
+@media (min-width: 1700px) {
+  .wdui_echarts{
+    height: 727px;
+  }
+  .wdui_form , .wdui_echarts{
+    width: 700px;
+    margin: 20px;
+    ul{
+      li{
+        width: 115px;
+        height: 115px;
+        margin: 11px;
+        &:hover{
+          transform: translateY(-8.5px);
+          box-shadow: 0 3px 3px 3px #9f9f9f;
+        }
+        .small_show_font{
+          line-height: 115px;
+          font-size: 20px;
+        }
+        .big_show_div{
+          .out_point{
+            width: 30px !important;
+            height: 30px !important;
+          }
+        }
+      }
+    }
+  }
+  .wdui_center{
+    width: 1600px;
+  }
 }
 /*
 

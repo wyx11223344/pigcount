@@ -45,6 +45,10 @@ export default {
                 this.img_src = require('../../../static/img/401.gif');
                 this.color_bgc = 'white';
             }
+        }).catch((err) => {
+            this.show_text = `邮箱验证失败！原因是：${err}`;
+            this.img_src = require('../../../static/img/401.gif');
+            this.color_bgc = 'white';
         });
     }
 };

@@ -117,8 +117,8 @@ export default {
         const W = canvas.width;
         const H = canvas.height;
 
-        const gridX = 5;
-        const gridY = 5;
+        const gridX = 3;
+        const gridY = 3;
 
         function shape(x, y, texte) {
             this.x = x;
