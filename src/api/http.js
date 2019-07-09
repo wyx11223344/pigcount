@@ -42,7 +42,7 @@ axios.interceptors.request.use(
 
 
 axios.interceptors.response.use((response) => {
-    return response.data;
+    return response;
 }, (err) => {
     if (err.response) {
         switch (err.response.status) {

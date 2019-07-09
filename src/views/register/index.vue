@@ -65,6 +65,7 @@ export default {
     created() {
         const _this = this;
         this.$post('/loginc/login_on', {}).then((response) => {
+            console.log(response)
             if (response.code === 200) {
                 _this.$store.state.is_log = true;
                 _this.username = response.code.data;
