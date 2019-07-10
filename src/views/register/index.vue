@@ -4,9 +4,35 @@
         <div class="wdui_center">
             <div class="wdui_form">
                 <ul>
-                    <li :style="{backgroundColor:item.bgc}" :ref="'li'+index" @click="show_big(index)" v-for="(item , index) in li_list" :key="index" @mouseover="show_hover = index" @mouseout="show_hover = null" @touchstart.stop="show_hover = index" @touchend="show_hover = null">
+                    <li class="li_hover" :style="{backgroundColor:item.bgc}" :ref="'li'+index" @click="show_big(index)" v-for="(item , index) in li_list" :key="index" @mouseover="show_hover = index" @mouseout="show_hover = null" @touchstart.stop="show_hover = index" @touchend="show_hover = null">
                         <transition name="el-zoom-in-center">
                             <div class="big_show_div" v-show="show_big_index === index && show_big_check1">
+                                <div class="show_big_dev">
+                                    <div class="show_big_head">
+                                        <p><img :src="item.src"/>{{item.text}}</p>
+                                    </div>
+                                    <div class="show_big_center">
+                                        <div class="show_big_pic">
+                                            <el-upload
+                                                    class="dia_pic_list"
+                                                    action="https://jsonplaceholder.typicode.com/posts/"
+                                                    list-type="picture-card"
+                                                    :on-preview="handlePictureCardPreview"
+                                                    :on-remove="handleRemove">
+                                                <i class="el-icon-plus"></i>
+                                            </el-upload>
+                                            <el-dialog :visible.sync="dialogVisible_pic">
+                                                <img width="100%" :src="dialogImageUrl" alt="">
+                                            </el-dialog>
+                                            <div class="show_pic_font">
+                                                添加您的照片
+                                            </div>
+                                        </div>
+                                        <div class="show_big_form">
+
+                                        </div>
+                                    </div>
+                                </div>
                                 <img @click.stop="show_small(index)" class="out_point" src="../../../static/img/cha.png"/>
                             </div>
                         </transition>
@@ -67,8 +93,26 @@
                 title="请扫码添加微信好友"
                 :visible.sync="dialogVisible"
                 :modal-append-to-body="false"
-                width="400">
+                width="70%">
             <img src="../../../static/img/weixiner.jpg" style="width: 100%"/>
+        </el-dialog>
+        <el-dialog
+                :title="dia_bar_title+' (请选择查看分析查看更多内容)'"
+                :visible.sync="dialogVisible1"
+                width="70%"
+                :modal-append-to-body="false">
+            <el-table :data="tableData1" style="width: 100% ; background-color: rgba(0,0,0,0);" :row-class-name="tableRowClassName" :header-row-class-name="'table_head'">
+                <el-table-column align="center" prop="data" label="日期" show-overflow-tooltip></el-table-column>
+                <el-table-column align="center" prop="type" label="类型"></el-table-column>
+                <el-table-column align="center" prop="money" label="金额"></el-table-column>
+                <el-table-column align="center" label="操作" width="210">
+                    <template slot-scope="scope">
+                        <el-button @click="show_more(scope.row)" size="mini" type="primary">查看</el-button>
+                        <el-button @click="show_change(scope.row)" size="mini" type="warning">修改</el-button>
+                        <el-button @click="show_del(scope.row)" size="mini" type="danger">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
         </el-dialog>
     </div>
 </template>
@@ -233,6 +277,23 @@ export default {
                 type: '餐饮饮食',
                 money: '20'
             } ],
+            tableData1: [ {
+                data: '2019-07-10',
+                type: '餐饮饮食',
+                money: '20'
+            }, {
+                data: '2019-07-10',
+                type: '餐饮饮食',
+                money: '20'
+            }, {
+                data: '2019-07-10',
+                type: '餐饮饮食',
+                money: '20'
+            }, {
+                data: '2019-07-10',
+                type: '餐饮饮食',
+                money: '20'
+            } ],
             username: '',
             show_big_check: false,
             show_big_check1: false,
@@ -240,10 +301,21 @@ export default {
             can_change: true,
             myChart: {},
             show_hover: null,
-            dialogVisible: false
+            dialogVisible: false,
+            dialogVisible1: false,
+            dialogVisible_pic: false,
+            dialogImageUrl: '',
+            dia_bar_title: ''
         };
     },
     methods: {
+        handleRemove(file, fileList) {
+            console.log(file, fileList);
+        },
+        handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible_pic = true;
+        },
         tableRowClassName({rowIndex}) {
             if (rowIndex % 2 === 0) {
                 return 'table_first';
@@ -283,6 +355,9 @@ export default {
             }
         },
         show_big(index) {
+            if (this.show_big_check) {
+                return;
+            }
             if (this.can_change) {
                 this.can_change = false;
                 this.show_big_index = index;
@@ -306,6 +381,7 @@ export default {
         },
         drawLine() {
             // 基于准备好的dom，初始化echarts实例
+            const _this = this;
             const myChart = this.$echarts.init(document.getElementById('myChart'));
             this.myChart = myChart;
             // 绘制图表
@@ -368,7 +444,7 @@ export default {
                     }
                 } ],
                 series: [ {
-                    name: '话费金额',
+                    name: '花费金额',
                     type: 'bar',
                     data: [ {
                         value: 5,
@@ -402,6 +478,10 @@ export default {
                         }
                     } ]
                 } ]
+            });
+            myChart.on('click', function (params) {
+                _this.dia_bar_title = params.name;
+                _this.dialogVisible1 = true;
             });
         },
         onResize() {
@@ -462,9 +542,9 @@ export default {
                 }
                 @keyframes run_pi{
                     0% { transform: translateX(0%) rotate(0)}
-                    25% { transform: translateX(-20%) rotate(15deg)}
+                    25% { transform: translateX(-20%) rotate(10deg)}
                     50%{ transform: translateX(0%) rotate(0)}
-                    75%{ transform: translateX(20%) rotate(-15deg)}
+                    75%{ transform: translateX(20%) rotate(-10deg)}
                     100%{ transform: translateX(0%) rotate(0)}
                 }
                 ul{
@@ -487,6 +567,77 @@ export default {
                                 position: absolute;
                                 right: 10px;
                                 top: 10px;
+                            }
+                            .show_big_dev{
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                height: 100%;
+                                .show_big_head{
+                                    height: 40px;
+                                    img{
+                                        margin:0 10px 0 10px;
+                                        height: 30px;
+                                        width: 30px;
+                                        transform: translateY(5px);
+                                    }
+                                    p{
+                                        line-height: 40px;
+                                        font-size: 20px;
+                                        font-weight: bold;
+                                        color: white;
+                                        border-bottom: 1px solid #f5f5f5;
+                                    }
+                                }
+                                .show_big_center{
+                                    width: 100%;
+                                    height: calc(100% - 40px);
+                                    display: flex;
+                                    justify-content: center;
+                                    .show_big_pic{
+                                        width: 800px;
+                                        margin-top: 20px;
+                                        overflow-y: auto;
+                                        .show_pic_font{
+                                            position: absolute;
+                                            left: 2%;
+                                            top: 100px;
+                                            width: 20px;
+                                            font-size: 18px;
+                                            font-weight: bold;
+                                            color: white;
+                                        }
+                                        &::-webkit-scrollbar {
+                                            width: 7px;
+                                            height: 7px;
+                                            background-color: #F5F5F5;
+                                        }
+                                        /*定义滚动条轨道 内阴影+圆角*/
+                                        &::-webkit-scrollbar-track {
+                                            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+                                            border-radius: 10px;
+                                            background-color: #F5F5F5;
+                                        }
+                                        /*定义滑块 内阴影+圆角*/
+                                        &::-webkit-scrollbar-thumb {
+                                            border-radius: 10px;
+                                            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+                                            background-color: rgba(106, 244, 255, 0.63);
+                                        }
+                                        .dia_pic_list{
+                                            display: flex;
+                                            width: 100% ;
+                                            flex-wrap: wrap;
+                                            justify-content: center;
+                                        }
+                                    }
+                                    .show_big_form{
+                                        width: 800px;
+                                        background-color: pink;
+                                        margin-top: 20px;
+                                    }
+                                }
                             }
                         }
                         .small_show{
@@ -609,5 +760,16 @@ export default {
     }
     /deep/ .el-dialog__headerbtn{
         top: 15px;
+    }
+    /deep/ .el-upload--picture-card{
+        background-color: rgba(0,0,0,0);
+    }
+    /deep/ .el-upload-list--picture-card li{
+        background-color: rgba(0,0,0,0);
+        margin: 10px;
+    }
+    /deep/ .el-upload-list--picture-card{
+        width: 100%;
+        text-align: center;
     }
 </style>

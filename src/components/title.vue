@@ -180,7 +180,7 @@ export default {
     top: 0;
     width: 100%;
     left: 0;
-    background-color: #ffffff;
+    background-color: #e9e9e9;
   }
   .nav_title{
     width: 100% ;
