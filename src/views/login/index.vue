@@ -290,7 +290,12 @@ export default {
     },
     methods: {
         register_button() {
-            if (this.err_register_name !== '') {
+            const reg = /^\s*$/g;
+            if (reg.test(this.name1) || reg.test(this.password1)) {
+                this.$message.error('老哥请先输入信息!');
+                this.register_pic_p = require('../../../static/img/null-password.jpg');
+                this.pi1_title = '老哥请先输入信息！';
+            } else if (this.err_register_name !== '') {
                 this.$message.error('老哥你邮箱不对啊？');
                 this.register_pic_p = require('../../../static/img/null-password.jpg');
                 this.pi1_title = '老哥你邮箱不对啊！';
@@ -373,7 +378,12 @@ export default {
             });
         },
         log_button() {
-            if (this.err_login_name !== '') {
+            const reg = /^\s*$/g;
+            if (reg.test(this.name) || reg.test(this.password)) {
+                this.$message.error('老哥请先输入信息!');
+                this.login_pic_p = require('../../../static/img/null-password.jpg');
+                this.pi_title = '老哥请先输入信息！';
+            } else if (this.err_login_name !== '') {
                 this.$message.error('老哥你邮箱不对啊？');
                 this.login_pic_p = require('../../../static/img/null-password.jpg');
                 this.pi_title = '老哥你邮箱不对啊！';

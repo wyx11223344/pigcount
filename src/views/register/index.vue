@@ -1,6 +1,6 @@
 <template>
     <div class="view_main">
-        <titletop></titletop>
+        <titletop :type="'1'"></titletop>
         <div class="wdui_center">
             <div class="wdui_form">
                 <ul>
@@ -29,6 +29,20 @@
 
                 </div>
             </div>
+            <div class="wdui_table">
+                <el-table :data="tableData" style="width: 100% ; background-color: rgba(0,0,0,0);" :row-class-name="tableRowClassName" :header-row-class-name="'table_head'">
+                    <el-table-column align="center" prop="data" label="日期" show-overflow-tooltip></el-table-column>
+                    <el-table-column align="center" prop="type" label="类型"></el-table-column>
+                    <el-table-column align="center" prop="money" label="金额"></el-table-column>
+                    <el-table-column align="center" label="操作" width="210">
+                        <template slot-scope="scope">
+                            <el-button @click="show_more(scope.row)" size="mini" type="primary">查看</el-button>
+                            <el-button @click="show_change(scope.row)" size="mini" type="warning">修改</el-button>
+                            <el-button @click="show_del(scope.row)" size="mini" type="danger">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </div>
         </div>
         <div class="view_foot">
             <div class="view_foot_left">
@@ -53,7 +67,7 @@
                 title="请扫码添加微信好友"
                 :visible.sync="dialogVisible"
                 :modal-append-to-body="false"
-                width="30%">
+                width="400">
             <img src="../../../static/img/weixiner.jpg" style="width: 100%"/>
         </el-dialog>
     </div>
@@ -202,6 +216,23 @@ export default {
                 src: require('../../../static/img/logo_sr.png'),
                 bgc: 'rgb(66,127,174)'
             } ],
+            tableData: [ {
+                data: '2019-07-10',
+                type: '餐饮饮食',
+                money: '20'
+            }, {
+                data: '2019-07-10',
+                type: '餐饮饮食',
+                money: '20'
+            }, {
+                data: '2019-07-10',
+                type: '餐饮饮食',
+                money: '20'
+            }, {
+                data: '2019-07-10',
+                type: '餐饮饮食',
+                money: '20'
+            } ],
             username: '',
             show_big_check: false,
             show_big_check1: false,
@@ -213,6 +244,22 @@ export default {
         };
     },
     methods: {
+        tableRowClassName({rowIndex}) {
+            if (rowIndex % 2 === 0) {
+                return 'table_first';
+            } else {
+                return 'table_second';
+            }
+        },
+        show_more(index) {
+            console.log(index);
+        },
+        show_change(index) {
+            console.log(index);
+        },
+        show_del(index) {
+            console.log(index);
+        },
         show_small(index) {
             console.log(index);
             if (this.can_change) {
@@ -283,7 +330,8 @@ export default {
                         }
                     },
                     axisLabel: {
-                        color: '#333'
+                        color: '#333',
+                        rotate: '-45'
                     },
                     splitLine: {
                         show: true,
@@ -301,12 +349,13 @@ export default {
                         }
                     },
                     axisLabel: {
-                        color: '#333'
+                        color: '#333',
                     },
                     axisTick: {
                         show: false
                     },
                     splitLine: {
+                        show: true,
                         lineStyle: {
                             color: '#cdd4da'
                         }
@@ -469,11 +518,15 @@ export default {
                     height: 100%;
                 }
             }
+            .wdui_table{
+                background-color: rgba(255,255,255,0.5);
+                margin-bottom: 20px;
+            }
         }
         .view_foot{
             width: 100%;
             height: 150px;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(0,0,0,0.7);
             color: white;
             display: flex;
             justify-content: center;
@@ -534,6 +587,18 @@ export default {
     }
     .disn{
         display: none;
+    }
+    /deep/ .table_head{
+       background-color: rgba(0, 0, 0 ,0);
+        th{
+            background-color: rgba(0, 0, 0 ,0);
+        }
+   }
+    /deep/ .table_first{
+        background-color: rgba(252, 236, 239, 0.45) !important;
+    }
+    /deep/ .table_second{
+        background-color: rgba(255, 251, 226, 0.45) !important;
     }
     /deep/ .el-dialog__header{
         background-color: #38414a;

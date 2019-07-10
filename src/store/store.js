@@ -17,6 +17,9 @@ export default new Vuex.Store({
         slidedown(state) {
             state.slide--;
         },
+        slidechange(state, index) {
+            state.slide = index;
+        }
     },
     actions: {
 

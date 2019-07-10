@@ -21,13 +21,13 @@
                     </template>
                 </p>
             </div>
-            <div class="re-btn" @click="refreshImg" :style="'height: '+28*scale+'px;padding: '+1*scale+'px '+16*scale+'px;font-size: '+18*scale+'px;'"><i class="el-icon-loading" style="color: #5992ff"></i>点我换图</div>
+            <div class="re-btn" @click="refreshImg" :style="'height: '+28*scale+'px;padding: '+1*scale+'px '+16*scale+'px;font-size: '+18*scale+'px;'"><i class="el-icon-loading" style="color: #5992ff"></i>点我换图<span style="font-size: 12px ; ">(手机用户请向右上拖动)</span></div>
         </div><br>
         <div class="slider-container" :style="'width:' + dataWidth + 'px;'">
             <div class="slider-bar" :style="'border-radius:'+ 24*scale+'px;'">
                 <p class="slider-bar-text select-none" onselectstart="return false" :style="'line-height:' + 28*scale + 'px;font-size:'+12*scale+'px;'">按住滑块， 拖动完成上方拼图</p>
             </div>
-            <div class="slider-btn" ref="sliderBtn" @mousedown="startMove" @touchstart="startMove" :style="'top: '+ -3*scale + 'px;'"><i class="el-icon-setting" style="background-color:white; border-radius: 40px ; color: #5992ff" :style="'font-size: '+36*scale+'px;'"></i></div>
+            <div class="slider-btn" ref="sliderBtn" @mousedown.stop="startMove" @touchstart.stop="startMove" :style="'top: '+ -3*scale + 'px;'"><i class="el-icon-setting" style="background-color:white; border-radius: 40px ; color: #5992ff" :style="'font-size: '+36*scale+'px;'"></i></div>
         </div>
     </div>
 </template>

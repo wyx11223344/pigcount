@@ -76,8 +76,6 @@ export default {
             } else { //向上滚动
                 _this.swipeup();
             }
-
-
         },
         swipeup() {
             const _this = this;

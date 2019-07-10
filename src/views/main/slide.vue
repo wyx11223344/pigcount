@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         slide_change(index) {
-            this.slide = index;
+            this.$store.commit('slidechange', index);
         }
     },
 };

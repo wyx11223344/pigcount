@@ -4,6 +4,9 @@
 -->
 <template>
   <div :class="theme" class="title">
+    <div class="no_show" v-if="type === '1'">
+
+    </div>
     <div class="nav_title_blur">
 
     </div>
@@ -37,6 +40,12 @@
 <script>
 export default {
     name: 'titletop',
+    props: {
+        type: {
+            type: String,
+            default: '0'
+        },
+    },
     data() {
         return {
             theme: '',
@@ -45,6 +54,7 @@ export default {
     },
     created() {
         this.theme = this.$store.state.theme;
+        console.log(this.type);
     },
     methods: {
         log_out() {
@@ -164,6 +174,13 @@ export default {
     filter: blur(5px);
     top: 0;
     width: 100%;
+  }
+  .no_show{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    left: 0;
+    background-color: #ffffff;
   }
   .nav_title{
     width: 100% ;
