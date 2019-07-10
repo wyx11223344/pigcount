@@ -4,7 +4,7 @@
         <div class="wdui_center">
             <div class="wdui_form">
                 <ul>
-                    <li :style="{backgroundColor:item.bgc}" :ref="'li'+index" @click="show_big(index)" v-for="(item , index) in li_list" :key="index" @mouseover="show_hover = index" @mouseout="show_hover = null">
+                    <li :style="{backgroundColor:item.bgc}" :ref="'li'+index" @click="show_big(index)" v-for="(item , index) in li_list" :key="index" @mouseover="show_hover = index" @mouseout="show_hover = null" @touchstart.stop="show_hover = index" @touchend="show_hover = null">
                         <transition name="el-zoom-in-center">
                             <div class="big_show_div" v-show="show_big_index === index && show_big_check1">
                                 <img @click.stop="show_small(index)" class="out_point" src="../../../static/img/cha.png"/>
@@ -34,7 +34,7 @@
             <div class="view_foot_left">
                 <p class="view_foot_p1">猪猪账本</p>
                 <p class="view_foot_p2">一个专门用来记账查看自己剁手记录的网站（个人制作，数据有保障）</p>
-                <p class="view_foot_p2">法律声明：网站制作来源于个人，图标使用<a href="https://www.iconfont.cn/" target="_blank">阿里巴巴适量图标库</a></p>
+                <p class="view_foot_p2">法律声明：网站制作于个人，图标使用<a href="https://www.iconfont.cn/" target="_blank">阿里巴巴适量图标库</a></p>
             </div>
             <div class="view_foot_right">
                 <p class="view_foot_p1">个人链接</p>
@@ -65,7 +65,6 @@ export default {
     created() {
         const _this = this;
         this.$post('/loginc/login_on', {}).then((response) => {
-            console.log(response)
             if (response.code === 200) {
                 _this.$store.state.is_log = true;
                 _this.username = response.code.data;
@@ -243,7 +242,7 @@ export default {
                 this.$refs[ `li${index}` ][ 0 ].style.position = 'fixed';
                 this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 200px)';
                 this.$refs[ `li${index}` ][ 0 ].style.width = '96%';
-                this.$refs[ `li${index}` ][ 0 ].style.left = '1.5%';
+                this.$refs[ `li${index}` ][ 0 ].style.left = '0';
                 this.$refs[ `li${index}` ][ 0 ].style.zIndex = '100';
                 this.$refs[ `li${index}` ][ 0 ].style.cursor = 'default';
                 setTimeout(() => {
@@ -327,27 +326,27 @@ export default {
                         itemStyle: {
                             color: '#FE4365'
                         }
-                    },{
+                    }, {
                         value: 15,
                         itemStyle: {
                             color: '#FC9D9A'
                         }
-                    },{
+                    }, {
                         value: 25,
                         itemStyle: {
                             color: '#F9CDAD'
                         }
-                    },{
+                    }, {
                         value: 55,
                         itemStyle: {
                             color: '#C8C8A9'
                         }
-                    },{
+                    }, {
                         value: 8,
                         itemStyle: {
                             color: '#83AF9B'
                         }
-                    },{
+                    }, {
                         value: 5,
                         itemStyle: {
                             color: '#B68A7B'
@@ -372,6 +371,7 @@ export default {
         height: 100%;
         background: url(../../../static/img/backgorund.jpg);
         overflow-y: auto;
+        overflow-x: hidden;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
@@ -479,6 +479,7 @@ export default {
             justify-content: center;
             .view_foot_left{
                 width: 800px;
+                padding:0 10px 0 10px;
                 .view_foot_p1{
                     margin-top: 20px;
                     font-size: 20px;
@@ -495,6 +496,7 @@ export default {
             }
             .view_foot_right{
                 width: 450px;
+                padding:0 10px 0 10px;
                 .view_foot_p1{
                     margin-top: 20px;
                     font-size: 20px;

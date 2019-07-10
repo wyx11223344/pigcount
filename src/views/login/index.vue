@@ -101,6 +101,7 @@ export default {
         change;
     },
     mounted() {
+        const _this = this;
         const utils = {
             degreesToRads: function(degrees) {
                 return degrees / 180 * Math.PI;
@@ -273,6 +274,19 @@ export default {
                 requestAnimationFrame(update);
             }, 1000 / fps);
         }
+
+        this.$nextTick(function () {
+            document.addEventListener('keyup', function (e) {
+                //此处填写你的业务逻辑即可
+                if (e.keyCode === 13) {
+                    if (_this.login_check_left === 0) {
+                        _this.log_button();
+                    } else if (this.login_check_left === 100) {
+                        _this.register_button();
+                    }
+                }
+            });
+        });
     },
     methods: {
         register_button() {
