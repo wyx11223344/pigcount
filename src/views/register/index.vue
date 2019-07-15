@@ -182,8 +182,23 @@ export default {
                     }, 500);
                 }, 1500);
             }
-        }).catch(() => {
-            this.$message.error('大哥，网站出错了，再试一次或者点击联系我');
+        }).catch((err) => {
+            setTimeout(() => {
+                _this.$store.state.app_change = false;
+                _this.$router.push('/');
+                setTimeout(() => {
+                    _this.$store.state.app_change = true;
+                    _this.$store.state.is_log = false;
+                }, 500);
+            }, 1500);
+            if (err === '超时了') {
+                this.$message.error('请将时间调整至标准时间，不要相差超过一个小时!');
+                return;
+            } else if (err === '我看你就是个蛤蟆皮') {
+                this.$message.error('请不要使用其他方式请求本站!');
+                return;
+            }
+            this.$message.error(err);
             this.$alert('<a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class" style="color: #ef6c68">老哥点我！联系我！</a>', '网站出错啦！', {
                 dangerouslyUseHTMLString: true
             });
@@ -208,7 +223,7 @@ export default {
                 disabledDate(time) {
                     return time.getTime() > Date.now();
                 },
-                shortcuts: [{
+                shortcuts: [ {
                     text: '今天',
                     onClick(picker) {
                         picker.$emit('pick', new Date());
@@ -227,7 +242,7 @@ export default {
                         date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
                         picker.$emit('pick', date);
                     }
-                }]
+                } ]
             },
             li_list: [ {
                 text: '餐饮饮食',
