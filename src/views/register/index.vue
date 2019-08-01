@@ -123,7 +123,7 @@
                 <p class="view_foot_p2"><a href="https://gitee.com/missshen/events" target="_blank">码云主页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://juejin.im/user/5d1c80f5f265da1bcb4f4812" target="_blank">掘金主页</a></p>
                 <p class="view_foot_img">
                     <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class"><img src="../../../static/img/qq.png"/></a>
-                    <a href="javascript:;" target="class" @click="dialogVisible = true"><img src="../../../static/img/微信.png"/></a>
+                    <a href="javascript:;" target="class" @click="dialogVisible = true"><img src="../../../static/img/weixin.png"/></a>
                     <a href="https://github.com/wyx11223344" target="class"><img src="../../../static/img/github.png"/></a>
                 </p>
             </div>
@@ -442,6 +442,7 @@ export default {
                 }, 500);
                 this.$refs[ `li${index}` ][ 0 ].style.height = '';
                 this.$refs[ `li${index}` ][ 0 ].style.width = '';
+                this.$refs[ `li${index}` ][ 0 ].style.margin = '11px';
                 this.$refs[ `li${index}` ][ 0 ].style.left = '';
                 this.$refs[ `li${index}` ][ 0 ].style.zIndex = '';
                 this.$refs[ `li${index}` ][ 0 ].style.cursor = '';
@@ -461,8 +462,9 @@ export default {
                 this.can_change = false;
                 this.show_big_index = index;
                 this.$refs[ `li${index}` ][ 0 ].style.position = 'fixed';
-                this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 300px)';
+                this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 100px)';
                 this.$refs[ `li${index}` ][ 0 ].style.width = '96%';
+                this.$refs[ `li${index}` ][ 0 ].style.margin = '0';
                 this.$refs[ `li${index}` ][ 0 ].style.left = '0';
                 this.$refs[ `li${index}` ][ 0 ].style.zIndex = '100';
                 this.$refs[ `li${index}` ][ 0 ].style.cursor = 'default';
