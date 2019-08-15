@@ -4,7 +4,7 @@
         <div class="wdui_center">
             <div class="wdui_form">
                 <ul>
-                    <li class="li_hover" :style="{backgroundColor:item.bgc}" :ref="'li'+index" @click="show_big(index)" v-for="(item , index) in li_list" :key="index" @mouseover="show_hover = index" @mouseout="show_hover = null" @touchstart.stop="show_hover = index" @touchend="show_hover = null">
+                    <li class="li_hover show_min" :style="{backgroundColor:item.bgc}" :ref="'li'+index" @click="show_big(index)" v-for="(item , index) in li_list" :key="index" @mouseover="show_hover = index" @mouseout="show_hover = null" @touchstart.stop="show_hover = index" @touchend="show_hover = null">
                         <transition name="el-zoom-in-center">
                             <div class="big_show_div" v-show="show_big_index === index && show_big_check1">
                                 <div class="show_big_dev">
@@ -26,7 +26,7 @@
                                             </div>
                                         </div>
                                         <div class="show_big_form">
-                                            <el-form style="width: 100% ; transform: translateY( 20px )" ref="form" :model="form" :rules="rules" label-width="0px">
+                                            <el-form style="width: 100% ; height: calc( 100% - 30px ) ; transform: translateY( 20px ) ; display: flex ; flex-wrap: wrap ; justify-content: center" ref="form" :model="form" :rules="rules" label-width="0px">
                                                 <table class="vlay-dialog-table">
                                                     <tr class="tr">
                                                         <td class="th">日期</td>
@@ -57,7 +57,7 @@
                                                         <td class="th">备注</td>
                                                         <td class="td">
                                                             <el-form-item label="" prop="notice">
-                                                                <el-input type="textarea" placeholder="选填" v-model="form.notice"></el-input>
+                                                                <el-input class="wdui_input_text" type="textarea" placeholder="选填" v-model="form.notice"></el-input>
                                                             </el-form-item>
                                                         </td>
                                                     </tr>
@@ -191,13 +191,6 @@ export default {
                     _this.$store.state.is_log = false;
                 }, 500);
             }, 1500);
-            if (err === '超时了') {
-                this.$message.error('请将时间调整至标准时间，不要相差超过一个小时!');
-                return;
-            } else if (err === '我看你就是个蛤蟆皮') {
-                this.$message.error('请不要使用其他方式请求本站!');
-                return;
-            }
             this.$message.error(err);
             this.$alert('<a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class" style="color: #ef6c68">老哥点我！联系我！</a>', '网站出错啦！', {
                 dangerouslyUseHTMLString: true
@@ -462,10 +455,10 @@ export default {
                 this.can_change = false;
                 this.show_big_index = index;
                 this.$refs[ `li${index}` ][ 0 ].style.position = 'fixed';
-                this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 100px)';
-                this.$refs[ `li${index}` ][ 0 ].style.width = '96%';
+                this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 300px)';
+                this.$refs[ `li${index}` ][ 0 ].style.width = '80%';
                 this.$refs[ `li${index}` ][ 0 ].style.margin = '0';
-                this.$refs[ `li${index}` ][ 0 ].style.left = '0';
+                this.$refs[ `li${index}` ][ 0 ].style.left = '10%';
                 this.$refs[ `li${index}` ][ 0 ].style.zIndex = '100';
                 this.$refs[ `li${index}` ][ 0 ].style.cursor = 'default';
                 setTimeout(() => {
@@ -761,6 +754,11 @@ export default {
                                                     .vlay-input{
 
                                                     }
+                                                    .wdui_input_text{
+                                                        /deep/ textarea{
+                                                            height: 100px;
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -771,8 +769,8 @@ export default {
                                         }
                                         .show_big_gif{
                                             position: absolute;
-                                            right: 10%;
-                                            bottom: 10%;
+                                            right: 0%;
+                                            bottom: 5%;
                                             .show_gif_1{
                                                 width: 300px;
                                             }

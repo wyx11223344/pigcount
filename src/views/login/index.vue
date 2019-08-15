@@ -47,12 +47,6 @@
         </div>
     </div>
 </template>
-<style>
-    .el-input__prefix{
-        margin-left: 8px;
-        margin-top: -2px;
-    }
-</style>
 <script>
 import pic_check from './pic_check.vue';
 export default {
@@ -441,12 +435,14 @@ export default {
 };
 
 </script>
-<style>
-    .error_input input{
+<style scoped lang="less">
+    /deep/ .error_input input{
         border: 1px solid #fe6673 !important;
     }
-</style>
-<style scoped>
+    /deep/ .el-input__prefix{
+        margin-left: 8px;
+        margin-top: -2px;
+    }
     .login_index{
         width: 100%;
         height: 100%;

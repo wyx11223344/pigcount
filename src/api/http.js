@@ -4,6 +4,11 @@ axios.defaults.withCredentials = true;
 import url from '../../setBaseUrl.js';
 import md5 from 'js-md5';
 import sha1 from 'sha1';
+import qs from 'qs';
+//1.引入vue
+import Vue from 'vue';
+//2.新创建一个vue实例
+const v = new Vue();
 
 axios.defaults.timeout = 5000;
 axios.defaults.baseURL = url.baseUrl;
@@ -33,6 +38,9 @@ axios.interceptors.request.use(
         config.data.timestamp = timestamp;
         config.data.rand = rand_str;
         config.data.signature = signature;
+        if (config.method === 'post') {
+            config.data = qs.stringify(config.data); // post请求格式化数据
+        }
         return config;
     },
     // error => {
@@ -42,19 +50,19 @@ axios.interceptors.request.use(
 
 
 axios.interceptors.response.use((response) => {
-    if (response === '超时了') {
-        this.$message.error('请核对您的本机时间误差不要超过一个小时！');
-    } else if (response === '我看你就是个蛤蟆皮') {
-        this.$message.error('请从本网站请求接口，不要使用postman等工具!');
+    if (response.data === '超时了') {
+        v.$message.error('请核对您的本机时间误差不要超过一个小时！');
+        return response;
+    } else if (response.data === '我看你就是个蛤蟆皮') {
+        v.$message.error('请从本网站请求接口，不要使用postman等工具!');
+        return response;
+    } else if (response.data === '您无权访问') {
+        v.$message.error('请先进行登录后再进行操做!');
+        return response;
     } else {
         return response;
     }
 }, (err) => {
-    if (err.response.data === '超时了') {
-        return Promise.reject(err.response.data);
-    } else if (err.response.data === '我看你就是个蛤蟆皮') {
-        return Promise.reject(err.response.data);
-    }
     if (err.response) {
         switch (err.response.status) {
         case 400:
@@ -136,7 +144,18 @@ export function post(url, data = {}) {
     return new Promise((resolve, reject) => {
         axios.post(url, data)
             .then((response) => {
-                resolve(response.data);
+                if (!response) {
+                    setTimeout(() => {
+                        window.vm.$store.state.app_change = false;
+                        window.vm.$router.push('login');
+                        setTimeout(() => {
+                            window.vm.$store.state.app_change = true;
+                            window.vm.$store.state.is_log = false;
+                        }, 500);
+                    }, 1000);
+                } else {
+                    resolve(response.data);
+                }
             }, (err) => {
                 reject(err);
             });

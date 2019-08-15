@@ -32,7 +32,7 @@ router.beforeEach((to, from, next) => {
     }, 400);
 });
 
-new Vue({
+window.vm = new Vue({
     router,
     store,
     render: (h) => {
