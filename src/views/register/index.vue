@@ -4,12 +4,20 @@
         <div class="wdui_center">
             <div class="wdui_form">
                 <ul>
-                    <li class="li_hover show_min" :style="{backgroundColor:item.bgc}" :ref="'li'+index" @click="show_big(index)" v-for="(item , index) in li_list" :key="index" @mouseover="show_hover = index" @mouseout="show_hover = null" @touchstart.stop="show_hover = index" @touchend="show_hover = null">
+                    <li class="li_hover show_min"
+                        :style="{backgroundColor:item.bgc}"
+                        :ref="'li'+index" @click="show_big(index)"
+                        v-for="(item , index) in li_list"
+                        :key="index"
+                        @mouseover="show_hover = index"
+                        @mouseout="show_hover = null"
+                        @touchstart.stop="show_hover = index"
+                        @touchend="show_hover = null">
                         <transition name="el-zoom-in-center">
                             <div class="big_show_div" v-show="show_big_index === index && show_big_check1">
                                 <div class="show_big_dev">
                                     <div class="show_big_head">
-                                        <p><img :src="item.src"/>{{item.text}}</p>
+                                        <p><img :src="'http://static.mrwanmisshen.com/typeList/'+ item.icon_name"/>{{item.typename}}</p>
                                     </div>
                                     <div class="show_big_center">
                                         <div class="show_big_pic">
@@ -80,12 +88,12 @@
                         </transition>
                         <transition name="el-zoom-in-center">
                             <div class="small_show" v-show="(show_big_index !== index || !show_big_check) && (show_hover == null || show_hover !== index)">
-                                <img :src="item.src"/>
+                                <img :src="'http://static.mrwanmisshen.com/typeList/'+ item.icon_name"/>
                             </div>
                         </transition>
                         <transition name="el-zoom-in-center">
                             <div class="small_show_font" v-show="(show_big_index !== index || !show_big_check) && show_hover === index">
-                                {{item.text}}
+                                {{item.typename}}
                             </div>
                         </transition>
                     </li>
@@ -163,53 +171,9 @@
 </template>
 
 <script>
+import url from '../../../setBaseUrl.js';
 export default {
     name: 'index',
-    created() {
-        const _this = this;
-        this.$post('/loginc/login_on', {}).then((response) => {
-            if (response.code === 200) {
-                _this.$store.state.is_log = true;
-                _this.username = response.code.data;
-            } else {
-                this.$message.error(response.msg);
-                setTimeout(() => {
-                    _this.$store.state.app_change = false;
-                    _this.$router.push('login');
-                    setTimeout(() => {
-                        _this.$store.state.app_change = true;
-                        _this.$store.state.is_log = false;
-                    }, 500);
-                }, 1500);
-            }
-        }).catch((err) => {
-            setTimeout(() => {
-                _this.$store.state.app_change = false;
-                _this.$router.push('/');
-                setTimeout(() => {
-                    _this.$store.state.app_change = true;
-                    _this.$store.state.is_log = false;
-                }, 500);
-            }, 1500);
-            this.$message.error(err);
-            this.$alert('<a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class" style="color: #ef6c68">老哥点我！联系我！</a>', '网站出错啦！', {
-                dangerouslyUseHTMLString: true
-            });
-        });
-    },
-    mounted() {
-        const _this = this;
-        this.drawLine();
-        this.$nextTick(function () {
-            document.addEventListener('keyup', function (e) {
-                //此处填写你的业务逻辑即可
-                if (e.keyCode === 27) {
-                    _this.show_small(_this.show_big_index);
-                }
-            });
-        });
-        window.addEventListener('resize', this.onResize, false);
-    },
     data() {
         return {
             pickerOptions: {
@@ -237,107 +201,8 @@ export default {
                     }
                 } ]
             },
-            li_list: [ {
-                text: '餐饮饮食',
-                src: require('../../../static/img/logo_cyys.png'),
-                bgc: 'rgb(254,67,101)'
-            }, {
-                text: '水果零食',
-                src: require('../../../static/img/logo_sgls.png'),
-                bgc: 'rgb(252,157,154)'
-            }, {
-                text: '日常用品',
-                src: require('../../../static/img/logo_rcyp.png'),
-                bgc: 'rgb(249,205,173)'
-            }, {
-                text: '材米油盐',
-                src: require('../../../static/img/logo_cmyy.png'),
-                bgc: 'rgb(200,200,169)'
-            }, {
-                text: '物业水电',
-                src: require('../../../static/img/logo_wysd.png'),
-                bgc: 'rgb(131,175,155)'
-            }, {
-                text: '医疗保健',
-                src: require('../../../static/img/logo_ylbj.png'),
-                bgc: 'rgb(182,138,123)'
-            }, {
-                text: '交通费',
-                src: require('../../../static/img/logo_jtf.png'),
-                bgc: 'rgb(229,131,8)'
-            }, {
-                text: '话费网费',
-                src: require('../../../static/img/logo_hfwf.png'),
-                bgc: 'rgb(220,87,18)'
-            }, {
-                text: '养车费',
-                src: require('../../../static/img/logo_ycf.png'),
-                bgc: 'rgb(77,169,180)'
-            }, {
-                text: '旅行娱乐',
-                src: require('../../../static/img/logo_lxyl.png'),
-                bgc: 'rgb(200,204,127)'
-            }, {
-                text: '博彩彩票',
-                src: require('../../../static/img/logo_bccp.png'),
-                bgc: 'rgb(196,140,84)'
-            }, {
-                text: '书报影像',
-                src: require('../../../static/img/logo_sbyx.png'),
-                bgc: 'rgb(190,75,71)'
-            }, {
-                text: '数码产品',
-                src: require('../../../static/img/logo_smcp.png'),
-                bgc: 'rgb(137,190,178)'
-            }, {
-                text: '教育培训',
-                src: require('../../../static/img/logo_jypx.png'),
-                bgc: 'rgb(201,186,131)'
-            }, {
-                text: '服饰装扮',
-                src: require('../../../static/img/logo_fszb.png'),
-                bgc: 'rgb(222,156,83)'
-            }, {
-                text: '化妆美容',
-                src: require('../../../static/img/logo_hzmr.png'),
-                bgc: '#EB7347'
-            }, {
-                text: '人际往来',
-                src: require('../../../static/img/logo_rjwl.png'),
-                bgc: '#FC9D99'
-            }, {
-                text: '礼品礼金',
-                src: require('../../../static/img/logo_lplj.png'),
-                bgc: '#26A65B'
-            }, {
-                text: '孝敬长辈',
-                src: require('../../../static/img/logo_xjzb.png'),
-                bgc: '#AEDD81'
-            }, {
-                text: '房产车产',
-                src: require('../../../static/img/logo_fcxc.png'),
-                bgc: '#00CCFF'
-            }, {
-                text: '投资亏损',
-                src: require('../../../static/img/logo_tzks.png'),
-                bgc: 'rgb(255,150,128)'
-            }, {
-                text: '电器家具',
-                src: require('../../../static/img/logo_dqjj.png'),
-                bgc: 'rgb(32,153,169)'
-            }, {
-                text: '财产借出',
-                src: require('../../../static/img/logo_ccjc.png'),
-                bgc: 'rgb(207,109,114)'
-            }, {
-                text: '其他',
-                src: require('../../../static/img/logo_qt.png'),
-                bgc: 'rgb(139,50,137)'
-            }, {
-                text: '收入',
-                src: require('../../../static/img/logo_sr.png'),
-                bgc: 'rgb(66,127,174)'
-            } ],
+            url: url,
+            li_list: [],
             tableData: [ {
                 data: '2019-07-10',
                 type: '餐饮饮食',
@@ -388,7 +253,67 @@ export default {
             dia_bar_title: ''
         };
     },
+    created() {
+        const _this = this;
+        this.$post('/loginc/login_on', {}).then((response) => {
+            if (response.code === 200) {
+                _this.$store.state.is_log = true;
+                _this.username = response.code.data;
+            } else {
+                this.$message.error(response.msg);
+                setTimeout(() => {
+                    _this.$store.state.app_change = false;
+                    _this.$router.push('login');
+                    setTimeout(() => {
+                        _this.$store.state.app_change = true;
+                        _this.$store.state.is_log = false;
+                    }, 500);
+                }, 1500);
+            }
+        }).catch((err) => {
+            setTimeout(() => {
+                _this.$store.state.app_change = false;
+                _this.$router.push('/');
+                setTimeout(() => {
+                    _this.$store.state.app_change = true;
+                    _this.$store.state.is_log = false;
+                }, 500);
+            }, 1500);
+            this.$message.error(err);
+            this.$alert('<a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class" style="color: #ef6c68">老哥点我！联系我！</a>', '网站出错啦！', {
+                dangerouslyUseHTMLString: true
+            });
+        });
+    },
+    mounted() {
+        const _this = this;
+        this.drawLine();
+        this.$nextTick(function () {
+            document.addEventListener('keyup', function (e) {
+                //此处填写你的业务逻辑即可
+                if (e.keyCode === 27) {
+                    _this.show_small(_this.show_big_index);
+                }
+            });
+        });
+        window.addEventListener('resize', this.onResize, false);
+        this.create_view_get();
+    },
     methods: {
+        create_view_get() {
+            this.$post('/web/list_get').then((response) => {
+                if (response.code === 200) {
+                    this.li_list = response.data;
+                } else {
+                    this.$message.error(response.msg);
+                }
+            });
+        },
+
+        /**
+         * 表单提交
+         * @param formName
+         */
         submitCase(formName) {
             this.$refs[ formName ].validate((valid) => {
                 if (valid) {
@@ -398,6 +323,11 @@ export default {
                 }
             });
         },
+
+        /**
+         * 表单重置
+         * @param formName
+         */
         resetForm(formName) {
             console.log(formName);
         },
@@ -408,6 +338,12 @@ export default {
             this.dialogImageUrl = file.url;
             this.dialogVisible_pic = true;
         },
+
+        /**
+         * 表格显示不同颜色
+         * @param rowIndex
+         * @returns {string}
+         */
         tableRowClassName({rowIndex}) {
             if (rowIndex % 2 === 0) {
                 return 'table_first';
@@ -415,15 +351,35 @@ export default {
                 return 'table_second';
             }
         },
+
+        /**
+         * 查看dia表格
+         * @param index
+         */
         show_more(index) {
             console.log(index);
         },
+
+        /**
+         * 修改信息
+         * @param index
+         */
         show_change(index) {
             console.log(index);
         },
+
+        /**
+         * 删除数据
+         * @param index
+         */
         show_del(index) {
             console.log(index);
         },
+
+        /**
+         * 类型缩小
+         * @param index
+         */
         show_small(index) {
             console.log(index);
             if (this.can_change) {
@@ -447,6 +403,11 @@ export default {
                 });
             }
         },
+
+        /**
+         * 类型变大填写
+         * @param index
+         */
         show_big(index) {
             if (this.show_big_check) {
                 return;
@@ -473,6 +434,10 @@ export default {
                 });
             }
         },
+
+        /**
+         * echarts表格绘制
+         */
         drawLine() {
             // 基于准备好的dom，初始化echarts实例
             const _this = this;
@@ -578,6 +543,10 @@ export default {
                 _this.dialogVisible1 = true;
             });
         },
+
+        /**
+         * echarts表格自适应
+         */
         onResize() {
             if (this.myChart) {
                 this.myChart.resize();
