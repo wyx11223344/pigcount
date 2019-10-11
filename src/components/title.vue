@@ -54,7 +54,6 @@ export default {
     },
     created() {
         this.theme = this.$store.state.theme;
-        console.log(this.type);
     },
     methods: {
         log_out() {

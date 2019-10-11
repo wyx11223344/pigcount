@@ -10,9 +10,11 @@ import Vue from 'vue';
 //2.新创建一个vue实例
 const v = new Vue();
 
-axios.defaults.timeout = 5000;
-axios.defaults.baseURL = url.baseUrl;
-
+const service = axios.create({
+    baseURL: url.baseUrl, // url = base url + request url
+    withCredentials: true, // send cookies when cross-domain requests
+    timeout: 5000 // request timeout
+})
 
 function _getRandomString(len) {
     len = len || 32;
@@ -26,7 +28,7 @@ function _getRandomString(len) {
 }
 
 // http request 拦截器
-axios.interceptors.request.use(
+service.interceptors.request.use(
     (config) => {
         //加密添加请求头
         const timestamp = parseInt(Date.parse(new Date()) / 1000);
@@ -49,7 +51,7 @@ axios.interceptors.request.use(
 );
 
 
-axios.interceptors.response.use((response) => {
+service.interceptors.response.use((response) => {
     if (response.data === '超时了') {
         v.$message.error('请核对您的本机时间误差不要超过一个小时！');
         return response;
@@ -120,7 +122,7 @@ axios.interceptors.response.use((response) => {
 
 export function fetch(url, params = {}) {
     return new Promise((resolve, reject) => {
-        axios.get(url, {
+        service.get(url, {
             params: params
         })
             .then((response) => {
@@ -142,7 +144,7 @@ export function fetch(url, params = {}) {
 
 export function post(url, data = {}) {
     return new Promise((resolve, reject) => {
-        axios.post(url, data)
+        service.post(url, data)
             .then((response) => {
                 if (!response) {
                     setTimeout(() => {
@@ -171,7 +173,7 @@ export function post(url, data = {}) {
 
 export function patch(url, data = {}) {
     return new Promise((resolve, reject) => {
-        axios.patch(url, data)
+        service.patch(url, data)
             .then((response) => {
                 resolve(response.data);
             }, (err) => {
@@ -189,7 +191,7 @@ export function patch(url, data = {}) {
 
 export function put(url, data = {}) {
     return new Promise((resolve, reject) => {
-        axios.put(url, data)
+        service.put(url, data)
             .then((response) => {
                 resolve(response.data);
             }, (err) => {

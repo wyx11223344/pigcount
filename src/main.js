@@ -12,8 +12,18 @@ import titletop from './components/title.vue';
 import theme from './components/theme_color.vue';
 import VueTouch from 'vue-touch';
 import './assets/icon/iconfont.css';
+import specialUi from '@wyx962717593/special-ui';
+import '@wyx962717593/special-ui/dist/special-ui.css';
+import * as filters from './utils/filters';
 
+/**
+ * 循环遍历全局注册过滤器
+ */
+Object.keys(filters).forEach((key) => {
+    Vue.filter(key, filters[ key ]);
+});
 
+Vue.use(specialUi);//全部注册
 Vue.prototype.$echarts = echarts; //引入组件
 Vue.config.productionTip = false;
 Vue.prototype.$post = post;

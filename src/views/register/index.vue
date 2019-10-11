@@ -21,20 +21,18 @@
                                     </div>
                                     <div class="show_big_center">
                                         <div class="show_big_pic">
-                                            <el-upload
-                                                    class="dia_pic_list"
-                                                    action="https://jsonplaceholder.typicode.com/posts/"
-                                                    list-type="picture-card"
-                                                    :on-preview="handlePictureCardPreview"
-                                                    :on-remove="handleRemove">
-                                                <i class="el-icon-plus"></i>
-                                            </el-upload>
-                                            <div class="show_pic_font">
-                                                添加您的照片
+                                            <div class="dia_pic_list" v-if="srcList.length">
+                                                <img v-for="(item,index) in srcList" :key="index" class="each_img_cla" :src="item" />
+                                            </div>
+                                            <div class="dia_pic_list" v-else>
+                                                <img class="each_img_cla" style="cursor: pointer" src="../../../static/img/noPic.png" @click="imagecropperShow = true"/>
+                                            </div>
+                                            <div class="show_pic_font" @click="imagecropperShow = true">
+                                                点我添加您的照片↑
                                             </div>
                                         </div>
                                         <div class="show_big_form">
-                                            <el-form style="width: 100% ; height: calc( 100% - 30px ) ; transform: translateY( 20px ) ; display: flex ; flex-wrap: wrap ; justify-content: center" ref="form" :model="form" :rules="rules" label-width="0px">
+                                            <el-form class="big_form_st" ref="form" :model="form" :rules="rules" label-width="0px">
                                                 <table class="vlay-dialog-table">
                                                     <tr class="tr">
                                                         <td class="th">日期</td>
@@ -45,7 +43,7 @@
                                                                         v-model="form.time"
                                                                         type="date"
                                                                         placeholder="选择日期"
-                                                                        value-format="yyyy/MM/dd"
+                                                                        value-format="timestamp"
                                                                         :picker-options="pickerOptions">
                                                                 </el-date-picker>
                                                             </el-form-item>
@@ -72,8 +70,8 @@
                                                 </table>
                                                 <div class="vlay-btms-btn">
                                                     <el-form-item>
-                                                        <el-button type="primary" @click="submitCase('form')">保存</el-button>
-                                                        <el-button @click="resetForm('form')">重置</el-button>
+                                                        <el-button type="primary" @click="submitCase(index)">保存</el-button>
+                                                        <el-button @click="resetForm()">重置</el-button>
                                                     </el-form-item>
                                                 </div>
                                             </el-form>
@@ -167,14 +165,31 @@
         <el-dialog :visible.sync="dialogVisible_pic" :modal-append-to-body="false">
             <img width="100%" :src="dialogImageUrl" alt="">
         </el-dialog>
+        <image-cropper  v-if="imagecropperShow"
+                        key="file"
+                        :width="200"
+                        :height="200"
+                        @close1="close1"
+                        @fileSend="imgChange(arguments)"></image-cropper>
     </div>
 </template>
 
 <script>
 import url from '../../../setBaseUrl.js';
+import axios from 'axios';
+import getSign from '@/utils/sign';
 export default {
     name: 'index',
     data() {
+        const dataCheck = (rule, value, callback) => {
+            console.log(value);
+            if (!value) {
+                callback(new Error('请输入密码'));
+            } else {
+                callback();
+            }
+        };
+        const today = (new Date()).getTime();
         return {
             pickerOptions: {
                 disabledDate(time) {
@@ -237,8 +252,17 @@ export default {
                 type: '餐饮饮食',
                 money: '20'
             } ],
-            form: {},
-            rules: {},
+            form: {
+                time: today
+            },
+            rules: {
+                money: [
+                    { required: true, message: '请输入金额', trigger: 'blur' }
+                ],
+                time: [
+                    { validator: dataCheck, trigger: 'blur' }
+                ],
+            },
             username: '',
             show_big_check: false,
             show_big_check1: false,
@@ -250,7 +274,13 @@ export default {
             dialogVisible1: false,
             dialogVisible_pic: false,
             dialogImageUrl: '',
-            dia_bar_title: ''
+            dia_bar_title: '',
+            // 截图组件
+            imagecropperShow: false,
+            // 上传照片展示列表
+            fileList: [],
+            srcList: [],
+            nameList: []
         };
     },
     created() {
@@ -314,10 +344,27 @@ export default {
          * 表单提交
          * @param formName
          */
-        submitCase(formName) {
-            this.$refs[ formName ].validate((valid) => {
+        submitCase(index) {
+            this.$refs.form[ index ].validate((valid) => {
                 if (valid) {
-                    console.log(this.form);
+                    //上传数据处理
+                    const fmData = new FormData();
+                    for (const i in this.fileList) {
+                        fmData.append('file', this.fileList[ i ], this.nameList[ i ]);
+                    }
+                    Object.keys(this.form).forEach((k) => {
+                        fmData.append(k, this.form[ k ]);
+                    });
+                    const arr = getSign();
+                    fmData.append('timestamp', arr[ 0 ]);
+                    fmData.append('rand', arr[ 1 ]);
+                    fmData.append('signature', arr[ 2 ]);
+                    fmData.append('noLog', true);
+                    axios.post(`${this.url.baseUrl}/books/booksChange`,
+                        fmData
+                    ).then(() => {
+
+                    });
                 } else {
                     this.$message.error('老哥至少把日期和金额填写了啊！');
                 }
@@ -326,17 +373,14 @@ export default {
 
         /**
          * 表单重置
-         * @param formName
          */
-        resetForm(formName) {
-            console.log(formName);
-        },
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePictureCardPreview(file) {
-            this.dialogImageUrl = file.url;
-            this.dialogVisible_pic = true;
+        resetForm() {
+            this.srcList = [];
+            this.fileList = [];
+            this.nameList = [];
+            this.form = {
+                time: new Date()
+            };
         },
 
         /**
@@ -381,7 +425,7 @@ export default {
          * @param index
          */
         show_small(index) {
-            console.log(index);
+            this.resetForm();
             if (this.can_change) {
                 this.can_change = false;
                 setTimeout(() => {
@@ -390,6 +434,7 @@ export default {
                     this.can_change = true;
                 }, 500);
                 this.$refs[ `li${index}` ][ 0 ].style.height = '';
+                this.$refs[ `li${index}` ][ 0 ].style.minHeight = '';
                 this.$refs[ `li${index}` ][ 0 ].style.width = '';
                 this.$refs[ `li${index}` ][ 0 ].style.margin = '11px';
                 this.$refs[ `li${index}` ][ 0 ].style.left = '';
@@ -416,7 +461,8 @@ export default {
                 this.can_change = false;
                 this.show_big_index = index;
                 this.$refs[ `li${index}` ][ 0 ].style.position = 'fixed';
-                this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 300px)';
+                this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 200px)';
+                this.$refs[ `li${index}` ][ 0 ].style.minHeight = '780px';
                 this.$refs[ `li${index}` ][ 0 ].style.width = '80%';
                 this.$refs[ `li${index}` ][ 0 ].style.margin = '0';
                 this.$refs[ `li${index}` ][ 0 ].style.left = '10%';
@@ -551,6 +597,22 @@ export default {
             if (this.myChart) {
                 this.myChart.resize();
             }
+        },
+
+        /**
+         * 图片上传关闭回调
+         */
+        close1() {
+            this.imagecropperShow = false;
+        },
+
+        /**
+         * 上传图片回调
+         */
+        imgChange(bolb) {
+            this.srcList.push(bolb[ 0 ].toString());
+            this.fileList.push(bolb[ 1 ]);
+            this.nameList.push(bolb[ 2 ]);
         }
     }
 };
@@ -665,18 +727,24 @@ export default {
                                         display: flex;
                                         .show_pic_font{
                                             position: absolute;
+                                            cursor: pointer;
                                             left: 2%;
                                             top: 100px;
                                             width: 20px;
                                             font-size: 18px;
                                             font-weight: bold;
                                             color: white;
+                                            transition: .5s;
+                                            text-align: center;
+                                            &:hover{
+                                                transform: translateY(-10px);
+                                            }
                                         }
                                         &::-webkit-scrollbar {
                                             width: 7px;
                                             height: 7px;
                                             background-color: #F5F5F5;
-                                            display: none;
+                                            /*display: none;*/
                                         }
                                         /*定义滚动条轨道 内阴影+圆角*/
                                         &::-webkit-scrollbar-track {
@@ -695,6 +763,9 @@ export default {
                                             width: 100% ;
                                             flex-wrap: wrap;
                                             justify-content: center;
+                                            img{
+                                                padding: 10px;
+                                            }
                                         }
                                     }
                                     .show_big_form{
@@ -702,6 +773,14 @@ export default {
                                         display: flex;
                                         justify-content: center;
                                         flex-wrap: wrap;
+                                        .big_form_st{
+                                            width: 100% ;
+                                            height: calc( 100% - 30px ) ;
+                                            transform: translateY( 20px ) ;
+                                            display: flex ; flex-wrap: wrap ;
+                                            justify-content: center;
+                                            z-index: 10;
+                                        }
                                         .vlay-dialog-table{
                                             width: 90%;
                                             .tr{
@@ -737,6 +816,7 @@ export default {
                                             margin-top: 20px;
                                         }
                                         .show_big_gif{
+                                            z-index: -1;
                                             position: absolute;
                                             right: 0%;
                                             bottom: 5%;
