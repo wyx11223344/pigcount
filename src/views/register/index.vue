@@ -104,10 +104,22 @@
                 </div>
             </div>
             <div class="wdui_table">
-                <el-table :data="tableData" style="width: 100% ; background-color: rgba(0,0,0,0);" :row-class-name="tableRowClassName" :header-row-class-name="'table_head'">
-                    <el-table-column align="center" prop="data" label="日期" show-overflow-tooltip></el-table-column>
-                    <el-table-column align="center" prop="type" label="类型"></el-table-column>
-                    <el-table-column align="center" prop="money" label="金额"></el-table-column>
+                <el-table :data="tableData" style="width: 100% ; background-color: rgba(0,0,0,0);" :row-class-name="tableRowClassName" :header-row-class-name="'table_head'" height="313">
+                    <el-table-column align="center" label="日期" show-overflow-tooltip>
+                        <template slot-scope="scope">
+                            {{scope.row.time * 1000 | formatdate('yyyy-MM-dd')}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="类型">
+                        <template slot-scope="scope">
+                            {{typeName[scope.row.type]}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column align="center" label="金额">
+                        <template slot-scope="scope">
+                            {{scope.row.money}}￥
+                        </template>
+                    </el-table-column>
                     <el-table-column align="center" label="操作" width="210">
                         <template slot-scope="scope">
                             <el-button @click="show_more(scope.row)" size="mini" type="primary">查看</el-button>
@@ -144,27 +156,24 @@
                 width="70%">
             <img src="../../../static/img/weixiner.jpg" style="width: 100%"/>
         </el-dialog>
-        <el-dialog
-                :title="dia_bar_title+' (请选择查看分析查看更多内容)'"
-                :visible.sync="dialogVisible1"
-                width="70%"
-                :modal-append-to-body="false">
-            <el-table :data="tableData1" style="width: 100% ; background-color: rgba(0,0,0,0);" :row-class-name="tableRowClassName" :header-row-class-name="'table_head'">
-                <el-table-column align="center" prop="data" label="日期" show-overflow-tooltip></el-table-column>
-                <el-table-column align="center" prop="type" label="类型"></el-table-column>
-                <el-table-column align="center" prop="money" label="金额"></el-table-column>
-                <el-table-column align="center" label="操作" width="210">
-                    <template slot-scope="scope">
-                        <el-button @click="show_more(scope.row)" size="mini" type="primary">查看</el-button>
-                        <el-button @click="show_change(scope.row)" size="mini" type="warning">修改</el-button>
-                        <el-button @click="show_del(scope.row)" size="mini" type="danger">删除</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-dialog>
-        <el-dialog :visible.sync="dialogVisible_pic" :modal-append-to-body="false">
-            <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
+<!--        <el-dialog-->
+<!--                :title="dia_bar_title+' (请选择查看分析查看更多内容)'"-->
+<!--                :visible.sync="dialogVisible1"-->
+<!--                width="70%"-->
+<!--                :modal-append-to-body="false">-->
+<!--            <el-table :data="tableData1" style="width: 100% ; background-color: rgba(0,0,0,0);" :row-class-name="tableRowClassName" :header-row-class-name="'table_head'">-->
+<!--                <el-table-column align="center" prop="data" label="日期" show-overflow-tooltip></el-table-column>-->
+<!--                <el-table-column align="center" prop="type" label="类型"></el-table-column>-->
+<!--                <el-table-column align="center" prop="money" label="金额"></el-table-column>-->
+<!--                <el-table-column align="center" label="操作" width="210">-->
+<!--                    <template slot-scope="scope">-->
+<!--                        <el-button @click="show_more(scope.row)" size="mini" type="primary">查看</el-button>-->
+<!--                        <el-button @click="show_change(scope.row)" size="mini" type="warning">修改</el-button>-->
+<!--                        <el-button @click="show_del(scope.row)" size="mini" type="danger">删除</el-button>-->
+<!--                    </template>-->
+<!--                </el-table-column>-->
+<!--            </el-table>-->
+<!--        </el-dialog>-->
         <image-cropper  v-if="imagecropperShow"
                         key="file"
                         :width="200"
@@ -176,20 +185,25 @@
 
 <script>
 import url from '../../../setBaseUrl.js';
-import axios from 'axios';
 import getSign from '@/utils/sign';
+import {formatdate} from '../../utils/filters';
+import beforeC from '../beforeCreate';
 export default {
     name: 'index',
+    mixins: [
+        beforeC
+    ],
     data() {
         const dataCheck = (rule, value, callback) => {
-            console.log(value);
             if (!value) {
                 callback(new Error('请输入密码'));
             } else {
                 callback();
             }
         };
-        const today = (new Date()).getTime();
+        const today = new Date(`${formatdate((new Date()), 'yyyy-MM-dd')} 00:00:00`).getTime();
+        const yestoday = new Date(`${formatdate((new Date()), 'yyyy-MM-dd')} 00:00:00`).getTime() - 3600 * 1000 * 24;
+        const lastweek = new Date(`${formatdate((new Date()), 'yyyy-MM-dd')} 00:00:00`).getTime() - 3600 * 1000 * 24 * 7;
         return {
             pickerOptions: {
                 disabledDate(time) {
@@ -198,60 +212,41 @@ export default {
                 shortcuts: [ {
                     text: '今天',
                     onClick(picker) {
-                        picker.$emit('pick', new Date());
+                        picker.$emit('pick', today);
                     }
                 }, {
                     text: '昨天',
                     onClick(picker) {
-                        const date = new Date();
-                        date.setTime(date.getTime() - 3600 * 1000 * 24);
-                        picker.$emit('pick', date);
+                        picker.$emit('pick', yestoday);
                     }
                 }, {
                     text: '一周前',
                     onClick(picker) {
-                        const date = new Date();
-                        date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-                        picker.$emit('pick', date);
+                        picker.$emit('pick', lastweek);
                     }
                 } ]
             },
             url: url,
             li_list: [],
-            tableData: [ {
-                data: '2019-07-10',
-                type: '餐饮饮食',
-                money: '20'
-            }, {
-                data: '2019-07-10',
-                type: '餐饮饮食',
-                money: '20'
-            }, {
-                data: '2019-07-10',
-                type: '餐饮饮食',
-                money: '20'
-            }, {
-                data: '2019-07-10',
-                type: '餐饮饮食',
-                money: '20'
-            } ],
-            tableData1: [ {
-                data: '2019-07-10',
-                type: '餐饮饮食',
-                money: '20'
-            }, {
-                data: '2019-07-10',
-                type: '餐饮饮食',
-                money: '20'
-            }, {
-                data: '2019-07-10',
-                type: '餐饮饮食',
-                money: '20'
-            }, {
-                data: '2019-07-10',
-                type: '餐饮饮食',
-                money: '20'
-            } ],
+            typeName: {},
+            tableData: [],
+            // tableData1: [ {
+            //     data: '2019-07-10',
+            //     type: '餐饮饮食',
+            //     money: '20'
+            // }, {
+            //     data: '2019-07-10',
+            //     type: '餐饮饮食',
+            //     money: '20'
+            // }, {
+            //     data: '2019-07-10',
+            //     type: '餐饮饮食',
+            //     money: '20'
+            // }, {
+            //     data: '2019-07-10',
+            //     type: '餐饮饮食',
+            //     money: '20'
+            // } ],
             form: {
                 time: today
             },
@@ -271,9 +266,7 @@ export default {
             myChart: {},
             show_hover: null,
             dialogVisible: false,
-            dialogVisible1: false,
-            dialogVisible_pic: false,
-            dialogImageUrl: '',
+            // dialogVisible1: false,
             dia_bar_title: '',
             // 截图组件
             imagecropperShow: false,
@@ -282,38 +275,6 @@ export default {
             srcList: [],
             nameList: []
         };
-    },
-    created() {
-        const _this = this;
-        this.$post('/loginc/login_on', {}).then((response) => {
-            if (response.code === 200) {
-                _this.$store.state.is_log = true;
-                _this.username = response.code.data;
-            } else {
-                this.$message.error(response.msg);
-                setTimeout(() => {
-                    _this.$store.state.app_change = false;
-                    _this.$router.push('login');
-                    setTimeout(() => {
-                        _this.$store.state.app_change = true;
-                        _this.$store.state.is_log = false;
-                    }, 500);
-                }, 1500);
-            }
-        }).catch((err) => {
-            setTimeout(() => {
-                _this.$store.state.app_change = false;
-                _this.$router.push('/');
-                setTimeout(() => {
-                    _this.$store.state.app_change = true;
-                    _this.$store.state.is_log = false;
-                }, 500);
-            }, 1500);
-            this.$message.error(err);
-            this.$alert('<a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class" style="color: #ef6c68">老哥点我！联系我！</a>', '网站出错啦！', {
-                dangerouslyUseHTMLString: true
-            });
-        });
     },
     mounted() {
         const _this = this;
@@ -330,10 +291,35 @@ export default {
         this.create_view_get();
     },
     methods: {
+
+        /**
+         * 初始化查询
+         */
         create_view_get() {
+            //查询基础类型
             this.$post('/web/list_get').then((response) => {
                 if (response.code === 200) {
                     this.li_list = response.data;
+                    this.li_list.forEach((item) => {
+                        this.typeName[ item.id ] = item.typename;
+                    });
+                } else {
+                    this.$message.error(response.msg);
+                }
+            });
+            this.form_list_get();
+        },
+
+        /**
+         * 获取最近5条数据
+         */
+        form_list_get() {
+            this.$post('/books/booksFind', {
+                page: 1,
+                pageSize: 5
+            }).then((response) => {
+                if (response.code === 200) {
+                    this.tableData = response.data.list;
                 } else {
                     this.$message.error(response.msg);
                 }
@@ -352,6 +338,8 @@ export default {
                     for (const i in this.fileList) {
                         fmData.append('file', this.fileList[ i ], this.nameList[ i ]);
                     }
+                    this.form.time = this.form.time / 1000;
+                    this.form.typeId = this.li_list[ index ].id;
                     Object.keys(this.form).forEach((k) => {
                         fmData.append(k, this.form[ k ]);
                     });
@@ -360,10 +348,19 @@ export default {
                     fmData.append('rand', arr[ 1 ]);
                     fmData.append('signature', arr[ 2 ]);
                     fmData.append('noLog', true);
-                    axios.post(`${this.url.baseUrl}/books/booksChange`,
+                    this.$post('/books/booksChange',
                         fmData
-                    ).then(() => {
-
+                    ).then((response) => {
+                        if (response.code === 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '保存成功！'
+                            });
+                            this.show_small(index);
+                            this.form_list_get();
+                        } else {
+                            this.$message.error(response.msg);
+                        }
                     });
                 } else {
                     this.$message.error('老哥至少把日期和金额填写了啊！');
@@ -492,7 +489,7 @@ export default {
             // 绘制图表
             myChart.setOption({
                 title: {
-                    text: '这个月的花销'
+                    text: '当月花销'
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -585,8 +582,14 @@ export default {
                 } ]
             });
             myChart.on('click', function (params) {
-                _this.dia_bar_title = params.name;
-                _this.dialogVisible1 = true;
+                // _this.dia_bar_title = params.name;
+                // _this.dialogVisible1 = true;
+                _this.$store.state.app_change = false;
+                _this.$router.push('analysis');
+                setTimeout(() => {
+                    _this.$store.state.is_log = false;
+                    _this.$store.state.app_change = true;
+                }, 500);
             });
         },
 

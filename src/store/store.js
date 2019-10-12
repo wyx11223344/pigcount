@@ -8,7 +8,8 @@ export default new Vuex.Store({
         app_change: true,
         theme: 'theme-pink',
         slide: 0,
-        is_log: false
+        is_log: false,
+        loadingArr: 0 // 关于加载动画几时结束
     },
     mutations: {
         slideadd(state) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
         },
         slidechange(state, index) {
             state.slide = index;
+        },
+        changeLoadingArr: (state, token) => { // 这里的state对象对应上面的state
+            state.loadingArr = token;
         }
     },
     actions: {

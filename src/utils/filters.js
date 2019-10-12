@@ -9,7 +9,7 @@ function padLeftZero(str) {
 
 /**
    * 日期过滤
-   * @param {日期} date
+   * @param {Date} date
    * @param {*日期格式} fmt
    */
 export function formatdate(date, fmt) {
