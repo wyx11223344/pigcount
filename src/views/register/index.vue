@@ -43,7 +43,7 @@
                                                                         v-model="form.time"
                                                                         type="date"
                                                                         placeholder="选择日期"
-                                                                        value-format="timestamp"
+                                                                        value-format="yyyy-MM-dd"
                                                                         :picker-options="pickerOptions">
                                                                 </el-date-picker>
                                                             </el-form-item>
@@ -201,9 +201,10 @@ export default {
                 callback();
             }
         };
-        const today = new Date(`${formatdate((new Date()), 'yyyy-MM-dd')} 00:00:00`).getTime();
-        const yestoday = new Date(`${formatdate((new Date()), 'yyyy-MM-dd')} 00:00:00`).getTime() - 3600 * 1000 * 24;
-        const lastweek = new Date(`${formatdate((new Date()), 'yyyy-MM-dd')} 00:00:00`).getTime() - 3600 * 1000 * 24 * 7;
+        const data = new Date();
+        const today = formatdate(data, 'yyyy-MM-dd');
+        const yestoday = formatdate(data.setDate(data.getDate() - 1), 'yyyy-MM-dd');
+        const lastweek = formatdate(data.setDate(data.getDate() - 7), 'yyyy-MM-dd');
         return {
             pickerOptions: {
                 disabledDate(time) {
@@ -338,7 +339,8 @@ export default {
                     for (const i in this.fileList) {
                         fmData.append('file', this.fileList[ i ], this.nameList[ i ]);
                     }
-                    this.form.time = this.form.time / 1000;
+                    console.log(this.form.time);
+                    this.form.time = new Date(this.form.time) / 1000;
                     this.form.typeId = this.li_list[ index ].id;
                     Object.keys(this.form).forEach((k) => {
                         fmData.append(k, this.form[ k ]);
@@ -359,6 +361,7 @@ export default {
                             this.show_small(index);
                             this.form_list_get();
                         } else {
+                            this.resetForm();
                             this.$message.error(response.msg);
                         }
                     });
@@ -376,7 +379,7 @@ export default {
             this.fileList = [];
             this.nameList = [];
             this.form = {
-                time: new Date()
+                time: formatdate(new Date(), 'yyyy-MM-dd')
             };
         },
 
