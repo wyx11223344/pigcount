@@ -40,7 +40,7 @@
                                                             <el-form-item label="" prop="time">
                                                                 <el-date-picker
                                                                         style="width: 100%"
-                                                                        v-model="form.time"
+                                                                        v-model="timePick"
                                                                         type="date"
                                                                         placeholder="选择日期"
                                                                         value-format="yyyy-MM-dd"
@@ -188,6 +188,11 @@ import url from '../../../setBaseUrl.js';
 import getSign from '@/utils/sign';
 import {formatdate} from '../../utils/filters';
 import beforeC from '../beforeCreate';
+
+const data = new Date();
+const today = formatdate(data, 'yyyy-MM-dd');
+const yestoday = formatdate(data.setDate(data.getDate() - 1), 'yyyy-MM-dd');
+const lastweek = formatdate(data.setDate(data.getDate() - 7), 'yyyy-MM-dd');
 export default {
     name: 'index',
     mixins: [
@@ -195,16 +200,12 @@ export default {
     ],
     data() {
         const dataCheck = (rule, value, callback) => {
-            if (!value) {
-                callback(new Error('请输入密码'));
+            if (!this.timePick) {
+                callback(new Error('请选择时间'));
             } else {
                 callback();
             }
         };
-        const data = new Date();
-        const today = formatdate(data, 'yyyy-MM-dd');
-        const yestoday = formatdate(data.setDate(data.getDate() - 1), 'yyyy-MM-dd');
-        const lastweek = formatdate(data.setDate(data.getDate() - 7), 'yyyy-MM-dd');
         return {
             pickerOptions: {
                 disabledDate(time) {
@@ -248,9 +249,9 @@ export default {
             //     type: '餐饮饮食',
             //     money: '20'
             // } ],
-            form: {
-                time: today
-            },
+            // 上传提交参数
+            timePick: today,
+            form: {},
             rules: {
                 money: [
                     { required: true, message: '请输入金额', trigger: 'blur' }
@@ -339,8 +340,7 @@ export default {
                     for (const i in this.fileList) {
                         fmData.append('file', this.fileList[ i ], this.nameList[ i ]);
                     }
-                    console.log(this.form.time);
-                    this.form.time = new Date(this.form.time) / 1000;
+                    this.form.time = new Date(this.timePick) / 1000;
                     this.form.typeId = this.li_list[ index ].id;
                     Object.keys(this.form).forEach((k) => {
                         fmData.append(k, this.form[ k ]);
@@ -361,7 +361,6 @@ export default {
                             this.show_small(index);
                             this.form_list_get();
                         } else {
-                            this.resetForm();
                             this.$message.error(response.msg);
                         }
                     });
@@ -378,9 +377,8 @@ export default {
             this.srcList = [];
             this.fileList = [];
             this.nameList = [];
-            this.form = {
-                time: formatdate(new Date(), 'yyyy-MM-dd')
-            };
+            this.form = {};
+            this.timePick = today;
         },
 
         /**
