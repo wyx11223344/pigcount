@@ -141,7 +141,7 @@
                 <p class="view_foot_p2"><a href="https://gitee.com/missshen/events" target="_blank">码云主页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://juejin.im/user/5d1c80f5f265da1bcb4f4812" target="_blank">掘金主页</a></p>
                 <p class="view_foot_img">
                     <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class"><img src="../../../static/img/qq.png"/></a>
-                    <a href="javascript:;" target="class" @click="dialogVisible = true"><img src="../../../static/img/weixin.png"/></a>
+                    <a href="javascript:;" @click="dialogVisible = true"><img src="../../../static/img/weixin.png"/></a>
                     <a href="https://github.com/wyx11223344" target="class"><img src="../../../static/img/github.png"/></a>
                 </p>
             </div>
@@ -154,32 +154,47 @@
                 :visible.sync="dialogVisible"
                 :modal-append-to-body="false"
                 width="70%">
-            <img src="../../../static/img/weixiner.jpg" style="width: 100%"/>
+            <div style="width: 100% ; position: relative ; height: 300px">
+                <img src="../../../static/img/weixiner.jpg" style="width: 100% ; max-width: 300px; position: absolute ; left: 0 ; top: 0 ; right: 0 ; margin: auto "/>
+            </div>
         </el-dialog>
-<!--        <el-dialog-->
-<!--                :title="dia_bar_title+' (请选择查看分析查看更多内容)'"-->
-<!--                :visible.sync="dialogVisible1"-->
-<!--                width="70%"-->
-<!--                :modal-append-to-body="false">-->
-<!--            <el-table :data="tableData1" style="width: 100% ; background-color: rgba(0,0,0,0);" :row-class-name="tableRowClassName" :header-row-class-name="'table_head'">-->
-<!--                <el-table-column align="center" prop="data" label="日期" show-overflow-tooltip></el-table-column>-->
-<!--                <el-table-column align="center" prop="type" label="类型"></el-table-column>-->
-<!--                <el-table-column align="center" prop="money" label="金额"></el-table-column>-->
-<!--                <el-table-column align="center" label="操作" width="210">-->
-<!--                    <template slot-scope="scope">-->
-<!--                        <el-button @click="show_more(scope.row)" size="mini" type="primary">查看</el-button>-->
-<!--                        <el-button @click="show_change(scope.row)" size="mini" type="warning">修改</el-button>-->
-<!--                        <el-button @click="show_del(scope.row)" size="mini" type="danger">删除</el-button>-->
-<!--                    </template>-->
-<!--                </el-table-column>-->
-<!--            </el-table>-->
-<!--        </el-dialog>-->
         <image-cropper  v-if="imagecropperShow"
                         key="file"
                         :width="200"
                         :height="200"
                         @close1="close1"
                         @fileSend="imgChange(arguments)"></image-cropper>
+        <el-drawer
+                :visible.sync="drawBack"
+                :direction="direction"
+                size="100%"
+                :before-close="drawClose">
+            <template #title>
+                <b class="draw_head_b">记账数据详细查看</b>
+            </template>
+            <div class="draw_main">
+                <div class="draw_3d_box">
+                    <div class="draw_3d_face">
+
+                    </div>
+                    <div class="draw_3d_behind">
+
+                    </div>
+                    <div class="draw_3d_top">
+
+                    </div>
+                    <div class="draw_3d_button">
+
+                    </div>
+                    <div class="draw_3d_left">
+
+                    </div>
+                    <div class="draw_3d_right">
+
+                    </div>
+                </div>
+            </div>
+        </el-drawer>
     </div>
 </template>
 
@@ -275,7 +290,12 @@ export default {
             // 上传照片展示列表
             fileList: [],
             srcList: [],
-            nameList: []
+            nameList: [],
+            // 查看和修改抽屉变化效果
+            drawBack: false,
+            directionList: [ 'ltr', 'rtl', 'ttb', 'btt' ],
+            directionDefaul: 0,
+            direction: 'ltr',
         };
     },
     mounted() {
@@ -400,6 +420,7 @@ export default {
          */
         show_more(index) {
             console.log(index);
+            this.drawBack = true;
         },
 
         /**
@@ -416,6 +437,15 @@ export default {
          */
         show_del(index) {
             console.log(index);
+        },
+
+        /**
+         * 关闭前改变方向回调
+         */
+        drawClose(done) {
+            done();
+            this.directionDefaul = this.directionDefaul > 2 ? 0 : this.directionDefaul + 1;
+            this.direction = this.directionList[ this.directionDefaul ];
         },
 
         /**
@@ -926,6 +956,79 @@ export default {
             height: 100%;
             z-index: 10;
             background-color: rgba(0, 0, 0, 0.3);
+        }
+    }
+    .draw_head_b{
+        text-align: center;
+        font-size: 24px;
+    }
+    .draw_main{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        .draw_3d_box{
+            bottom: 100px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            display: inline-block;
+            transform-style: preserve-3d;
+            animation: boxRun 5s linear infinite;
+            @keyframes boxRun {
+                0% {
+                    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+                }
+                /*20% {*/
+                /*    transform: rotateX(30deg) rotateY(10deg) rotateZ(40deg);*/
+                /*}*/
+                /*40% {*/
+                /*    transform: rotateX(60deg) rotateY(60deg) rotateZ(40deg);*/
+                /*}*/
+                /*60% {*/
+                /*    transform: rotateX(150deg) rotateY(30deg) rotateZ(170deg);*/
+                /*}*/
+                /*80% {*/
+                /*    transform: rotateX(40deg) rotateY(60deg) rotateZ(80deg);*/
+                /*}*/
+                100% {
+                    transform: rotate3d(1,1,1,360deg) ;
+                }
+            }
+            div{
+                opacity: 0.5;
+                width: 150px;
+                height: 150px;
+                position: absolute;
+                left: 0;
+                right: 0;
+            }
+            .draw_3d_face{
+                background-color: red;
+                transform: translateZ(75px);
+            }
+            .draw_3d_behind{
+                background-color: orange;
+                transform: translateZ(-75px) rotateX(180deg);
+            }
+            .draw_3d_top{
+                background-color: pink;
+                transform:rotateX(90deg) translateZ(75px);
+            }
+            .draw_3d_button{
+                background-color: wheat;
+                transform:rotateX(90deg) translateZ(-75px);
+            }
+            .draw_3d_left{
+                background-color: purple;
+                transform:rotateY(90deg) translateZ(75px);
+            }
+            .draw_3d_right{
+                background-color: gold;
+                transform:rotateY(-90deg) translateZ(75px);
+            }
         }
     }
     .disn{
