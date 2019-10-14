@@ -977,26 +977,6 @@ export default {
             display: inline-block;
             transform-style: preserve-3d;
             animation: boxRun 5s linear infinite;
-            @keyframes boxRun {
-                0% {
-                    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-                }
-                /*20% {*/
-                /*    transform: rotateX(30deg) rotateY(10deg) rotateZ(40deg);*/
-                /*}*/
-                /*40% {*/
-                /*    transform: rotateX(60deg) rotateY(60deg) rotateZ(40deg);*/
-                /*}*/
-                /*60% {*/
-                /*    transform: rotateX(150deg) rotateY(30deg) rotateZ(170deg);*/
-                /*}*/
-                /*80% {*/
-                /*    transform: rotateX(40deg) rotateY(60deg) rotateZ(80deg);*/
-                /*}*/
-                100% {
-                    transform: rotate3d(1,1,1,360deg) ;
-                }
-            }
             div{
                 opacity: 0.5;
                 width: 150px;
@@ -1029,6 +1009,14 @@ export default {
                 background-color: gold;
                 transform:rotateY(-90deg) translateZ(75px);
             }
+        }
+    }
+    @keyframes boxRun {
+        0% {
+            transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+        }
+        100% {
+            transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
         }
     }
     .disn{
