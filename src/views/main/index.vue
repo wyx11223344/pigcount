@@ -4,25 +4,25 @@
       <titletop></titletop>
       <div class="banner_control" :style="{transform:'translate3d(0,'+(-100*slide)+'%,0)'}">
         <div class="banner0">
-          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
+<!--          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>-->
           <img src="../../../static/img/banner1_font.png" class="banner_font"/>
           <img src="../../../static/img/cicle.png" class="banner_run"/>
           <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
         </div>
         <div class="banner1">
-          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
+<!--          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>-->
           <img src="../../../static/img/banner1_font.png" class="banner_font"/>
           <img src="../../../static/img/cicle.png" class="banner_run"/>
           <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
         </div>
         <div class="banner2">
-          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
+<!--          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>-->
           <img src="../../../static/img/banner1_font.png" class="banner_font"/>
           <img src="../../../static/img/cicle.png" class="banner_run"/>
           <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
         </div>
         <div class="banner3">
-          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>
+<!--          <img @click="updown" src="../../../static/img/down_font.png" class="icon_down"/>-->
           <img src="../../../static/img/banner1_font.png" class="banner_font"/>
           <img src="../../../static/img/cicle.png" class="banner_run"/>
           <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
@@ -33,6 +33,7 @@
           <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
         </div>
       </div>
+      <pig-foot style="position: fixed; bottom: 0 ; left: 0"></pig-foot>
       <!--<theme></theme>-->
       <slide></slide>
     </div>
@@ -43,6 +44,12 @@ import slide from './slide.vue';
 
 export default {
     name: 'index',
+    components: {
+        pigFoot: () => {
+            return import('@/components/pigFoot');
+        },
+        'slide': slide,
+    },
     data() {
         return {
             stop_scroll: false,
@@ -120,9 +127,6 @@ export default {
             }
         }
     },
-    components: {
-        'slide': slide,
-    }
 };
 </script>
 <style lang="less" scoped>
