@@ -106,10 +106,7 @@ export default {
                 this.$store.state.app_change = true;
             }, 500);
             this.$router.push(index);
-        },
-        // href_change(){
-        //   window.location.href = 'http://www.mrwanmisshen.com'
-        // }
+        }
     },
     computed: {
         theme_change() {

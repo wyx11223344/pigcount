@@ -3,7 +3,7 @@ module.exports = {
     devServer: {
         proxy: {
             // '/': {
-            //     target: 'http://pigshop.mrwanmisshen.com/',
+            //     target: 'http://193.112.145.172:8068',
             //     changeOrigin: true
             // }
             '/': {

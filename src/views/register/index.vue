@@ -17,7 +17,7 @@
                             <div class="big_show_div" v-show="show_big_index === index && show_big_check1">
                                 <div class="show_big_dev">
                                     <div class="show_big_head">
-                                        <p><img :src="'http://static.mrwanmisshen.com/typeList/'+ item.icon_name"/>{{item.typename}}</p>
+                                        <p><img :src="'http://193.112.145.172:8000/typeList/'+ item.icon_name"/>{{item.typename}}</p>
                                     </div>
                                     <div class="show_big_center">
                                         <div class="show_big_pic">
@@ -86,7 +86,7 @@
                         </transition>
                         <transition name="el-zoom-in-center">
                             <div class="small_show" v-show="(show_big_index !== index || !show_big_check) && (show_hover == null || show_hover !== index)">
-                                <img :src="'http://static.mrwanmisshen.com/typeList/'+ item.icon_name"/>
+                                <img :src="'http://193.112.145.172:8000/typeList/'+ item.icon_name"/>
                             </div>
                         </transition>
                         <transition name="el-zoom-in-center">
