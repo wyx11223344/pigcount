@@ -130,10 +130,34 @@
                 </el-table>
             </div>
         </div>
+        <div class="view_foot">
+            <div class="view_foot_left">
+                <p class="view_foot_p1">猪猪账本</p>
+                <p class="view_foot_p2">一个专门用来记账查看自己剁手记录的网站（个人制作，数据有保障）</p>
+                <p class="view_foot_p2">法律声明：网站制作于个人，图标使用<a href="https://www.iconfont.cn/" target="_blank">阿里巴巴适量图标库</a></p>
+            </div>
+            <div class="view_foot_right">
+                <p class="view_foot_p1">个人链接</p>
+                <p class="view_foot_p2"><a href="https://gitee.com/missshen/events" target="_blank">码云主页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://juejin.im/user/5d1c80f5f265da1bcb4f4812" target="_blank">掘金主页</a></p>
+                <p class="view_foot_img">
+                    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=962717593" target="class"><img src="../../../static/img/qq.png"/></a>
+                    <a href="javascript:;" @click="dialogVisible = true"><img src="../../../static/img/weixin.png"/></a>
+                    <a href="https://github.com/wyx11223344" target="class"><img src="../../../static/img/github.png"/></a>
+                </p>
+            </div>
+        </div>
         <div class="dia_my" :class="{disn: !show_big_check}" @click="show_small(show_big_index)">
 
         </div>
-        <pig-foot></pig-foot>
+        <el-dialog
+                title="请扫码添加微信好友"
+                :visible.sync="dialogVisible"
+                :modal-append-to-body="false"
+                width="70%">
+            <div style="width: 100% ; position: relative ; height: 300px">
+                <img src="../../../static/img/weixiner.jpg" style="width: 100% ; max-width: 300px; position: absolute ; left: 0 ; top: 0 ; right: 0 ; margin: auto "/>
+            </div>
+        </el-dialog>
         <image-cropper  v-if="imagecropperShow"
                         key="file"
                         :width="200"
@@ -177,11 +201,6 @@ export default {
     mixins: [
         beforeC
     ],
-    components: {
-        pigFoot: () => {
-            return import('@/components/pigFoot');
-        }
-    },
     data() {
         const dataCheck = (rule, value, callback) => {
             if (!this.timePick) {
