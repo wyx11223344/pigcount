@@ -175,7 +175,6 @@
 </template>
 
 <script>
-import url from '../../../setBaseUrl.js';
 import getSign from '@/utils/sign';
 import {formatdate} from '../../utils/filters';
 import beforeC from '../beforeCreate';
@@ -224,7 +223,6 @@ export default {
                     }
                 } ]
             },
-            url: url,
             li_list: [],
             typeName: {},
             tableData: [],
@@ -350,7 +348,6 @@ export default {
                     fmData.append('timestamp', arr[ 0 ]);
                     fmData.append('rand', arr[ 1 ]);
                     fmData.append('signature', arr[ 2 ]);
-                    fmData.append('noLog', true);
                     this.$post('/books/booksChange',
                         fmData
                     ).then((response) => {

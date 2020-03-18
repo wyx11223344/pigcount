@@ -1,7 +1,4 @@
 import axios from 'axios';
-axios.defaults.withCredentials = true;
-
-import url from '../../setBaseUrl.js';
 import md5 from 'js-md5';
 import sha1 from 'sha1';
 import qs from 'qs';
@@ -14,7 +11,6 @@ const v = new Vue();
 let loadingInstance;
 
 const service = axios.create({
-    baseURL: url.baseUrl, // url = base url + request url
     withCredentials: true, // send cookies when cross-domain requests
     timeout: 5000 // request timeout
 });
