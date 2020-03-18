@@ -33,8 +33,8 @@
           <img src="../../../static/img/banner1.png" alt="" class="banner_zoom">
         </div>
       </div>
-      <pig-foot style="position: fixed; bottom: 0 ; left: 0"></pig-foot>
-      <!--<theme></theme>-->
+<!--      <pig-foot style="position: fixed; bottom: 0 ; left: 0"></pig-foot>-->
+<!--      <theme></theme>-->
       <slide></slide>
     </div>
   </v-touch>
@@ -45,9 +45,9 @@ import slide from './slide.vue';
 export default {
     name: 'index',
     components: {
-        pigFoot: () => {
-            return import('@/components/pigFoot');
-        },
+        // pigFoot: () => {
+        //     return import('@/components/pigFoot');
+        // },
         'slide': slide,
     },
     data() {

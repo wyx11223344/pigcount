@@ -3,7 +3,7 @@
 @2019-3-35 14：35
 -->
 <template>
-  <div :class="theme" class="title">
+  <div class="title">
     <div class="no_show" v-if="type === '1'">
 
     </div>

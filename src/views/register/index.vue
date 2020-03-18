@@ -149,25 +149,14 @@
                 <b class="draw_head_b">记账数据详细查看</b>
             </template>
             <div class="draw_main">
+
                 <div class="draw_3d_box">
-                    <div class="draw_3d_face">
-
-                    </div>
-                    <div class="draw_3d_behind">
-
-                    </div>
-                    <div class="draw_3d_top">
-
-                    </div>
-                    <div class="draw_3d_button">
-
-                    </div>
-                    <div class="draw_3d_left">
-
-                    </div>
-                    <div class="draw_3d_right">
-
-                    </div>
+                    <div class="draw_3d_face"></div>
+                    <div class="draw_3d_behind"></div>
+                    <div class="draw_3d_top"></div>
+                    <div class="draw_3d_button"></div>
+                    <div class="draw_3d_left"></div>
+                    <div class="draw_3d_right"></div>
                 </div>
             </div>
         </el-drawer>
@@ -226,23 +215,6 @@ export default {
             li_list: [],
             typeName: {},
             tableData: [],
-            // tableData1: [ {
-            //     data: '2019-07-10',
-            //     type: '餐饮饮食',
-            //     money: '20'
-            // }, {
-            //     data: '2019-07-10',
-            //     type: '餐饮饮食',
-            //     money: '20'
-            // }, {
-            //     data: '2019-07-10',
-            //     type: '餐饮饮食',
-            //     money: '20'
-            // }, {
-            //     data: '2019-07-10',
-            //     type: '餐饮饮食',
-            //     money: '20'
-            // } ],
             // 上传提交参数
             timePick: today,
             form: {},
@@ -590,7 +562,7 @@ export default {
                     } ]
                 } ]
             });
-            myChart.on('click', function (params) {
+            myChart.on('click', function () {
                 // _this.dia_bar_title = params.name;
                 // _this.dialogVisible1 = true;
                 _this.$store.state.app_change = false;

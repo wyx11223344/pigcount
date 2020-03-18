@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{bounceInDown: $store.state.app_change , bounceOutDown : $store.state.app_change === false}" class="animated">
+  <div id="app" :class="[{'bounceInDown': $store.state.app_change , 'bounceOutDown' : $store.state.app_change === false}, myValue]" class="animated">
     <router-view></router-view>
   </div>
 </template>
