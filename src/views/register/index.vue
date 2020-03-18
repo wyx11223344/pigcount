@@ -168,12 +168,41 @@
                 :visible.sync="drawBack"
                 :direction="direction"
                 size="100%"
+                append-to-body
                 :before-close="drawClose">
             <template #title>
                 <b class="draw_head_b">记账数据详细查看</b>
             </template>
             <div class="draw_main">
-
+                <div class="show-table" v-if="showMoreMessage">
+                    <table>
+                        <tr>
+                            <td>账本时间：</td>
+                            <td>{{ showMoreMessage.time * 1000 | formatdate('yyyy-MM-dd') }}</td>
+                            <td>记账时间</td>
+                            <td>{{ showMoreMessage.create_time * 1000 | formatdate('yyyy-MM-dd hh:mm:ss') }}</td>
+                        </tr>
+                        <tr>
+                            <td>记账金额</td>
+                            <td>{{ showMoreMessage.money }}</td>
+                            <td>所属类型</td>
+                            <td>{{ showMoreMessage.type }}</td>
+                        </tr>
+                        <tr>
+                            <td>备注：</td>
+                            <td colspan="3">{{ showMoreMessage.detaile }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <el-carousel height="250px" type="card">
+                                    <el-carousel-item v-for="item in 4" :key="item">
+                                        <h3 class="small">{{ item }}</h3>
+                                    </el-carousel-item>
+                                </el-carousel>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
                 <div class="draw_3d_box">
                     <div class="draw_3d_face"></div>
                     <div class="draw_3d_behind"></div>
@@ -266,6 +295,8 @@ export default {
             directionList: [ 'ltr', 'rtl', 'ttb', 'btt' ],
             directionDefaul: 0,
             direction: 'ltr',
+            // 查看详情对象
+            showMoreMessage: null
         };
     },
     mounted() {
@@ -388,7 +419,7 @@ export default {
          * @param index
          */
         show_more(index) {
-            console.log(index);
+            this.showMoreMessage = index;
             this.drawBack = true;
         },
 
@@ -935,6 +966,26 @@ export default {
         position: relative;
         width: 100%;
         height: 100%;
+        .show-table{
+            width: 100%;
+            table{
+                margin: auto;
+                width: 80%;
+                max-width: 1200px;
+                text-align: center;
+                border-collapse:collapse;
+                font-size: 16px;
+                tr{
+                    width: 100%;
+                    height: 60px;
+                    line-height: 60px;
+
+                    td{
+                        border: 1px solid #f2f2f2;
+                    }
+                }
+            }
+        }
         .draw_3d_box{
             bottom: 100px;
             left: 0;
