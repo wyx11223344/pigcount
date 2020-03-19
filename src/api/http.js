@@ -11,6 +11,7 @@ const v = new Vue();
 let loadingInstance;
 
 const service = axios.create({
+	baseURL: 'http://193.112.145.172:8698',
     withCredentials: true, // send cookies when cross-domain requests
     timeout: 5000 // request timeout
 });
