@@ -236,5 +236,5 @@
             "landscape-secondary"
         ]
     },
-    "fullscreen" : true
+    "fullscreen" : false
 }
