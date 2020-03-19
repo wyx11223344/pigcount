@@ -177,7 +177,7 @@
                 <div class="show-table" v-if="showMoreMessage">
                     <table>
                         <tr>
-                            <td>账本时间：</td>
+                            <td>账本时间</td>
                             <td>{{ showMoreMessage.time * 1000 | formatdate('yyyy-MM-dd') }}</td>
                             <td>记账时间</td>
                             <td>{{ showMoreMessage.create_time * 1000 | formatdate('yyyy-MM-dd hh:mm:ss') }}</td>
@@ -194,9 +194,9 @@
                         </tr>
                         <tr>
                             <td colspan="4">
-                                <el-carousel height="250px" type="card">
-                                    <el-carousel-item v-for="item in 4" :key="item">
-                                        <h3 class="small">{{ item }}</h3>
+                                <el-carousel height="230px" type="card" class="mt15">
+                                    <el-carousel-item v-for="item in showMoreMessage.picList" :key="item.id">
+                                        <img style="height: 230px" :src="'http://193.112.145.172:8000/' + username + '/'+ item.pic_url" alt="">
                                     </el-carousel-item>
                                 </el-carousel>
                             </td>
@@ -274,7 +274,6 @@ export default {
                     { validator: dataCheck, trigger: 'blur' }
                 ],
             },
-            username: '',
             show_big_check: false,
             show_big_check1: false,
             show_big_index: null,
@@ -419,8 +418,13 @@ export default {
          * @param index
          */
         show_more(index) {
-            this.showMoreMessage = index;
-            this.drawBack = true;
+            this.$post('/web/get_pics_ids', {
+                ids: index.pic_ids
+            }).then((response) => {
+                this.showMoreMessage = index;
+                this.showMoreMessage.picList = response.data;
+                this.drawBack = true;
+            });
         },
 
         /**

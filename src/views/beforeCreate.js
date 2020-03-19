@@ -1,10 +1,15 @@
 const mixin = {
+    data() {
+        return {
+            username: ''
+        };
+    },
     beforeCreate() {
         const _this = this;
         this.$post('/loginc/login_on', {}).then((response) => {
             if (response.code === 200) {
                 _this.$store.state.is_log = true;
-                _this.username = response.code.data;
+                _this.username = response.data[ 0 ].name;
             } else {
                 this.$message.error(response.msg);
                 setTimeout(() => {
