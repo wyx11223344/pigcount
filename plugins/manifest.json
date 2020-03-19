@@ -1,7 +1,7 @@
 {
     "@platforms" : [ "android", "iPhone", "iPad" ],
     "id" : "H50069BD1", /*应用的标识*/
-    "name" : "plugins", /*应用名称，程序桌面图标名称*/
+    "name" : "猪猪账本", /*应用名称，程序桌面图标名称*/
     "version" : {
         "name" : "1.0", /*应用版本名称*/
         "code" : ""
