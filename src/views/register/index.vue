@@ -173,7 +173,7 @@
             <template #title>
                 <b class="draw_head_b">记账数据详细查看</b>
             </template>
-            <div class="draw_main">
+            <div class="draw_main f-scoll">
                 <div class="show-table" v-if="showMoreMessage">
                     <table>
                         <tr>
@@ -203,13 +203,17 @@
                         </tr>
                     </table>
                 </div>
-                <div class="draw_3d_box">
-                    <div class="draw_3d_face"></div>
-                    <div class="draw_3d_behind"></div>
-                    <div class="draw_3d_top"></div>
-                    <div class="draw_3d_button"></div>
-                    <div class="draw_3d_left"></div>
-                    <div class="draw_3d_right"></div>
+                <div class="d3-out-box">
+                    <div class="draw_3d_content">
+                        <div class="draw_3d_box">
+                            <div class="draw_3d_face"></div>
+                            <div class="draw_3d_behind"></div>
+                            <div class="draw_3d_top"></div>
+                            <div class="draw_3d_button"></div>
+                            <div class="draw_3d_left"></div>
+                            <div class="draw_3d_right"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </el-drawer>
@@ -990,48 +994,59 @@ export default {
                 }
             }
         }
-        .draw_3d_box{
-            bottom: 100px;
-            left: 0;
-            right: 0;
-            margin: auto;
-            width: 150px;
-            height: 150px;
-            position: absolute;
-            display: inline-block;
-            transform-style: preserve-3d;
-            animation: boxRun 5s linear infinite;
-            div{
-                opacity: 0.5;
-                width: 150px;
-                height: 150px;
-                position: absolute;
-                left: 0;
-                right: 0;
-            }
-            .draw_3d_face{
-                background-color: red;
-                transform: translateZ(75px);
-            }
-            .draw_3d_behind{
-                background-color: orange;
-                transform: translateZ(-75px) rotateX(180deg);
-            }
-            .draw_3d_top{
-                background-color: pink;
-                transform:rotateX(90deg) translateZ(75px);
-            }
-            .draw_3d_button{
-                background-color: wheat;
-                transform:rotateX(90deg) translateZ(-75px);
-            }
-            .draw_3d_left{
-                background-color: purple;
-                transform:rotateY(90deg) translateZ(75px);
-            }
-            .draw_3d_right{
-                background-color: gold;
-                transform:rotateY(-90deg) translateZ(75px);
+        .d3-out-box{
+            width: 100%;
+            height: 320px;
+            .draw_3d_content{
+                width: 100%;
+                height: 200px;
+                margin-top: 50px;
+                position: relative;
+                .draw_3d_box{
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    margin: auto;
+                    width: 150px;
+                    height: 150px;
+                    position: absolute;
+                    display: inline-block;
+                    transform-style: preserve-3d;
+                    animation: boxRun 5s linear infinite;
+                    div{
+                        opacity: 0.5;
+                        width: 150px;
+                        height: 150px;
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                    }
+                    .draw_3d_face{
+                        background-color: red;
+                        transform: translateZ(75px);
+                    }
+                    .draw_3d_behind{
+                        background-color: orange;
+                        transform: translateZ(-75px) rotateX(180deg);
+                    }
+                    .draw_3d_top{
+                        background-color: pink;
+                        transform:rotateX(90deg) translateZ(75px);
+                    }
+                    .draw_3d_button{
+                        background-color: wheat;
+                        transform:rotateX(90deg) translateZ(-75px);
+                    }
+                    .draw_3d_left{
+                        background-color: purple;
+                        transform:rotateY(90deg) translateZ(75px);
+                    }
+                    .draw_3d_right{
+                        background-color: gold;
+                        transform:rotateY(-90deg) translateZ(75px);
+                    }
+                }
             }
         }
     }
@@ -1079,5 +1094,8 @@ export default {
     }
     /deep/ .el-upload-list--picture-card{
         text-align: center;
+    }
+    /deep/.el-drawer__body{
+        height: 100%;
     }
 </style>
