@@ -26,7 +26,7 @@ export default {
             return;
         }
         const brr = arr[ 1 ].split('&');
-        this.$post('loginc/code_check', {
+        this.$post('/loginc/code_check', {
             code: brr[ 0 ],
             name: decodeURIComponent(brr[ 1 ])
         }).then((response) => {
