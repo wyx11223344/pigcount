@@ -186,7 +186,7 @@
                             <td>记账金额</td>
                             <td>{{ showMoreMessage.money }}</td>
                             <td>所属类型</td>
-                            <td>{{ showMoreMessage.type }}</td>
+                            <td>{{ typeName[showMoreMessage.type] }}</td>
                         </tr>
                         <tr>
                             <td>备注：</td>
@@ -225,10 +225,37 @@ import getSign from '@/utils/sign';
 import {formatdate} from '../../utils/filters';
 import beforeC from '../beforeCreate';
 
+/**
+ * 获取当月时间
+ * @type {Date}
+ */
+const time = new Date();
+let timeYear = time.getFullYear();
+const timeMonth = time.getMonth();
+timeYear += (timeYear < 2000) ? 1900 : 0; //
 const data = new Date();
 const today = formatdate(data, 'yyyy-MM-dd');
 const yestoday = formatdate(data.setDate(data.getDate() - 1), 'yyyy-MM-dd');
 const lastweek = formatdate(data.setDate(data.getDate() - 7), 'yyyy-MM-dd');
+const startTime = new Date(timeYear, timeMonth, 1);
+const year = startTime.getFullYear(); //得到年份
+const month = startTime.getMonth() + 1;//得到月份
+const date = startTime.getDate();//得到日期
+const endTime = new Date(timeYear, timeMonth, getMonthDays(timeMonth));
+const year1 = endTime.getFullYear(); //得到年份
+const month1 = endTime.getMonth() + 1;//得到月份
+const date1 = endTime.getDate();//得到日期
+const end = new Date(`${year1}-${month1}-${date1} 23:59:59`);
+const start = new Date(`${year}-${month}-${date} 00:00:00`);
+
+//获得某月的天数
+function getMonthDays(myMonth) {
+    const monthStartDate = new Date(timeYear, myMonth, 1);
+    const monthEndDate = new Date(timeYear, myMonth + 1, 1);
+    const days = (monthEndDate - monthStartDate) / (1000 * 60 * 60 * 24);
+    return days;
+}
+
 export default {
     name: 'index',
     mixins: [
@@ -304,7 +331,6 @@ export default {
     },
     mounted() {
         const _this = this;
-        this.drawLine();
         this.$nextTick(function () {
             document.addEventListener('keyup', function (e) {
                 //此处填写你的业务逻辑即可
@@ -337,7 +363,7 @@ export default {
         },
 
         /**
-         * 获取最近5条数据
+         * 获取最近5条数据 以及获取echarts图数据
          */
         form_list_get() {
             this.$post('/books/booksFind', {
@@ -349,6 +375,12 @@ export default {
                 } else {
                     this.$message.error(response.msg);
                 }
+            });
+            this.$post('/books/booksCountType', {
+                stime: start.getTime() / 1000,
+                etime: end.getTime() / 1000
+            }).then((response) => {
+                this.drawLine(response.data);
             });
         },
 
@@ -444,7 +476,28 @@ export default {
          * @param index
          */
         show_del(index) {
-            console.log(index);
+            this.$confirm('是否要删除该条记录，删除后无法找回?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                this.$post('/books/booksDel', {
+                    ids: index.id
+                }).then((response) => {
+                    if (response.data > 0) {
+                        this.$message({
+                            type: 'success',
+                            message: `成功删除${response.data}信息`
+                        });
+                        this.form_list_get();
+                    }
+                });
+            }).catch(() => {
+                this.$message({
+                    type: 'info',
+                    message: '已取消删除'
+                });
+            });
         },
 
         /**
@@ -520,11 +573,17 @@ export default {
         /**
          * echarts表格绘制
          */
-        drawLine() {
+        drawLine(data) {
             // 基于准备好的dom，初始化echarts实例
             const _this = this;
+            const xData = [];
+            const yData = [];
             const myChart = this.$echarts.init(document.getElementById('myChart'));
             this.myChart = myChart;
+            data.forEach((item) => {
+                xData.push(item.typename);
+                yData.push(item.total);
+            });
             // 绘制图表
             myChart.setOption({
                 title: {
@@ -556,7 +615,7 @@ export default {
                             color: '#cdd4da'
                         }
                     },
-                    data: [ '餐饮饮食', '水果零食', '日常用品', '材米油盐', '物业水电', '交通费' ]
+                    data: xData
                 },
                 yAxis: [ {
                     type: 'value',
@@ -587,37 +646,18 @@ export default {
                 series: [ {
                     name: '花费金额',
                     type: 'bar',
-                    data: [ {
-                        value: 5,
-                        itemStyle: {
-                            color: '#FE4365'
-                        }
-                    }, {
-                        value: 15,
-                        itemStyle: {
-                            color: '#FC9D9A'
-                        }
-                    }, {
-                        value: 25,
-                        itemStyle: {
-                            color: '#F9CDAD'
-                        }
-                    }, {
-                        value: 55,
-                        itemStyle: {
-                            color: '#C8C8A9'
-                        }
-                    }, {
-                        value: 8,
-                        itemStyle: {
-                            color: '#83AF9B'
-                        }
-                    }, {
-                        value: 5,
-                        itemStyle: {
-                            color: '#B68A7B'
-                        }
-                    } ]
+                    barMaxWidth: 40,
+                    itemStyle: {
+                        normal: {
+                            // 定制显示（按顺序）
+                            color: function(params) {
+                                const colorList = [ 'rgba(254,67,101,0.51)', 'rgba(229,131,8,0.5)', 'rgba(64,116,52,0.5)', 'rgba(252,157,154,0.51)',
+                                    'rgba(220,87,18,0.5)', 'rgba(222,156,83,0.51)', 'rgba(161,47,47,0.5)', 'rgba(182,194,154,0.5)' ];
+                                return colorList[ params.dataIndex ];
+                            }
+                        },
+                    },
+                    data: yData
                 } ]
             });
             myChart.on('click', function () {
