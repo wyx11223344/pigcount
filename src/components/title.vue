@@ -58,7 +58,7 @@ export default {
     methods: {
         log_out() {
             const _this = this;
-            this.$post('loginc/login_out', {
+            this.$post('/loginc/login_out', {
             }).then((response) => {
                 if (response.code === 200) {
                     this.$message({
