@@ -523,7 +523,7 @@ export default {
                     this.can_change = true;
                 }, 500);
                 this.$refs[ `li${index}` ][ 0 ].style.height = '';
-                this.$refs[ `li${index}` ][ 0 ].style.minHeight = '';
+                this.$refs[ `li${index}` ][ 0 ].style.maxHeight = '';
                 this.$refs[ `li${index}` ][ 0 ].style.width = '';
                 this.$refs[ `li${index}` ][ 0 ].style.margin = '11px';
                 this.$refs[ `li${index}` ][ 0 ].style.left = '';
@@ -550,8 +550,8 @@ export default {
                 this.can_change = false;
                 this.show_big_index = index;
                 this.$refs[ `li${index}` ][ 0 ].style.position = 'fixed';
-                this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 200px)';
-                this.$refs[ `li${index}` ][ 0 ].style.minHeight = '780px';
+                this.$refs[ `li${index}` ][ 0 ].style.height = 'calc(100% - 70px)';
+                this.$refs[ `li${index}` ][ 0 ].style.maxHeight = '780px';
                 this.$refs[ `li${index}` ][ 0 ].style.width = '80%';
                 this.$refs[ `li${index}` ][ 0 ].style.margin = '0';
                 this.$refs[ `li${index}` ][ 0 ].style.left = '10%';
@@ -799,10 +799,12 @@ export default {
                                 }
                                 .show_big_center{
                                     width: 100%;
-                                    height: calc(100% - 40px);
+                                    height: calc(100% - 60px);
                                     transform: translateY(10px);
                                     display: flex;
                                     justify-content: center;
+                                    overflow-y: auto;
+                                    overflow-x: hidden;
                                     .show_big_pic{
                                         width: 600px;
                                         overflow-y: auto;

@@ -29,11 +29,14 @@ function _getRandomString(len) {
 // http request 拦截器
 service.interceptors.request.use(
     (config) => {
-        loadingInstance = Loading.service({ // 加载动画
-            text: '正在请求中请骚等...',
-            background: 'rgba(255, 255, 255, 0.6)'
-        });
-        store.commit('changeLoadingArr', store.state.loadingArr + 1); // 动画加载个数加1
+        console.log(config);
+        if (config.url !== '/loginc/login_in') {
+            loadingInstance = Loading.service({ // 加载动画
+                text: '正在请求中请骚等...',
+                background: 'rgba(255, 255, 255, 0.6)'
+            });
+            store.commit('changeLoadingArr', store.state.loadingArr + 1); // 动画加载个数加1
+        }
         //加密添加请求头
         if (Object.prototype.toString.call(config.data) === '[object FormData]') {
             return config;
