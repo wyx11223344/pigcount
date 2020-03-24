@@ -307,7 +307,7 @@ export default {
             this.login_check_left = 0;
             this.login_send = true;
             this.loading_text = '正在为老哥拼命登录中！';
-            _this.$post('loginc/login_in', {
+            _this.$post('/loginc/login_in', {
                 username: this.name,
                 password: this.password
             }).then((response) => {
@@ -344,7 +344,7 @@ export default {
             this.login_check_left = 100;
             this.login_send = true;
             this.loading_text = '正在为老哥注册中！';
-            _this.$post('loginc/register', {
+            _this.$post('/loginc/register', {
                 username: this.name1,
                 password: this.password1
             }).then((response) => {
