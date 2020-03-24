@@ -366,12 +366,14 @@ export default {
          * 获取最近5条数据 以及获取echarts图数据
          */
         form_list_get() {
+            this.tableData.splice(0, this.tableData.length);
             this.$post('/books/booksFind', {
                 page: 1,
                 pageSize: 5
             }).then((response) => {
                 if (response.code === 200) {
                     this.tableData = response.data.list;
+                    console.log(this.tableData);
                 } else {
                     this.$message.error(response.msg);
                 }
