@@ -29,7 +29,6 @@ function _getRandomString(len) {
 // http request 拦截器
 service.interceptors.request.use(
     (config) => {
-        console.log(config);
         if (config.url !== '/loginc/login_in') {
             loadingInstance = Loading.service({ // 加载动画
                 text: '正在请求中请骚等...',
