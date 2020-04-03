@@ -154,6 +154,7 @@ export default {
       overflow: hidden;
       height: 100%;
       width: 100%;
+      display: test-@className;
     }
   }
   @bgcardList:banner0,banner1,banner2,banner3,banner4;
