@@ -2,6 +2,7 @@
     <div class="view_main">
         <titletop :type="'1'"></titletop>
         <div class="wdui_center">
+            <p class="wdui_top_money">剩余金额：<span>{{ haveMoney }} </span>元<span v-show="haveMoney < 50">（即将饿死，还不少用点）</span></p>
             <div class="wdui_form">
                 <ul>
                     <li class="li_hover show_min"
@@ -382,7 +383,8 @@ export default {
                 stime: start.getTime() / 1000,
                 etime: end.getTime() / 1000
             }).then((response) => {
-                this.drawLine(response.data);
+                this.haveMoney = response.data.haveMoney;
+                this.drawLine(response.data.countType);
             });
         },
 
@@ -738,6 +740,17 @@ export default {
             justify-content: center;
             align-content:flex-start;
             background-color: rgba(255, 255, 255, 0.5);
+            .wdui_top_money{
+                height: 2rem;
+                font-size: 1.5rem;
+                line-height: 2rem;
+                font-weight: bold;
+                width: 100%;
+                text-align: center;
+                span{
+                    color: #fe4365;
+                }
+            }
             .wdui_form{
                 background-color: rgba(255,255,255,0.5);
                 .form_div_p{
