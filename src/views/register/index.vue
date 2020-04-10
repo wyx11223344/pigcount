@@ -2,7 +2,7 @@
     <div class="view_main">
         <titletop :type="'1'"></titletop>
         <div class="wdui_center">
-            <p class="wdui_top_money">剩余金额：<span>{{ haveMoney }} </span>元<span v-show="haveMoney < 50">（即将饿死，还不少用点）</span></p>
+            <p class="wdui_top_money">剩余金额：<span>{{ haveMoney }} </span>元</p>
             <div class="wdui_form">
                 <ul>
                     <li class="li_hover show_min"
