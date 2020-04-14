@@ -1,5 +1,5 @@
 module.exports = {
-    outputDir: 'admin',
+    outputDir: 'pigcount',
     publicPath: './',
     devServer: {
         proxy: {
