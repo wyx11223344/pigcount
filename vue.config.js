@@ -1,4 +1,5 @@
 module.exports = {
+    outputDir: 'admin',
     publicPath: './',
     devServer: {
         proxy: {
