@@ -327,7 +327,9 @@ export default {
             directionDefaul: 0,
             direction: 'ltr',
             // 查看详情对象
-            showMoreMessage: null
+            showMoreMessage: null,
+            // 剩余金钱
+            haveMoney: 0
         };
     },
     mounted() {
@@ -374,7 +376,6 @@ export default {
             }).then((response) => {
                 if (response.code === 200) {
                     this.tableData = response.data.list;
-                    console.log(this.tableData);
                 } else {
                     this.$message.error(response.msg);
                 }

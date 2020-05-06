@@ -63,7 +63,7 @@ service.interceptors.request.use(
 
 service.interceptors.response.use((response) => {
     store.commit('changeLoadingArr', store.state.loadingArr - 1); // 动画加载个数减1
-    if (store.state.loadingArr === 0) {
+    if (store.state.loadingArr === 0 && loadingInstance) {
         loadingInstance.close();
     }
     if (response.data === '超时了') {
